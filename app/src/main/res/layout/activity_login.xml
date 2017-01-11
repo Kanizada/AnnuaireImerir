@@ -14,32 +14,73 @@
     tools:context="com.imerir.annuaireimerir.LoginActivity">
 
     <ImageView
-        android:id="@+id/LogoLogin"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="3.5"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="24dp"
         android:src="@drawable/logo_imerirpng"/>
 
     <EditText
         android:id="@+id/editTextId"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:hint="Nom d'utilisateur"/>
 
     <EditText
         android:layout_below="@+id/editTextMdp"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight="0.6"
         android:hint="Mot de passe"/>
     
     <Button
-        android:layout_width="138dp"
+        android:id="@+id/login_button"
+        android:layout_width="164dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="0.7"
+        android:text="Se connecter"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:layout_marginBottom="30dp">
+
+        <CheckBox
+            android:id="@+id/remind_checkbox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@+id/remind_checkbox"
+            android:gravity="center_vertical"
+            android:text="se souvenir de moi"/>
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/password_loose"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:textColor="@color/blue"
+        android:text="Mot de passe oublié ?"/>
+
+    <TextView
+        android:id="@+id/logup"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="0.4"
+        android:gravity="center"
+        android:textColor="@color/blue"
+        android:text="Pas encore de compte ?"/>
 
 
 </LinearLayout>
