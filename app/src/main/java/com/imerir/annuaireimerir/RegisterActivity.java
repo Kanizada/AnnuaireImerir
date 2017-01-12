@@ -22,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.id.activity_register);
+        setContentView(R.layout.activity_register);
         nomET = (EditText) findViewById(R.id.nomET);
         prenomET = (EditText) findViewById(R.id.prenomET);
         usernameET = (EditText) findViewById(R.id.usernameET);
