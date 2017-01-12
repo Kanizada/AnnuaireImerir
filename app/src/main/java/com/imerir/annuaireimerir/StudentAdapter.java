@@ -47,25 +47,25 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     public class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         ImageView image;
-        TextView nomTv;
-        TextView prenomTv;
-        TextView promotionTv;
+        TextView nomTV;
+        TextView prenomTV;
+        TextView promotionTV;
         Student student;
 
         public StudentViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             image = (ImageView) itemView.findViewById(R.id.student_image);
-            nomTv = (TextView) itemView.findViewById(R.id.student_last_name);
-            prenomTv = (TextView) itemView.findViewById(R.id.student_first_name);
-            promotionTv = (TextView) itemView.findViewById(R.id.student_promotion);
+            nomTV = (TextView) itemView.findViewById(R.id.student_last_name);
+            prenomTV = (TextView) itemView.findViewById(R.id.student_first_name);
+            promotionTV = (TextView) itemView.findViewById(R.id.student_promotion);
         }
 
         public void update(Student student){
             this.student = student;
-            nomTv.setText(student.getLastName());
-            prenomTv.setText(student.getFirstName());
-            promotionTv.setText(student.getPromotion().getName());
+            nomTV.setText(student.getLastName());
+            prenomTV.setText(student.getFirstName());
+            promotionTV.setText(student.getPromotion().getName());
             //image
             cardView.setOnClickListener(this);
         }
