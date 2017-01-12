@@ -15,6 +15,10 @@ public class Promotion {
     private ArrayList<Student> students;
     private Formation formation;
 
+    public Promotion(){
+
+    }
+
     public Promotion(Integer id, String name, Integer yearStart, Integer yearEnd, ArrayList<Student> students, Formation formation) {
         this.id = id;
         this.name = name;

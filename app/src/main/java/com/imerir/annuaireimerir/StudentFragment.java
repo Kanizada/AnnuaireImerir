@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.ArrayList;
+
 /**
  * Created by student on 10/01/2017.
  */
@@ -16,6 +18,7 @@ import android.view.ViewGroup;
 public class StudentFragment extends Fragment {
     RecyclerView recyclerView;
     StudentAdapter adapter;
+    ArrayList<Student> students;
 
     public StudentFragment(){
 
@@ -29,17 +32,23 @@ public class StudentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        ArrayList<Student> students = new ArrayList<>();
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
+        this.students = students;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout., container, false);
+        super.onCreateView(inflater, container, savedInstanceState);
+        View rootView = inflater.inflate(R.layout.fragment_student_list, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        StudentAdapter adapter = new StudentAdapter(/*Arraylist Student ici*/(StudentAdapter.OnStudentClickedListener));
+        StudentAdapter adapter = new StudentAdapter(students,(StudentAdapter.OnStudentClickedListener) this.getActivity());
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);

@@ -17,6 +17,10 @@ public class Enterprise {
     private Double lat;
     private Double lng;
 
+    public Enterprise(){
+
+    }
+
     public Enterprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Student> linkedStudents, Double lat, Double lng) {
         this.name = name;
         this.activityDomain = activityDomain;
