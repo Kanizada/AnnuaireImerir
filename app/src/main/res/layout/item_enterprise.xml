@@ -20,7 +20,7 @@
         android:weightSum="2">
 
         <ImageView
-            android:id="@+id/society_image"
+            android:id="@+id/enterprise_image"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="0.5"
@@ -34,7 +34,7 @@
             android:weightSum="2">
 
             <TextView
-                android:id="@+id/society_name"
+                android:id="@+id/enterprise_name"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
@@ -43,7 +43,7 @@
                 tools:text="Nom de l'entreprise"/>
 
             <TextView
-                android:id="@+id/society_city"
+                android:id="@+id/enterprise_city"
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"

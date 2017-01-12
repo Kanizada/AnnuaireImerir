@@ -11,5 +11,6 @@ public class EnterpriseDetailActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //setContentView(R.layout.activity_enterprise_detail);
     }
 }

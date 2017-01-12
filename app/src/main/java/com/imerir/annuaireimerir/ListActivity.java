@@ -1,5 +1,6 @@
 package com.imerir.annuaireimerir;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -55,7 +56,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             /*fab.setImageDrawable(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.//àdefinir)
                     .color(Color.WHITE).sizeDp(24));*/
-            //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EnterpriseFragment.newInstance(), "enterprise").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EnterpriseFragment.newInstance(), "enterprise").commit();
         }
     }
 
@@ -80,6 +81,11 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.action_student:
                 setMode(DisplayMode.STUDENT);
+                return true;
+            case R.id.action_disconnect:
+                Intent intent = new Intent(ListActivity.this, LoginActivity.class);
+                ListActivity.this.startActivity(intent);
+                finish();
                 return true;
         }
         return super.onOptionsItemSelected(item);

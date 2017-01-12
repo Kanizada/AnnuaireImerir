@@ -28,10 +28,10 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
     Button registerBtn;
     EmailValidator emailValidator = new EmailValidator();
 
-    @Override
+    /*@Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.id.activity_register);
+        setContentView(R.layout.activity_register);
         nomET = (EditText) findViewById(R.id.nomET);
         prenomET = (EditText) findViewById(R.id.prenomET);
         usernameET = (EditText) findViewById(R.id.usernameET);
@@ -43,11 +43,11 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
         registerBtn.setOnClickListener(this);
 
 
-    }
+    }*/
 
     @Override
     public void onClick(View view) {
-        if (view == registerBtn){
+        /*if (view == registerBtn){
             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(nomET.getWindowToken(), 0);
             InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -111,6 +111,6 @@ public class RegisterActivity extends AppCompatActivity implements View.OnClickL
                 RequestQueue queue = Volley.newRequestQueue(RegisterActivity.this);
                 queue.add(registerRequest);
             }
-        }
+        }*/
     }
 }

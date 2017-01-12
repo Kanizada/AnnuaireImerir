@@ -22,6 +22,12 @@
         android:orderInCategory="100"
         android:title="Liste des élèves"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_disconnect"
+        android:orderInCategory="100"
+        android:title="Se déconnecter"
+        app:showAsAction="never" />
+
 
 
 </menu>
