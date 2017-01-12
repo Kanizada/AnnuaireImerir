@@ -70,8 +70,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }else if (view == singupBtn){
 
-            /*Intent registerIntent = new Intent(LoginActivity.this,RegisterActivity.class);
-            LoginActivity.this.startActivity(registerIntent);*/
+            Intent registerIntent = new Intent(LoginActivity.this,ListActivity.class);
+            LoginActivity.this.startActivity(registerIntent);
 
         }else if (view == loginBtn){
 
@@ -103,7 +103,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         boolean success = jsonResponse.getBoolean("success");
 
                         if (success){
-                            // Si login reussi > UserArea
+                            // Si login reussi > ListActivity
                             Intent loginIntent = new Intent(LoginActivity.this,ListActivity.class);
                             LoginActivity.this.startActivity(loginIntent);
                             finish();

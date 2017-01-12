@@ -35,7 +35,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
     @Override
     public void onBindViewHolder(StudentViewHolder holder, int position) {
         Student student = students.get(position);
-        holder.update(student, listener);
+        holder.update(student);
     }
 
 
@@ -57,11 +57,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             image = (ImageView) itemView.findViewById(R.id.student_image);
             nomTv = (TextView) itemView.findViewById(R.id.student_last_name);
-            prenomTv = (TextView) itemView.findViewById(R.id.student_last_name);
+            prenomTv = (TextView) itemView.findViewById(R.id.student_first_name);
             promotionTv = (TextView) itemView.findViewById(R.id.student_promotion);
         }
 
-        public void update(Student student, final OnStudentClickedListener listener){
+        public void update(Student student){
             this.student = student;
             nomTv.setText(student.getLastName());
             prenomTv.setText(student.getLastName());
