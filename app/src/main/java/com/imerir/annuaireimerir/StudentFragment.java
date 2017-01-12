@@ -36,14 +36,14 @@ public class StudentFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return super.onCreateView(inflater, container, savedInstanceState);
         View rootView = inflater.inflate(R.layout., container, false);
-        studentList = (RecyclerView) rootView.findViewById(R.id.studentList);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
-        studentList.setLayoutManager(mlayoutManager);
+        recyclerView.setLayoutManager(mlayoutManager);
         StudentAdapter adapter = new StudentAdapter(/*Arraylist Student ici*/(StudentAdapter.OnStudentClickedListener));
         this.adapter = adapter;
-        studentList.setRecycledViewPool(new RecyclerView.RecycledViewPool());
-        studentList.setViewCacheExtension(null);
-        studentList.setAdapter(adapter);
+        recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+        recyclerView.setViewCacheExtension(null);
+        recyclerView.setAdapter(adapter);
         return rootView;
     }
 }
