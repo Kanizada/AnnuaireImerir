@@ -4,10 +4,13 @@
     <item
         android:drawable="@color/white"/>
 
+
     <item>
+
         <bitmap
+
             android:gravity="center"
-            android:src="@drawable/logo_imerirpng"/>
+            android:src="@drawable/logo_imerirpg"/>
     </item>
 
 </layer-list>

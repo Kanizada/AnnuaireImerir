@@ -19,7 +19,7 @@
         android:layout_weight="3.5"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
-        android:src="@drawable/logo_imerirpng"/>
+        android:src="@drawable/logo_imerir"/>
 
     <EditText
         android:id="@+id/usernameET"
