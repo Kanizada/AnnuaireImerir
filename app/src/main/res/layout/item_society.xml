@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/card_view"
+    app:cardElevation="2dp"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginBottom="4dp"
+    android:background="#00ffffff">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:weightSum="2">
+
+        <ImageView
+            android:id="@+id/society_image"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="0.5"
+            tools:src="@mipmap/ic_launcher"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_weight="1.5"
+            android:weightSum="2">
+
+            <TextView
+                android:id="@+id/society_name"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textStyle="bold"
+                tools:text="Nom de l'entreprise"/>
+
+            <TextView
+                android:id="@+id/society_city"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:textStyle="bold"
+                tools:text="Ville (département)"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</android.support.v7.widget.CardView>

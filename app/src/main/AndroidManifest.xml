@@ -24,6 +24,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".ListActivity" />
+<<<<<<< HEAD
+=======
+        <activity android:name=".LoginActivity"></activity>
+>>>>>>> origin/master
     </application>
 
 </manifest>
