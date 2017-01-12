@@ -14,7 +14,8 @@
         android:id="@+id/ImageCardView"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="35">
+        android:layout_weight="35"
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:id="@+id/ImageLayout"
@@ -58,7 +59,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:textSize="20dp"
-                    android:layout_weight="9"
                     tools:text="Adresse"/>
 
             </LinearLayout>

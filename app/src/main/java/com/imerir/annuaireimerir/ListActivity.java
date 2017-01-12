@@ -1,5 +1,6 @@
 package com.imerir.annuaireimerir;
 
+import android.graphics.Color;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.mikepenz.google_material_typeface_library.GoogleMaterial;
+import com.mikepenz.iconics.IconicsDrawable;
+
 public class ListActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton fab;
     DisplayMode mode;
@@ -15,8 +19,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
     enum DisplayMode {
         STUDENT,
-        ENTERPRISE,
-        LOCATION
+        ENTERPRISE
     }
 
     @Override
@@ -28,7 +31,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         setSupportActionBar(toolbar);
         setTitle("Liste des élèves");
         setMode(DisplayMode.STUDENT);
-        fab.setOnClickListener(this);
+        //fab.setOnClickListener(this);
     }
 
     @Override
@@ -38,19 +41,21 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
             }else if (mode == DisplayMode.ENTERPRISE){
 
-            }else if (mode == DisplayMode.LOCATION){
-
             }
         }
     }
 
     public void setMode(DisplayMode newMode){
         if(newMode==DisplayMode.STUDENT){
+            /*fab.setImageDrawable(new IconicsDrawable(this)
+                    .icon(GoogleMaterial.Icon.//àdefinir)
+                    .color(Color.WHITE).sizeDp(24));*/
             getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, StudentFragment.newInstance(), "student").commit();
         }else if (newMode==DisplayMode.ENTERPRISE){
-
-        }else if (newMode==DisplayMode.LOCATION){
-
+            /*fab.setImageDrawable(new IconicsDrawable(this)
+                    .icon(GoogleMaterial.Icon.//àdefinir)
+                    .color(Color.WHITE).sizeDp(24));*/
+            //getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EnterpriseFragment.newInstance(), "enterprise").commit();
         }
     }
 
@@ -63,8 +68,19 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
-        if (id == R.id.action_account) {
-            return true;
+        switch (id){
+            case R.id.action_sortby:
+                //pop up du dialogue pour changer le mode de tri
+                return true;
+            case R.id.action_account:
+                // go account page
+                return true;
+            case R.id.action_enterprise:
+                setMode(DisplayMode.ENTERPRISE);
+                return true;
+            case R.id.action_student:
+                setMode(DisplayMode.STUDENT);
+                return true;
         }
         return super.onOptionsItemSelected(item);
     }

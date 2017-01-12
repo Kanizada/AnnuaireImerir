@@ -3,6 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.imerir.annuaireimerir.ListActivity">
     <item
+        android:id="@+id/action_sortby"
+        android:orderInCategory="100"
+        android:title="Trier par"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_account"
         android:orderInCategory="100"
         android:title="Mon compte"
@@ -17,10 +22,6 @@
         android:orderInCategory="100"
         android:title="Liste des élèves"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/action_location"
-        android:orderInCategory="100"
-        android:title="Liste par département"
-        app:showAsAction="never" />
+
 
 </menu>
