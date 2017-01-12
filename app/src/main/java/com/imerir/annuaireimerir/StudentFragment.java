@@ -19,6 +19,7 @@ public class StudentFragment extends Fragment {
     RecyclerView recyclerView;
     StudentAdapter adapter;
     ArrayList<Student> students;
+    StudentAdapter.OnStudentClickedListener listener;
 
     public StudentFragment(){
 
@@ -43,7 +44,7 @@ public class StudentFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        StudentAdapter adapter = new StudentAdapter(students,(StudentAdapter.OnStudentClickedListener) this.getActivity());
+        StudentAdapter adapter = new StudentAdapter(students,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -53,10 +54,12 @@ public class StudentFragment extends Fragment {
     public void init(){
         //simulation liste student
         ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
+        Promotion promotion = new Promotion();
+        promotion.setName("GOA");
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","WagnerWagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
         this.students = students;
     }
 }

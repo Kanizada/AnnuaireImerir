@@ -46,7 +46,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
 
     public void setMode(DisplayMode newMode){
         if(newMode==DisplayMode.STUDENT){
-
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, StudentFragment.newInstance(), "student").commit();
         }else if (newMode==DisplayMode.ENTERPRISE){
 
         }else if (newMode==DisplayMode.LOCATION){
