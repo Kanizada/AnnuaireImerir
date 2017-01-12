@@ -22,14 +22,16 @@
         android:src="@drawable/logo_imerirpng"/>
 
     <EditText
-        android:id="@+id/editTextId"
+        android:id="@+id/usernameET"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.6"
         android:hint="Nom d'utilisateur"/>
 
     <EditText
-        android:layout_below="@+id/editTextMdp"
+        android:inputType="textPassword"
+        android:id="@+id/passwordET"
+        android:layout_below="@+id/usernameET"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
         android:layout_weight="0.6"
@@ -74,7 +76,7 @@
         android:text="Mot de passe oublié ?"/>
 
     <TextView
-        android:id="@+id/logup"
+        android:id="@+id/signup"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.4"

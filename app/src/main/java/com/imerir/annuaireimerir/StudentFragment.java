@@ -32,6 +32,7 @@ public class StudentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //simulation liste student
         ArrayList<Student> students = new ArrayList<>();
         students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
         students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
