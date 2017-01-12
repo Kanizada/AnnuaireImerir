@@ -54,11 +54,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
         public StudentViewHolder(View itemView) {
             super(itemView);
-            cardView = (CardView) itemView.findViewById();
-            image = (ImageView) itemView.findViewById();
-            nomTv = (TextView) itemView.findViewById();
-            prenomTv = (TextView) itemView.findViewById();
-            promotionTv = (TextView) itemView.findViewById();
+            cardView = (CardView) itemView.findViewById(R.id.card_view);
+            image = (ImageView) itemView.findViewById(R.id.student_image);
+            nomTv = (TextView) itemView.findViewById(R.id.student_last_name);
+            prenomTv = (TextView) itemView.findViewById(R.id.student_last_name);
+            promotionTv = (TextView) itemView.findViewById(R.id.student_promotion);
         }
 
         public void update(Student student, final OnStudentClickedListener listener){
