@@ -7,12 +7,20 @@
     android:gravity="center"
     android:weightSum="3">
 
-    <TextView
-        android:id="@+id/instructionTV"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="0.6"
-        android:text="INSTRUCTION BLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLA"/>
+        android:layout_margin="12dp">
+
+        <TextView
+            android:id="@+id/instructionTV"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_margin="4dp"
+            android:text="INSTRUCTION BLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLABLA"/>
+
+    </android.support.v7.widget.CardView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,154 +29,156 @@
         android:orientation="vertical"
         android:weightSum="6">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/NomTV"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Nom" />
 
             <EditText
                 android:id="@+id/nomET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/NomTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:hint="Nom" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/prenomTV"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Prenom" />
 
             <EditText
                 android:id="@+id/prenomET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/prenomTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:hint="Prenom" />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/usernameTV"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Username" />
 
             <EditText
                 android:id="@+id/usernameET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/usernameTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:hint="Username"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/passwordTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Password" />
 
             <EditText
                 android:id="@+id/passwordET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/passwordTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
                 android:hint="Password"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/confirmpasswordTV"
-                android:layout_width="0dp"
+                android:id="@+id/passwordconfirmTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Confirm pasword" />
 
             <EditText
                 android:id="@+id/passwordconfirmET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/passwordconfirmTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:hint="Confirm your password"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:orientation="horizontal"
-            android:weightSum="2">
+            android:orientation="horizontal">
 
             <TextView
                 android:id="@+id/mailTV"
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:gravity="center_vertical"
+                android:layout_margin="16dp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 android:text="Mail Adress" />
 
             <EditText
                 android:id="@+id/mailET"
-                android:layout_width="0dp"
+                android:layout_toRightOf="@+id/mailTV"
+                android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
                 android:hint="Mail"/>
 
-        </LinearLayout>
+        </RelativeLayout>
 
     </LinearLayout>
 
