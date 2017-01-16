@@ -67,7 +67,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             prenomTV.setText(student.getFirstName());
             promotionTV.setText(student.getPromotion().getName());
             //image
-            cardView.setOnClickListener(this);
+            //cardView.setOnClickListener(this);
         }
 
         @Override

@@ -63,7 +63,7 @@ public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.En
             nomTV.setText(enterprise.getName());
             villeTV.setText(enterprise.getCity());
             //image
-            cardView.setOnClickListener(this);
+            //cardView.setOnClickListener(this);
         }
 
         @Override
