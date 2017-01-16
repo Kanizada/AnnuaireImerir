@@ -6,7 +6,7 @@
     android:id="@+id/card_view"
     app:cardElevation="2dp"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="64dp"
     android:layout_marginLeft="8dp"
     android:layout_marginRight="8dp"
     android:layout_marginTop="4dp"
@@ -38,7 +38,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
+                android:gravity="center_vertical"
                 android:textStyle="bold"
                 tools:text="Nom de l'entreprise"/>
 
@@ -47,8 +47,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="0dp"
                 android:layout_weight="1"
-                android:gravity="center"
-                android:textStyle="bold"
+                android:gravity="center_vertical"
                 tools:text="Ville (département)"/>
 
         </LinearLayout>
