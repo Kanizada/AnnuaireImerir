@@ -15,6 +15,10 @@ public class Student {
     private Promotion promotion;
     private Boolean hasEnterprise;
 
+    public Student(){
+
+    }
+
     public Student(String firstName, String lastName, String address, Enterprise enterprise, Formation formation, Promotion promotion, Boolean hasEnterprise) {
         this.firstName = firstName;
         this.lastName = lastName;

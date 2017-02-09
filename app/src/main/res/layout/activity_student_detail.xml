@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_student_detail"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -15,7 +16,8 @@
         android:layout_marginBottom="4dp"
         android:layout_height="0dp"
         android:layout_width="match_parent"
-        android:layout_weight="35">
+        android:layout_weight="35"
+        android:layout_margin="5dp">
 
         <LinearLayout
             android:id="@+id/ImageLayout"
@@ -59,7 +61,12 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+<<<<<<< HEAD:app/src/main/res/layout/fiche_eleve.xml
                     android:orientation="horizontal">
+=======
+                    android:textSize="20dp"
+                    tools:text="Adresse"/>
+>>>>>>> origin/master:app/src/main/res/layout/activity_student_detail.xml
 
                     <TextView
                         android:id="@+id/Adresse"

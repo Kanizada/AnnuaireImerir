@@ -16,18 +16,28 @@ public class Enterprise {
     private ArrayList<Student> linkedStudents;
     private Double lat;
     private Double lng;
+    private String city;
 
     public Enterprise(){
 
     }
 
-    public Enterprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Student> linkedStudents, Double lat, Double lng) {
+    public Enterprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Student> linkedStudents,String city, Double lat, Double lng) {
         this.name = name;
         this.activityDomain = activityDomain;
         this.website = website;
         this.linkedStudents = linkedStudents;
+        this.city = city;
         this.lat = lat;
         this.lng = lng;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
     public String getName() {

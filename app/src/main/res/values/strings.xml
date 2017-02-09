@@ -3,4 +3,7 @@
     <string name="title_activity_main2">Main2Activity</string>
     <string name="action_settings">Settings</string>
     <string name="section_format">Hello World from section: %1$d</string>
+    <string name="msg_email_validation">A validation mail has been sent to your mail inbox please check it out !</string>
+    <string name="messageUsernamenotav">This username is not available sorry !</string>
+    <string name="messageTry">Try again</string>
 </resources>

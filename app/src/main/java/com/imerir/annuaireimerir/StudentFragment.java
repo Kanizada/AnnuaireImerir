@@ -19,6 +19,7 @@ public class StudentFragment extends Fragment {
     RecyclerView recyclerView;
     StudentAdapter adapter;
     ArrayList<Student> students;
+    StudentAdapter.OnStudentClickedListener listener;
 
     public StudentFragment(){
 
@@ -32,28 +33,33 @@ public class StudentFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //simulation liste student
-        ArrayList<Student> students = new ArrayList<>();
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, new Promotion(), true));
-        this.students = students;
+
     }
 
-    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        init();
         View rootView = inflater.inflate(R.layout.fragment_student_list, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        StudentAdapter adapter = new StudentAdapter(students,(StudentAdapter.OnStudentClickedListener) this.getActivity());
+        StudentAdapter adapter = new StudentAdapter(students,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
         recyclerView.setAdapter(adapter);
         return rootView;
+    }
+    public void init(){
+        //simulation liste student
+        ArrayList<Student> students = new ArrayList<>();
+        Promotion promotion = new Promotion();
+        promotion.setName("GOA");
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","WagnerWagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
+        this.students = students;
     }
 }

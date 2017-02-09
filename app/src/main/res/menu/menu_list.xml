@@ -3,8 +3,31 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.imerir.annuaireimerir.ListActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_sortby"
         android:orderInCategory="100"
-        android:title="@string/action_settings"
+        android:title="Trier par"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_account"
+        android:orderInCategory="100"
+        android:title="Mon compte"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_enterprise"
+        android:orderInCategory="100"
+        android:title="Liste des entreprises"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_student"
+        android:orderInCategory="100"
+        android:title="Liste des élèves"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/action_disconnect"
+        android:orderInCategory="100"
+        android:title="Se déconnecter"
+        app:showAsAction="never" />
+
+
+
 </menu>

@@ -30,6 +30,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     SharedPreferences loginPreferences;
     SharedPreferences.Editor loginPrefEditor;
 
+    Boolean local = true;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,62 +72,66 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         }else if (view == singupBtn){
 
-            Intent registerIntent = new Intent(LoginActivity.this,ListActivity.class);
-            LoginActivity.this.startActivity(registerIntent);
+            //Intent registerIntent = new Intent(LoginActivity.this,ListActivity.class);
+            //LoginActivity.this.startActivity(registerIntent);
 
         }else if (view == loginBtn){
 
-            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(usernameET.getWindowToken(), 0);
-            InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm1.hideSoftInputFromWindow(passwordET.getWindowToken(), 0);
+            if(!local) {
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(usernameET.getWindowToken(), 0);
+                InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm1.hideSoftInputFromWindow(passwordET.getWindowToken(), 0);
 
-            // get les infos dans Edit Text et conversion to string
-            final String username = usernameET.getText().toString();
-            final String password = passwordET.getText().toString();
+                // get les infos dans Edit Text et conversion to string
+                final String username = usernameET.getText().toString();
+                final String password = passwordET.getText().toString();
 
-            if(rememberCB.isChecked()){
-                loginPrefEditor.putBoolean("rememberMe", true);
-                loginPrefEditor.putString("username", username);
-                loginPrefEditor.putString("password", password);
-                loginPrefEditor.apply();
-            } else {
-                loginPrefEditor.clear();
-                loginPrefEditor.apply();
-            }
-
-            Response.Listener<String> responseListener = new Response.Listener<String>() {
-                @Override
-                public void onResponse(String response) {
-                    try {
-                        // compare la reponse de la DB en JSON
-                        JSONObject jsonResponse = new JSONObject(response);
-                        boolean success = jsonResponse.getBoolean("success");
-
-                        if (success){
-                            // Si login reussi > ListActivity
-                            Intent loginIntent = new Intent(LoginActivity.this,ListActivity.class);
-                            LoginActivity.this.startActivity(loginIntent);
-                            finish();
-
-                        }else{
-                            // message d'erreur en cas de réponse login negative
-                            AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                            builder.setMessage("Nom d'utilisateur ou mot de passe incorrect")
-                                    .setNegativeButton("Ressayer", null)
-                                    .create()
-                                    .show();
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
+                if (rememberCB.isChecked()) {
+                    loginPrefEditor.putBoolean("rememberMe", true);
+                    loginPrefEditor.putString("username", username);
+                    loginPrefEditor.putString("password", password);
+                    loginPrefEditor.apply();
+                } else {
+                    loginPrefEditor.clear();
+                    loginPrefEditor.apply();
                 }
-            };
 
-            LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-            RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-            queue.add(loginRequest);
+                Response.Listener<String> responseListener = new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            // compare la reponse de la DB en JSON
+                            JSONObject jsonResponse = new JSONObject(response);
+                            boolean success = jsonResponse.getBoolean("success");
 
+                            if (success) {
+                                // Si login reussi > ListActivity
+                                Intent loginIntent = new Intent(LoginActivity.this, ListActivity.class);
+                                LoginActivity.this.startActivity(loginIntent);
+                                finish();
+
+                            } else {
+                                // message d'erreur en cas de réponse login negative
+                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
+                                builder.setMessage("Nom d'utilisateur ou mot de passe incorrect")
+                                        .setNegativeButton("Ressayer", null)
+                                        .create()
+                                        .show();
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                };
+
+                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
+                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                queue.add(loginRequest);
+            } else {
+                Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
+                LoginActivity.this.startActivity(listIntent);
+            }
         }
     }
 }
