@@ -12,6 +12,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/ImageCardView"
+        android:layout_marginBottom="4dp"
         android:layout_height="0dp"
         android:layout_width="match_parent"
         android:layout_weight="35">
@@ -52,6 +53,7 @@
                 android:id="@+id/AdresseCardView"
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="10">
 
                 <LinearLayout
@@ -63,8 +65,8 @@
                         android:id="@+id/Adresse"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:textSize="20dp"
-                        tools:text="Adresse"/>
+                        android:textSize="20sp"
+                        tools:text="Adresse:"/>
 
                 </LinearLayout>
 
@@ -75,6 +77,7 @@
                 android:id="@+id/TelephoneCardView"
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
+                android:layout_marginBottom="4dp"
                 android:layout_weight="10">
 
                     <LinearLayout
@@ -88,9 +91,9 @@
                             android:id="@+id/telephone"
                             android:layout_width="0dp"
                             android:layout_height="match_parent"
-                            android:textSize="20dp"
+                            android:textSize="20sp"
                             android:layout_weight="8"
-                            android:text="Telephone"/>
+                            android:text="Telephone:"/>
 
                         <ImageView
                             android:layout_width="0dp"
@@ -104,6 +107,7 @@
 
             <android.support.v7.widget.CardView
                 android:id="@+id/mailCardView"
+                android:layout_marginBottom="4dp"
                 android:layout_height="0dp"
                 android:layout_width="match_parent"
                 android:layout_weight="10">
@@ -120,9 +124,9 @@
                         android:id="@+id/adresseMail"
                         android:layout_width="0dp"
                         android:layout_height="match_parent"
-                        android:textSize="20dp"
+                        android:textSize="20sp"
                         android:layout_weight="8"
-                        android:text="Adresse mail"/>
+                        android:text="Adresse mail:"/>
 
                     <ImageView
                         android:layout_width="0dp"
@@ -135,84 +139,166 @@
             </android.support.v7.widget.CardView>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:weightSum="10"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/formation"
+            <android.support.v7.widget.CardView
+                android:id="@+id/formationCardView"
+                android:layout_marginBottom="4dp"
+                android:layout_height="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_weight="10"
-                android:text="Formation"/>
+                android:layout_weight="10">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/formation"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20sp"
+                        android:layout_weight="10"
+                        android:text="Formation:"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
 
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:weightSum="10"
-            android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/promotion"
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/promotionCardView"
+                android:layout_marginBottom="4dp"
+                android:layout_height="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_weight="10"
-                tools:text="Promotion"/>
+                android:layout_weight="10">
 
-        </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:weightSum="10"
-            android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/promotion"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20sp"
+                        android:layout_weight="10"
+                        tools:text="Promotion:"/>
 
-            <TextView
-                android:id="@+id/entreprise"
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:id="@+id/entrepriseCardView"
+                android:layout_marginBottom="4dp"
+                android:layout_height="0dp"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="20dp"
-                android:layout_weight="10"
-                tools:text="Entreprise(s):"/>
+                android:layout_weight="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/entreprise"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:textSize="20sp"
+                        android:layout_weight="10"
+                        tools:text="Entreprise(s):"/>
+
+                </LinearLayout>
+
+            </android.support.v7.widget.CardView>
+
+            <android.support.v7.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="10">
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/EntrepriseList"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/entreprise_list">
+
+                </android.support.v7.widget.RecyclerView>
+
+
+            </android.support.v7.widget.CardView>
+
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="10"
-            android:weightSum="10"
-            android:orientation="horizontal">
+        </android.support.v7.widget.CardView>
 
-            <TextView
-                android:id="@+id/listeEntreprise"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:textSize="20dp"
-                android:layout_weight="8"
-                tools:text="IMERIR"/>
+    </LinearLayout>
 
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="2"
-                android:src="@android:drawable/ic_menu_always_landscape_portrait"/>
 
-         </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+           <!-- <android.support.v7.widget.CardView
+                android:id="@+id/ListeCardView"
+                android:layout_height="0dp"
+                android:layout_width="match_parent"
+                android:layout_weight="10">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_weight="10"
+                    android:weightSum="10"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:id="@+id/listeEntreprise"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:textSize="20dp"
+                        android:layout_weight="8"
+                        tools:text="IMERIR"/>
+
+                    <ImageView
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="2"
+                        android:src="@android:drawable/ic_menu_always_landscape_portrait"/>
+
+                 </LinearLayout>
+            </android.support.v7.widget.CardView>
 
         </LinearLayout>
 
 
-    </android.support.v7.widget.CardView>
-
-</LinearLayout>
+    </android.support.v7.widget.CardView>-->
