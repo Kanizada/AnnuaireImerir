@@ -1,7 +1,6 @@
 package com.imerir.annuaireimerir.fragments;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -11,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.imerir.annuaireimerir.R;
-import com.imerir.annuaireimerir.adapters.EntrepriseAdapter;
-import com.imerir.annuaireimerir.adapters.PromotionAdapter;
+import com.imerir.annuaireimerir.adapters.PromotionListAdapter;
 import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Promotion;
 
@@ -22,17 +20,17 @@ import java.util.ArrayList;
  * Created by student on 06/03/2017.
  */
 
-public class PromotionFragment extends Fragment implements ApiClient.OnPromotionsListener{
+public class PromotionListFragment extends Fragment implements ApiClient.OnPromotionsListener{
     RecyclerView recyclerView;
     ArrayList<Promotion> promotions;
-    PromotionAdapter adapter;
-    PromotionAdapter.OnPromotionClickedListener listener;
-    public PromotionFragment(){
+    PromotionListAdapter adapter;
+    PromotionListAdapter.OnPromotionClickedListener listener;
+    public PromotionListFragment(){
 
     }
 
-    public static PromotionFragment newInstance(){
-        PromotionFragment fragment = new PromotionFragment();
+    public static PromotionListFragment newInstance(){
+        PromotionListFragment fragment = new PromotionListFragment();
         return fragment;
     }
 
@@ -48,7 +46,7 @@ public class PromotionFragment extends Fragment implements ApiClient.OnPromotion
         recyclerView = (RecyclerView) rootView.findViewById(R.id.promotionList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        PromotionAdapter adapter = new PromotionAdapter(promotions,listener);
+        PromotionListAdapter adapter = new PromotionListAdapter(promotions,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);

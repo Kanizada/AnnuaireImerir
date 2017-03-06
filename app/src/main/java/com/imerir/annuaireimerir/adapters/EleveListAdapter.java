@@ -17,13 +17,13 @@ import java.util.ArrayList;
  * Created by eleve on 10/01/2017.
  */
 
-public class EleveAdapter extends RecyclerView.Adapter<EleveAdapter.EleveViewHolder> {
+public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.EleveViewHolder> {
 
     ArrayList<Eleve> eleves;
     private OnEleveClickedListener listener;
 
 
-    public EleveAdapter(ArrayList<Eleve> eleves, final OnEleveClickedListener listener){
+    public EleveListAdapter(ArrayList<Eleve> eleves, final OnEleveClickedListener listener){
         this.eleves = eleves;
         this.listener = listener;
     }

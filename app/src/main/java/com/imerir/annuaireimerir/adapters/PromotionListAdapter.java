@@ -1,6 +1,5 @@
 package com.imerir.annuaireimerir.adapters;
 
-import android.media.Image;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -10,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
-import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
 
 import java.util.ArrayList;
@@ -19,12 +17,12 @@ import java.util.ArrayList;
  * Created by student on 06/03/2017.
  */
 
-public class PromotionAdapter extends RecyclerView.Adapter<PromotionAdapter.PromotionViewHolder> {
+public class PromotionListAdapter extends RecyclerView.Adapter<PromotionListAdapter.PromotionViewHolder> {
 
     ArrayList<Promotion> promotions;
     OnPromotionClickedListener listener;
 
-    public PromotionAdapter(ArrayList<Promotion> promotions, OnPromotionClickedListener listener){
+    public PromotionListAdapter(ArrayList<Promotion> promotions, OnPromotionClickedListener listener){
         this.promotions = promotions;
         this.listener = listener;
     }

@@ -2,6 +2,7 @@ package com.imerir.annuaireimerir.models;
 
 import org.json.JSONObject;
 
+import java.io.Serializable;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -10,7 +11,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Entreprise {
+public class Entreprise implements Serializable{
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
     private String nom;

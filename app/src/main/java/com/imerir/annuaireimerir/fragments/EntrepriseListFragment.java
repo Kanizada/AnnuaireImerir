@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import com.imerir.annuaireimerir.adapters.EntrepriseAdapter;
+import com.imerir.annuaireimerir.adapters.EntrepriseListAdapter;
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Entreprise;
@@ -20,17 +20,17 @@ import java.util.ArrayList;
  * Created by student on 12/01/2017.
  */
 
-public class EntrepriseFragment extends Fragment implements ApiClient.OnEntreprisesListener {
+public class EntrepriseListFragment extends Fragment implements ApiClient.OnEntreprisesListener {
     RecyclerView recyclerView;
     ArrayList<Entreprise> entreprises;
-    EntrepriseAdapter adapter;
-    EntrepriseAdapter.OnEntrepriseClickedListener listener;
+    EntrepriseListAdapter adapter;
+    EntrepriseListAdapter.OnEntrepriseClickedListener listener;
 
-    public EntrepriseFragment(){
+    public EntrepriseListFragment(){
     }
 
-    public static EntrepriseFragment newInstance(){
-        EntrepriseFragment fragment = new EntrepriseFragment();
+    public static EntrepriseListFragment newInstance(){
+        EntrepriseListFragment fragment = new EntrepriseListFragment();
         return fragment;
     }
 
@@ -42,7 +42,7 @@ public class EntrepriseFragment extends Fragment implements ApiClient.OnEntrepri
         recyclerView = (RecyclerView) rootView.findViewById(R.id.enterpriseList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        EntrepriseAdapter adapter = new EntrepriseAdapter(entreprises,listener);
+        EntrepriseListAdapter adapter = new EntrepriseListAdapter(entreprises,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);

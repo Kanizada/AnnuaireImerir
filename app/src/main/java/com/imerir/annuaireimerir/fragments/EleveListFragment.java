@@ -10,7 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.imerir.annuaireimerir.R;
-import com.imerir.annuaireimerir.adapters.EleveAdapter;
+import com.imerir.annuaireimerir.adapters.EleveListAdapter;
 import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Eleve;
 
@@ -20,18 +20,18 @@ import java.util.ArrayList;
  * Created by student on 10/01/2017.
  */
 
-public class EleveFragment extends Fragment implements ApiClient.OnElevesListener {
+public class EleveListFragment extends Fragment implements ApiClient.OnElevesListener {
     RecyclerView recyclerView;
-    EleveAdapter adapter;
+    EleveListAdapter adapter;
     ArrayList<Eleve> eleves;
-    EleveAdapter.OnEleveClickedListener listener;
+    EleveListAdapter.OnEleveClickedListener listener;
 
-    public EleveFragment(){
+    public EleveListFragment(){
 
     }
 
-    public static EleveFragment newInstance(){
-        EleveFragment fragment = new EleveFragment();
+    public static EleveListFragment newInstance(){
+        EleveListFragment fragment = new EleveListFragment();
         return fragment;
     }
 
@@ -49,7 +49,7 @@ public class EleveFragment extends Fragment implements ApiClient.OnElevesListene
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        EleveAdapter adapter = new EleveAdapter(eleves,listener);
+        EleveListAdapter adapter = new EleveListAdapter(eleves,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);

@@ -17,12 +17,12 @@ import java.util.ArrayList;
  * Created by eleve on 12/01/2017.
  */
 
-public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.EnterpriseViewHolder> {
+public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAdapter.EnterpriseViewHolder> {
 
     ArrayList<Entreprise> entreprises;
     private OnEntrepriseClickedListener listener;
 
-    public EntrepriseAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener){
+    public EntrepriseListAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener){
         this.entreprises = entreprises;
         this.listener = listener;
 
