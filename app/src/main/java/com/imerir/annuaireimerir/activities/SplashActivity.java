@@ -14,13 +14,8 @@ public class SplashActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //CHARGEMENT DES DONNES DEPUIS LA BDD VIA LAPI
+        //CHARGEMENT DES DONNES DEPUIS LA BDD VIA LAPI ICI?
         //A VOIR SI IL FAUT LE METTRE DANS UN THREAD POUR DES RAISONS DE PERFORMANCES
-        ApiClient.createInstance(this);
-        ApiClient.getInstance().getEleves("devTmpKey");
-        ApiClient.getInstance().getEntreprises("devTmpKey");
-        ApiClient.getInstance().getPromotions("devTmpKey");
-        //
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();

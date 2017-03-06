@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.imerir.annuaireimerir.adapters.EntrepriseAdapter;
 import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
@@ -18,7 +20,7 @@ import java.util.ArrayList;
  * Created by student on 12/01/2017.
  */
 
-public class EntrepriseFragment extends Fragment {
+public class EntrepriseFragment extends Fragment implements ApiClient.OnEntreprisesListener {
     RecyclerView recyclerView;
     ArrayList<Entreprise> entreprises;
     EntrepriseAdapter adapter;
@@ -49,14 +51,7 @@ public class EntrepriseFragment extends Fragment {
     }
 
     public void init(){
-        entreprises = new ArrayList<>();
-        Entreprise entreprise = new Entreprise();
-        entreprise.setName("Iristech");
-        entreprise.setCity("Perpignan");
-        entreprises.add(entreprise);
-        entreprises.add(entreprise);
-        entreprises.add(entreprise);
-        entreprises.add(entreprise);
+        ApiClient.getInstance().getEntreprises("devTmpKey", this);
 
     }
 
@@ -66,5 +61,24 @@ public class EntrepriseFragment extends Fragment {
     }
 
 
+    @Override
+    public void onEntreprisesReceived(ArrayList<Entreprise> entreprises) {
+        this.entreprises = entreprises;
+        Toast.makeText(this.getContext(),"Succès du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
+    }
 
+    @Override
+    public void onEntreprisesFailed(String error) {
+        Toast.makeText(this.getContext(),"Erreur du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onEntrepriseReceived(Entreprise entreprise) {
+
+    }
+
+    @Override
+    public void onEntrepriseFailed(String error) {
+
+    }
 }

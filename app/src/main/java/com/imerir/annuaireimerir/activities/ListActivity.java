@@ -11,7 +11,7 @@ import android.view.View;
 
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.fragments.EntrepriseFragment;
-import com.imerir.annuaireimerir.fragments.StudentFragment;
+import com.imerir.annuaireimerir.fragments.EleveFragment;
 
 public class ListActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton fab;
@@ -33,6 +33,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         setTitle("Liste des élèves");
         setMode(DisplayMode.STUDENT);
         //fab.setOnClickListener(this);
+
     }
 
     @Override
@@ -51,7 +52,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
             /*fab.setImageDrawable(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.//àdefinir)
                     .color(Color.WHITE).sizeDp(24));*/
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, StudentFragment.newInstance(), "student").commit();
+            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EleveFragment.newInstance(), "student").commit();
         }else if (newMode==DisplayMode.ENTERPRISE){
             /*fab.setImageDrawable(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.//àdefinir)

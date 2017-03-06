@@ -17,26 +17,26 @@ import java.util.ArrayList;
  * Created by eleve on 10/01/2017.
  */
 
-public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
+public class EleveAdapter extends RecyclerView.Adapter<EleveAdapter.EleveViewHolder> {
 
     ArrayList<Eleve> eleves;
-    private OnStudentClickedListener listener;
+    private OnEleveClickedListener listener;
 
 
-    public StudentAdapter(ArrayList<Eleve> eleves, final OnStudentClickedListener listener){
+    public EleveAdapter(ArrayList<Eleve> eleves, final OnEleveClickedListener listener){
         this.eleves = eleves;
         this.listener = listener;
     }
 
 
     @Override
-    public StudentViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public EleveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
-        return new StudentViewHolder(v);
+        return new EleveViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(StudentViewHolder holder, int position) {
+    public void onBindViewHolder(EleveViewHolder holder, int position) {
         Eleve eleve = eleves.get(position);
         holder.update(eleve);
     }
@@ -47,7 +47,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         return eleves.size();
     }
 
-    public class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class EleveViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         CardView cardView;
         ImageView image;
         TextView nomTV;
@@ -55,7 +55,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         TextView promotionTV;
         Eleve eleve;
 
-        public StudentViewHolder(View itemView) {
+        public EleveViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             image = (ImageView) itemView.findViewById(R.id.student_image);
@@ -68,7 +68,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             this.eleve = eleve;
             nomTV.setText(eleve.getNom());
             prenomTV.setText(eleve.getPrenom());
-            promotionTV.setText(eleve.getPromotion().getName());
+            promotionTV.setText(eleve.getPromotion().getNom());
             //image
             //cardView.setOnClickListener(this);
         }
@@ -76,12 +76,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         @Override
         public void onClick(View view) {
             if (view == cardView){
-                listener.onStudentClicked(eleve);
+                listener.onEleveClicked(eleve);
             }
         }
     }
 
-    public interface OnStudentClickedListener{
-        void onStudentClicked(Eleve eleve);
+    public interface OnEleveClickedListener {
+        void onEleveClicked(Eleve eleve);
     }
 }

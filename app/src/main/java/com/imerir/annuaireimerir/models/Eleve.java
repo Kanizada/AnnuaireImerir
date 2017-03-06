@@ -10,6 +10,7 @@ import java.util.ArrayList;
  * axel.zapata@imerir.com
  */
 public class Eleve {
+
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
     private String prenom;
@@ -109,6 +110,62 @@ public class Eleve {
 
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getDateInscription() {
+        return dateInscription;
+    }
+
+    public void setDateInscription(String dateInscription) {
+        this.dateInscription = dateInscription;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public ArrayList<Entreprise> getEntreprises() {
+        return entreprises;
+    }
+
+    public void setEntreprises(ArrayList<Entreprise> entreprises) {
+        this.entreprises = entreprises;
+    }
+
+    public String getSiteWeb() {
+        return siteWeb;
+    }
+
+    public void setSiteWeb(String siteWeb) {
+        this.siteWeb = siteWeb;
+    }
+
+    public String getTelephoneMobile() {
+        return telephoneMobile;
+    }
+
+    public void setTelephoneMobile(String telephoneMobile) {
+        this.telephoneMobile = telephoneMobile;
+    }
+
+    public String getTelephonePerso() {
+        return telephonePerso;
+    }
+
+    public void setTelephonePerso(String telephonePerso) {
+        this.telephonePerso = telephonePerso;
     }
 
 }

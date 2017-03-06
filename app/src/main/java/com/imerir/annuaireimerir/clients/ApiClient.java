@@ -40,7 +40,7 @@ public class ApiClient {
 
     public static ApiClient getInstance() {return instance;}
 
-    public void getEntreprisesByDepartement(String numeroDepartement, String cleApi){
+    public void getEntreprisesByDepartement(String numeroDepartement, String cleApi, final OnEntreprisesListener listener){
         String url = "http://79.137.78.233/entreprises/departement/"+numeroDepartement+"?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -57,9 +57,10 @@ public class ApiClient {
                             entreprises.add(entreprise);
                         }
                         //LISTENER HERE
+                        listener.onEntreprisesReceived(entreprises);
                     }else {
                         Log.e("ApiClient","getEntreprisesByDepartement() requete HTTP SUCCESS = 0");
-
+                        listener.onEntrepriseFailed("getEntreprisesByDepartement() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -71,12 +72,13 @@ public class ApiClient {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ApiClient","getEntreprisesByDepartement() Volley error"+error);
+                listener.onEntrepriseFailed(error.toString());
             }
         });
         queue.add(request);
     }
 
-    public void getEntreprisesById(String idEntreprise, String cleApi){
+    public void getEntrepriseById(String idEntreprise, String cleApi, final OnEntreprisesListener listener){
         String url = "http://79.137.78.233/entreprises/"+idEntreprise+"?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -88,25 +90,28 @@ public class ApiClient {
                         JSONArray bodyArray = retourJSON.getJSONArray("body");
                         Entreprise entreprise = new Entreprise(bodyArray.getJSONObject(0));
                         //LISTENER HERE
+                        listener.onEntrepriseReceived(entreprise);
                     }else {
-                        Log.e("ApiClient","getEntreprisesById() requete HTTP SUCCESS = 0");
+                        Log.e("ApiClient","getEntrepriseById() requete HTTP SUCCESS = 0");
+                        listener.onEntrepriseFailed("getEntrepriseById() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
-                    Log.e("ApiClient", "getEnterprisesById() JSON error");
+                    Log.e("ApiClient", "getEnterpriseById() JSON error");
                 }
 
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Log.e("ApiClient","getEnterprisesById() Volley error"+error);
+                Log.e("ApiClient","getEnterpriseById() Volley error"+error);
+                listener.onEntrepriseFailed(error.toString());
             }
         });
         queue.add(request);
     }
 
-    public void getEntreprises(String cleApi){
+    public void getEntreprises(String cleApi, final OnEntreprisesListener listener){
         String url = "http://79.137.78.233/entreprises/list?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -123,8 +128,10 @@ public class ApiClient {
                             entreprises.add(entreprise);
                         }
                         //LISTENER HERE
+                        listener.onEntreprisesReceived(entreprises);
                     }else {
                         Log.e("ApiClient","getEntreprises() requete HTTP SUCCESS = 0");
+                        listener.onEntreprisesFailed("getEntreprises() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -136,12 +143,13 @@ public class ApiClient {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ApiClient","getEnterprises() Volley error"+error);
+                listener.onEntreprisesFailed(error.toString());
             }
         });
         queue.add(request);
     }
 
-    public void getEleves(String cleApi){
+    public void getEleves(String cleApi, final OnElevesListener listener){
         String url = "http://79.137.78.233/eleves/list?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -158,8 +166,10 @@ public class ApiClient {
                             eleves.add(eleve);
                         }
                         //LISTENER HERE
+                        listener.onElevesReceived(eleves);
                     }else {
                         Log.e("ApiClient","getEleves() requete HTTP SUCCESS = 0");
+                        listener.onElevesFailed("getEleves() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -171,12 +181,15 @@ public class ApiClient {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ApiClient","getEleves() Volley error"+error);
+                listener.onElevesFailed(error.toString());
             }
         });
         queue.add(request);
     }
 
-    public void getElevesByPromotionId(String idPromotion, String cleApi){
+    //GET ELEVE BY ID
+
+    public void getElevesByPromotionId(String idPromotion, String cleApi,final OnElevesListener listener){
         String url = "http://79.137.78.233/promotions/id/eleves?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -186,6 +199,8 @@ public class ApiClient {
                     int success = retourJSON.getInt("success");
                     if (success == 1){
                         JSONArray bodyArray = retourJSON.getJSONArray("body");
+                        //AJOUTER UNE VERIFICATION DU CONTENU DE BODY
+                        //if ((bodyArray.isNull(0)){}
                         ArrayList<Eleve> eleves = new ArrayList<>();
                         for (int i = 0; i<bodyArray.length();i++){
                             JSONObject eleveJSON = bodyArray.getJSONObject(i);
@@ -193,8 +208,10 @@ public class ApiClient {
                             eleves.add(eleve);
                         }
                         //LISTENER HERE
+                        listener.onElevesReceived(eleves);
                     }else {
                         Log.e("ApiClient","getEleveByPromotion() requete HTTP SUCCESS = 0");
+                        listener.onElevesFailed("getEleveByPromotion() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -206,12 +223,13 @@ public class ApiClient {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ApiClient","getEleveByPromotion() Volley error"+error);
+                listener.onElevesFailed(error.toString());
             }
         });
         queue.add(request);
     }
 
-    public void getPromotions(String cleApi){
+    public void getPromotions(String cleApi,final OnPromotionsListener listener){
         String url = "http://79.137.78.233/promotions/list?key="+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
@@ -228,8 +246,10 @@ public class ApiClient {
                             promotions.add(promotion);
                         }
                         //LISTENER HERE
+                        listener.onPromotionsReceived(promotions);
                     }else {
                         Log.e("ApiClient","getPromotions() requete HTTP SUCCESS = 0");
+                        listener.onPromotionsFailed("getPromotions() requete HTTP SUCCESS = 0");
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -241,9 +261,27 @@ public class ApiClient {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.e("ApiClient","getPromotions() Volley error"+error);
+                listener.onPromotionsFailed(error.toString());
             }
         });
         queue.add(request);
+    }
+
+    public interface OnElevesListener {
+        void onElevesReceived(ArrayList<Eleve> eleves);
+        void onElevesFailed(String error);
+    }
+
+    public interface OnEntreprisesListener {
+        void onEntreprisesReceived(ArrayList<Entreprise> entreprises);
+        void onEntreprisesFailed(String error);
+        void onEntrepriseReceived(Entreprise entreprise);
+        void onEntrepriseFailed(String error);
+    }
+
+    public interface OnPromotionsListener {
+        void onPromotionsReceived(ArrayList<Promotion> promotions);
+        void onPromotionsFailed(String error);
     }
 
 }

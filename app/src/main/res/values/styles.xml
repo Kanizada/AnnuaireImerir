@@ -1,24 +1,24 @@
 <resources>
 
     <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+    <style nom="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <!-- Customize your theme here. -->
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorPrimaryDark</item>
+        <item nom="colorPrimary">@color/colorPrimary</item>
+        <item nom="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item nom="colorAccent">@color/colorPrimaryDark</item>
     </style>
 
-    <style name="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <item name="android:windowBackground">@drawable/background_splash</item>
+    <style nom="SplashTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item nom="android:windowBackground">@drawable/background_splash</item>
     </style>
 
-    <style name="ToolbarCustom" parent="Base.Widget.AppCompat.Light.ActionBar">
-        <item name="titleTextColor">@android:color/white</item>
-        <item name="colorControlNormal">@android:color/white</item>
+    <style nom="ToolbarCustom" parent="Base.Widget.AppCompat.Light.ActionBar">
+        <item nom="titleTextColor">@android:color/white</item>
+        <item nom="colorControlNormal">@android:color/white</item>
     </style>
 
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style nom="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style nom="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

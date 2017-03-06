@@ -12,9 +12,11 @@ import java.util.ArrayList;
 public class Promotion {
 
 
+
+
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
-    private String name;
+    private String nom;
     private String annee;
     private Boolean promoActuelle;
     //
@@ -22,7 +24,7 @@ public class Promotion {
     //constructeur JSON
     public Promotion(JSONObject jsonObject){
         this.id =  jsonObject.optInt("id");
-        this.name = jsonObject.optString("nom");
+        this.nom = jsonObject.optString("nom");
         this.annee = jsonObject.optString("annee");
         this.promoActuelle = jsonObject.optBoolean("promo_actuelle");
     }
@@ -41,9 +43,9 @@ public class Promotion {
 
 
 
-    public Promotion(Integer id, String name, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves, Formation formation) {
+    public Promotion(Integer id, String nom, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves, Formation formation) {
         this.id = id;
-        this.name = name;
+        this.nom = nom;
         this.yearStart = yearStart;
         this.yearEnd = yearEnd;
         this.eleves = eleves;
@@ -58,12 +60,12 @@ public class Promotion {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    public String getNom() {
+        return nom;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
     public Integer getYearStart() {
@@ -96,5 +98,25 @@ public class Promotion {
 
     public void setFormation(Formation formation) {
         this.formation = formation;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getAnnee() {
+        return annee;
+    }
+
+    public void setAnnee(String annee) {
+        this.annee = annee;
+    }
+
+    public Boolean getPromoActuelle() {
+        return promoActuelle;
+    }
+
+    public void setPromoActuelle(Boolean promoActuelle) {
+        this.promoActuelle = promoActuelle;
     }
 }

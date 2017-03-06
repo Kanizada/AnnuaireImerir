@@ -7,9 +7,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.imerir.annuaireimerir.R;
-import com.imerir.annuaireimerir.adapters.StudentAdapter;
+import com.imerir.annuaireimerir.adapters.EleveAdapter;
+import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Eleve;
 
 import java.util.ArrayList;
@@ -18,18 +20,18 @@ import java.util.ArrayList;
  * Created by student on 10/01/2017.
  */
 
-public class StudentFragment extends Fragment {
+public class EleveFragment extends Fragment implements ApiClient.OnElevesListener {
     RecyclerView recyclerView;
-    StudentAdapter adapter;
+    EleveAdapter adapter;
     ArrayList<Eleve> eleves;
-    StudentAdapter.OnStudentClickedListener listener;
+    EleveAdapter.OnEleveClickedListener listener;
 
-    public StudentFragment(){
+    public EleveFragment(){
 
     }
 
-    public static StudentFragment newInstance(){
-        StudentFragment fragment = new StudentFragment();
+    public static EleveFragment newInstance(){
+        EleveFragment fragment = new EleveFragment();
         return fragment;
     }
 
@@ -47,7 +49,7 @@ public class StudentFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        StudentAdapter adapter = new StudentAdapter(eleves,listener);
+        EleveAdapter adapter = new EleveAdapter(eleves,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -55,14 +57,17 @@ public class StudentFragment extends Fragment {
         return rootView;
     }
     public void init(){
-        //simulation liste student
-/*        ArrayList<Eleve> eleves = new ArrayList<>();
-        Promotion promotion = new Promotion();
-        promotion.setName("GOA");
-        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        eleves.add(new Eleve("Tristan","WagnerWagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        this.eleves = eleves;*/
+        ApiClient.getInstance().getEleves("devTmpKey",this);
+    }
+
+    @Override
+    public void onElevesReceived(ArrayList<Eleve> eleves) {
+        this.eleves = eleves;
+        Toast.makeText(this.getContext(),"Succès du chargement de la liste des élèves",Toast.LENGTH_LONG).show();
+    }
+
+    @Override
+    public void onElevesFailed(String error) {
+        Toast.makeText(this.getContext(),"Erreur lors du chargement de la liste des élèves",Toast.LENGTH_LONG).show();
     }
 }
