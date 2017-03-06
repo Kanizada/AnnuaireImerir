@@ -14,13 +14,13 @@ import java.util.ArrayList;
  * Created by student on 12/01/2017.
  */
 
-public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.EnterpriseViewHolder> {
+public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.EnterpriseViewHolder> {
 
-    ArrayList<Enterprise> enterprises;
+    ArrayList<Entreprise> entreprises;
     private OnEnterpriseClickedListener listener;
 
-    public EnterpriseAdapter(ArrayList<Enterprise> enterprises, OnEnterpriseClickedListener listener){
-        this.enterprises = enterprises;
+    public EntrepriseAdapter(ArrayList<Entreprise> entreprises, OnEnterpriseClickedListener listener){
+        this.entreprises = entreprises;
         this.listener = listener;
 
     }
@@ -32,22 +32,22 @@ public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.En
 
     @Override
     public void onBindViewHolder(EnterpriseViewHolder holder, int position) {
-        Enterprise enterprise = enterprises.get(position);
-        holder.update(enterprise);
+        Entreprise entreprise = entreprises.get(position);
+        holder.update(entreprise);
     }
 
 
 
     @Override
     public int getItemCount() {
-        return enterprises.size();
+        return entreprises.size();
     }
 
     public class EnterpriseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardView;
         ImageView image;
         TextView nomTV, villeTV;
-        Enterprise enterprise;
+        Entreprise entreprise;
 
 
         public EnterpriseViewHolder(View itemView) {
@@ -58,10 +58,10 @@ public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.En
             villeTV = (TextView) itemView.findViewById(R.id.enterprise_city);
         }
 
-        public void update(Enterprise enterprise){
-            this.enterprise = enterprise;
-            nomTV.setText(enterprise.getName());
-            villeTV.setText(enterprise.getCity());
+        public void update(Entreprise entreprise){
+            this.entreprise = entreprise;
+            nomTV.setText(entreprise.getName());
+            villeTV.setText(entreprise.getCity());
             //image
             //cardView.setOnClickListener(this);
         }
@@ -69,7 +69,7 @@ public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.En
         @Override
         public void onClick(View view) {
             if ( view == cardView){
-                listener.onEnterpriseClicked(enterprise);
+                listener.onEnterpriseClicked(entreprise);
             }
         }
     }
@@ -77,6 +77,6 @@ public class EnterpriseAdapter extends RecyclerView.Adapter<EnterpriseAdapter.En
 
 
     public interface OnEnterpriseClickedListener{
-        void onEnterpriseClicked(Enterprise enterprise);
+        void onEnterpriseClicked(Entreprise entreprise);
     }
 }

@@ -1,7 +1,6 @@
 package com.imerir.annuaireimerir;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -53,13 +52,13 @@ public class StudentFragment extends Fragment {
     }
     public void init(){
         //simulation liste student
-        ArrayList<Student> students = new ArrayList<>();
+/*        ArrayList<Student> students = new ArrayList<>();
         Promotion promotion = new Promotion();
         promotion.setName("GOA");
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","WagnerWagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Enterprise(),Formation.CDSM, promotion, true));
-        this.students = students;
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","WagnerWagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        this.students = students;*/
     }
 }

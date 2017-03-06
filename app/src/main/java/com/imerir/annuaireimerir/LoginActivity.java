@@ -87,6 +87,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 final String username = usernameET.getText().toString();
                 final String password = passwordET.getText().toString();
 
+                
+
                 if (rememberCB.isChecked()) {
                     loginPrefEditor.putBoolean("rememberMe", true);
                     loginPrefEditor.putString("username", username);

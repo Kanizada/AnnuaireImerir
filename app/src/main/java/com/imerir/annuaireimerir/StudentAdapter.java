@@ -63,8 +63,8 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
         public void update(Student student){
             this.student = student;
-            nomTV.setText(student.getLastName());
-            prenomTV.setText(student.getFirstName());
+            nomTV.setText(student.getNom());
+            prenomTV.setText(student.getPrenom());
             promotionTV.setText(student.getPromotion().getName());
             //image
             //cardView.setOnClickListener(this);

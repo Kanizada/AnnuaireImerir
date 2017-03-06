@@ -14,17 +14,17 @@ import java.util.ArrayList;
  * Created by student on 12/01/2017.
  */
 
-public class EnterpriseFragment extends Fragment {
+public class EntrepriseFragment extends Fragment {
     RecyclerView recyclerView;
-    ArrayList<Enterprise> enterprises;
-    EnterpriseAdapter adapter;
-    EnterpriseAdapter.OnEnterpriseClickedListener listener;
+    ArrayList<Entreprise> entreprises;
+    EntrepriseAdapter adapter;
+    EntrepriseAdapter.OnEnterpriseClickedListener listener;
 
-    public EnterpriseFragment(){
+    public EntrepriseFragment(){
     }
 
-    public static EnterpriseFragment newInstance(){
-        EnterpriseFragment fragment = new EnterpriseFragment();
+    public static EntrepriseFragment newInstance(){
+        EntrepriseFragment fragment = new EntrepriseFragment();
         return fragment;
     }
 
@@ -36,7 +36,7 @@ public class EnterpriseFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.enterpriseList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        EnterpriseAdapter adapter = new EnterpriseAdapter(enterprises,listener);
+        EntrepriseAdapter adapter = new EntrepriseAdapter(entreprises,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -45,14 +45,14 @@ public class EnterpriseFragment extends Fragment {
     }
 
     public void init(){
-        enterprises = new ArrayList<>();
-        Enterprise enterprise = new Enterprise();
-        enterprise.setName("Iristech");
-        enterprise.setCity("Perpignan");
-        enterprises.add(enterprise);
-        enterprises.add(enterprise);
-        enterprises.add(enterprise);
-        enterprises.add(enterprise);
+        entreprises = new ArrayList<>();
+        Entreprise entreprise = new Entreprise();
+        entreprise.setName("Iristech");
+        entreprise.setCity("Perpignan");
+        entreprises.add(entreprise);
+        entreprises.add(entreprise);
+        entreprises.add(entreprise);
+        entreprises.add(entreprise);
 
     }
 

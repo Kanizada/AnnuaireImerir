@@ -1,5 +1,7 @@
 package com.imerir.annuaireimerir;
 
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 
 /**
@@ -8,8 +10,26 @@ import java.util.ArrayList;
  * axel.zapata@imerir.com
  */
 public class Promotion {
-    private Integer id;
+
+
+    // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
+    private int id;
     private String name;
+    private String annee;
+    private Boolean promoActuelle;
+    //
+
+    //constructeur JSON
+    public Promotion(JSONObject jsonObject){
+        this.id =  jsonObject.optInt("id");
+        this.name = jsonObject.optString("nom");
+        this.annee = jsonObject.optString("annee");
+        this.promoActuelle = jsonObject.optBoolean("promo_actuelle");
+    }
+
+
+
+
     private Integer yearStart;
     private Integer yearEnd;
     private ArrayList<Student> students;
@@ -18,6 +38,8 @@ public class Promotion {
     public Promotion(){
 
     }
+
+
 
     public Promotion(Integer id, String name, Integer yearStart, Integer yearEnd, ArrayList<Student> students, Formation formation) {
         this.id = id;

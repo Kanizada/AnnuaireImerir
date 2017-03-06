@@ -1,64 +1,98 @@
 package com.imerir.annuaireimerir;
 
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
 /**
  * Created by Axel Zapata on 09/01/2017.
  * For Imerir.
  * axel.zapata@imerir.com
  */
 public class Student {
-
-    private String firstName;
-    private String lastName;
-    private String address;
-    private Enterprise enterprise;
-    private Formation formation;
+    // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
+    private int id;
+    private String prenom;
+    private String nom;
+    private String adresse;
+    private String siteWeb;
+    private String telephoneMobile;
+    private String telephonePerso;
+    private String dateInscription;
+    private String email;
+    private ArrayList<Entreprise> entreprises = new ArrayList<>();
     private Promotion promotion;
-    private Boolean hasEnterprise;
+    //
+
+
+    //constructor from JSON
+    public Student(JSONObject jsonObject){
+        this.id = jsonObject.optInt("id");
+        this.prenom = jsonObject.optString("prenom");
+        this.nom = jsonObject.optString("nom");
+        this.adresse = jsonObject.optString("adresse");
+        this.siteWeb = jsonObject.optString("site_web");
+        this.telephoneMobile = jsonObject.optString("telephone_mobile");
+        this.telephonePerso = jsonObject.optString("telephone_perso");
+        this.dateInscription = jsonObject.optString("date_inscription");
+        this.email = jsonObject.optString("email");
+        //A VOIR POUR LA LISTE DENTREPRISE
+        this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
+
+    }
+
+
+
+
+    private Formation formation;
+    private Entreprise entreprise;
+
 
     public Student(){
 
     }
 
-    public Student(String firstName, String lastName, String address, Enterprise enterprise, Formation formation, Promotion promotion, Boolean hasEnterprise) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.enterprise = enterprise;
+
+    //premier jet constructor
+    public Student(String prenom, String nom, String adresse, Entreprise entreprise, Formation formation, Promotion promotion) {
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.entreprise = entreprise;
         this.formation = formation;
         this.promotion = promotion;
-        this.hasEnterprise = hasEnterprise;
     }
 
-    public String getFirstName() {
-        return firstName;
+    public String getPrenom() {
+        return prenom;
     }
 
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setPrenom(String prenom) {
+        this.prenom = prenom;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getNom() {
+        return nom;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setNom(String nom) {
+        this.nom = nom;
     }
 
-    public String getAddress() {
-        return address;
+    public String getAdresse() {
+        return adresse;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setAdresse(String adresse) {
+        this.adresse = adresse;
     }
 
-    public Enterprise getEnterprise() {
-        return enterprise;
+    public Entreprise getEntreprise() {
+        return entreprise;
     }
 
-    public void setEnterprise(Enterprise enterprise) {
-        this.enterprise = enterprise;
+    public void setEntreprise(Entreprise entreprise) {
+        this.entreprise = entreprise;
     }
 
     public Formation getFormation() {
@@ -77,11 +111,4 @@ public class Student {
         this.promotion = promotion;
     }
 
-    public Boolean getHasEnterprise() {
-        return hasEnterprise;
-    }
-
-    public void setHasEnterprise(Boolean hasEnterprise) {
-        this.hasEnterprise = hasEnterprise;
-    }
 }
