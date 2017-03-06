@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +16,8 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.imerir.annuaireimerir.tools.LoginRequest;
+import com.imerir.annuaireimerir.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;

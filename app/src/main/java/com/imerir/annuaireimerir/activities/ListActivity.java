@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.activities;
 
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
@@ -8,6 +8,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+
+import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.fragments.EntrepriseFragment;
+import com.imerir.annuaireimerir.fragments.StudentFragment;
 
 public class ListActivity extends AppCompatActivity implements View.OnClickListener {
     FloatingActionButton fab;

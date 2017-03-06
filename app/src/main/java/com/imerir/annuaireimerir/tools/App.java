@@ -1,6 +1,8 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.tools;
 
 import android.app.Application;
+
+import com.imerir.annuaireimerir.clients.ApiClient;
 
 
 /**

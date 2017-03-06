@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.models;
 
 /**
  * Created by Axel Zapata on 09/01/2017.

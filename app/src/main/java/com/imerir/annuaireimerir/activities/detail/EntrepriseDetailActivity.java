@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.activities.detail;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

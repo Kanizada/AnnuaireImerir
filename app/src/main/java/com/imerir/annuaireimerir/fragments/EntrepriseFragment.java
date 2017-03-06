@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.imerir.annuaireimerir.adapters.EntrepriseAdapter;
+import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
 
@@ -18,7 +22,7 @@ public class EntrepriseFragment extends Fragment {
     RecyclerView recyclerView;
     ArrayList<Entreprise> entreprises;
     EntrepriseAdapter adapter;
-    EntrepriseAdapter.OnEnterpriseClickedListener listener;
+    EntrepriseAdapter.OnEntrepriseClickedListener listener;
 
     public EntrepriseFragment(){
     }

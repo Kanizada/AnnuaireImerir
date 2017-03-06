@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.tools;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -14,10 +14,11 @@ import java.util.Map;
 public class RegisterRequest extends StringRequest{
 
     // path script php pour la requete d'enregistrement
-    private static final String REGISTER_RESQUEST_URL = "http://iristech.fr/appmobiledata/Register.php";
+    private static final String REGISTER_RESQUEST_URL = "";
     // création du map qui va contenir les infos à injecter dans la db
     private Map<String, String> params;
 
+    //exemple des données à envoyer au script pour les enregistrer sur la bdd
     public RegisterRequest(String nom, String prenom, String username, String password, String mail, Response.Listener<String> listener) {
         super(Request.Method.POST, REGISTER_RESQUEST_URL, listener, null);
         params = new HashMap<>();

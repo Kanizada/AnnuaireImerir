@@ -11,7 +11,7 @@
     android:orientation="vertical"
     android:weightSum="7"
     android:gravity="center_horizontal"
-    tools:context="com.imerir.annuaireimerir.LoginActivity">
+    tools:context="com.imerir.annuaireimerir.activities.LoginActivity">
 
     <ImageView
         android:layout_width="wrap_content"

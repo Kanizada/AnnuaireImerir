@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.clients;
 
 import android.content.Context;
 import android.util.Log;
@@ -9,6 +9,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.imerir.annuaireimerir.models.Eleve;
+import com.imerir.annuaireimerir.models.Entreprise;
+import com.imerir.annuaireimerir.models.Promotion;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -24,7 +27,6 @@ public class ApiClient {
     private static ApiClient instance;
     Context context;
     RequestQueue queue;
-    int success;
 
 
     public ApiClient(Context context) {
@@ -149,10 +151,10 @@ public class ApiClient {
                     int success = retourJSON.getInt("success");
                     if (success == 1){
                         JSONArray bodyArray = retourJSON.getJSONArray("body");
-                        ArrayList<Student> eleves = new ArrayList<>();
+                        ArrayList<Eleve> eleves = new ArrayList<>();
                         for (int i = 0; i<bodyArray.length();i++){
                             JSONObject eleveJSON = bodyArray.getJSONObject(i);
-                            Student eleve = new Student(eleveJSON);
+                            Eleve eleve = new Eleve(eleveJSON);
                             eleves.add(eleve);
                         }
                         //LISTENER HERE
@@ -184,10 +186,10 @@ public class ApiClient {
                     int success = retourJSON.getInt("success");
                     if (success == 1){
                         JSONArray bodyArray = retourJSON.getJSONArray("body");
-                        ArrayList<Student> eleves = new ArrayList<>();
+                        ArrayList<Eleve> eleves = new ArrayList<>();
                         for (int i = 0; i<bodyArray.length();i++){
                             JSONObject eleveJSON = bodyArray.getJSONObject(i);
-                            Student eleve = new Student(eleveJSON);
+                            Eleve eleve = new Eleve(eleveJSON);
                             eleves.add(eleve);
                         }
                         //LISTENER HERE

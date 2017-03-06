@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.models;
 
 import org.json.JSONObject;
 
@@ -32,7 +32,7 @@ public class Promotion {
 
     private Integer yearStart;
     private Integer yearEnd;
-    private ArrayList<Student> students;
+    private ArrayList<Eleve> eleves;
     private Formation formation;
 
     public Promotion(){
@@ -41,12 +41,12 @@ public class Promotion {
 
 
 
-    public Promotion(Integer id, String name, Integer yearStart, Integer yearEnd, ArrayList<Student> students, Formation formation) {
+    public Promotion(Integer id, String name, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves, Formation formation) {
         this.id = id;
         this.name = name;
         this.yearStart = yearStart;
         this.yearEnd = yearEnd;
-        this.students = students;
+        this.eleves = eleves;
         this.formation = formation;
     }
 
@@ -82,12 +82,12 @@ public class Promotion {
         this.yearEnd = yearEnd;
     }
 
-    public ArrayList<Student> getStudents() {
-        return students;
+    public ArrayList<Eleve> getEleves() {
+        return eleves;
     }
 
-    public void setStudents(ArrayList<Student> students) {
-        this.students = students;
+    public void setEleves(ArrayList<Eleve> eleves) {
+        this.eleves = eleves;
     }
 
     public Formation getFormation() {

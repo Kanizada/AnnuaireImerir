@@ -1,7 +1,9 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.imerir.annuaireimerir.R;
 
 public class MainActivity extends AppCompatActivity {
 

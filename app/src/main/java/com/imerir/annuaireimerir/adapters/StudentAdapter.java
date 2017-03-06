@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,20 +8,23 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.models.Eleve;
+
 import java.util.ArrayList;
 
 /**
- * Created by student on 10/01/2017.
+ * Created by eleve on 10/01/2017.
  */
 
 public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentViewHolder> {
 
-    ArrayList<Student> students;
+    ArrayList<Eleve> eleves;
     private OnStudentClickedListener listener;
 
 
-    public StudentAdapter(ArrayList<Student> students, final OnStudentClickedListener listener){
-        this.students = students;
+    public StudentAdapter(ArrayList<Eleve> eleves, final OnStudentClickedListener listener){
+        this.eleves = eleves;
         this.listener = listener;
     }
 
@@ -34,14 +37,14 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
 
     @Override
     public void onBindViewHolder(StudentViewHolder holder, int position) {
-        Student student = students.get(position);
-        holder.update(student);
+        Eleve eleve = eleves.get(position);
+        holder.update(eleve);
     }
 
 
     @Override
     public int getItemCount() {
-        return students.size();
+        return eleves.size();
     }
 
     public class StudentViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
@@ -50,7 +53,7 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         TextView nomTV;
         TextView prenomTV;
         TextView promotionTV;
-        Student student;
+        Eleve eleve;
 
         public StudentViewHolder(View itemView) {
             super(itemView);
@@ -61,11 +64,11 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
             promotionTV = (TextView) itemView.findViewById(R.id.student_promotion);
         }
 
-        public void update(Student student){
-            this.student = student;
-            nomTV.setText(student.getNom());
-            prenomTV.setText(student.getPrenom());
-            promotionTV.setText(student.getPromotion().getName());
+        public void update(Eleve eleve){
+            this.eleve = eleve;
+            nomTV.setText(eleve.getNom());
+            prenomTV.setText(eleve.getPrenom());
+            promotionTV.setText(eleve.getPromotion().getName());
             //image
             //cardView.setOnClickListener(this);
         }
@@ -73,12 +76,12 @@ public class StudentAdapter extends RecyclerView.Adapter<StudentAdapter.StudentV
         @Override
         public void onClick(View view) {
             if (view == cardView){
-                listener.onStudentClicked(student);
+                listener.onStudentClicked(eleve);
             }
         }
     }
 
     public interface OnStudentClickedListener{
-        void onStudentClicked(Student student);
+        void onStudentClicked(Eleve eleve);
     }
 }

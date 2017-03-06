@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.tools;
 
 import com.android.volley.Response;
 import com.android.volley.toolbox.StringRequest;
@@ -14,7 +14,7 @@ import java.util.Map;
 public class LoginRequest extends StringRequest {
 
     // path jusqu'au script de requete login
-    private static final String LOGIN_RESQUEST_URL = "http://imerir.com/webservice";
+    private static final String LOGIN_RESQUEST_URL = "http://imerir.com/webservice/login.php";
     
     // création du map qui va contenir le username et le mdp
     private Map<String, String> params;

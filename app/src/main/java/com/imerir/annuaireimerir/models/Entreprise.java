@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.models;
 
 import org.json.JSONObject;
 
@@ -21,7 +21,7 @@ public class Entreprise {
     // ----------------------------------------------//
     private ActivityDomain activityDomain;
     private URL website;
-    private ArrayList<Student> linkedStudents;
+    private ArrayList<Eleve> linkedEleves;
     private Double lat;
     private Double lng;
     private String city;
@@ -39,11 +39,11 @@ public class Entreprise {
         this.email = jsonObject.optString("email");
     }
 
-    public Entreprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Student> linkedStudents, String city, Double lat, Double lng) {
+    public Entreprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
         this.nom = name;
         this.activityDomain = activityDomain;
         this.website = website;
-        this.linkedStudents = linkedStudents;
+        this.linkedEleves = linkedEleves;
         this.city = city;
         this.lat = lat;
         this.lng = lng;
@@ -81,12 +81,12 @@ public class Entreprise {
         this.website = website;
     }
 
-    public ArrayList<Student> getLinkedStudents() {
-        return linkedStudents;
+    public ArrayList<Eleve> getLinkedEleves() {
+        return linkedEleves;
     }
 
-    public void setLinkedStudents(ArrayList<Student> linkedStudents) {
-        this.linkedStudents = linkedStudents;
+    public void setLinkedEleves(ArrayList<Eleve> linkedEleves) {
+        this.linkedEleves = linkedEleves;
     }
 
     public Double getLat() {

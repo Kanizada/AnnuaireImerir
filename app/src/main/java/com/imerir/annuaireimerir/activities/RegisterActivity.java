@@ -1,22 +1,11 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.activities;
 
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.imerir.annuaireimerir.tools.EmailValidator;
 
 /**
  * Created by student on 12/01/2017.

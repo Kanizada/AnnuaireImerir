@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.adapters;
 
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -8,18 +8,21 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.models.Entreprise;
+
 import java.util.ArrayList;
 
 /**
- * Created by student on 12/01/2017.
+ * Created by eleve on 12/01/2017.
  */
 
 public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.EnterpriseViewHolder> {
 
     ArrayList<Entreprise> entreprises;
-    private OnEnterpriseClickedListener listener;
+    private OnEntrepriseClickedListener listener;
 
-    public EntrepriseAdapter(ArrayList<Entreprise> entreprises, OnEnterpriseClickedListener listener){
+    public EntrepriseAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener){
         this.entreprises = entreprises;
         this.listener = listener;
 
@@ -69,14 +72,14 @@ public class EntrepriseAdapter extends RecyclerView.Adapter<EntrepriseAdapter.En
         @Override
         public void onClick(View view) {
             if ( view == cardView){
-                listener.onEnterpriseClicked(entreprise);
+                listener.onEntrepriseClicked(entreprise);
             }
         }
     }
 
 
 
-    public interface OnEnterpriseClickedListener{
-        void onEnterpriseClicked(Entreprise entreprise);
+    public interface OnEntrepriseClickedListener {
+        void onEntrepriseClicked(Entreprise entreprise);
     }
 }

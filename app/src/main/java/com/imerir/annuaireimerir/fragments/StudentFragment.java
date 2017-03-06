@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir;
+package com.imerir.annuaireimerir.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -7,6 +7,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.adapters.StudentAdapter;
+import com.imerir.annuaireimerir.models.Eleve;
 
 import java.util.ArrayList;
 
@@ -17,7 +21,7 @@ import java.util.ArrayList;
 public class StudentFragment extends Fragment {
     RecyclerView recyclerView;
     StudentAdapter adapter;
-    ArrayList<Student> students;
+    ArrayList<Eleve> eleves;
     StudentAdapter.OnStudentClickedListener listener;
 
     public StudentFragment(){
@@ -43,7 +47,7 @@ public class StudentFragment extends Fragment {
         recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        StudentAdapter adapter = new StudentAdapter(students,listener);
+        StudentAdapter adapter = new StudentAdapter(eleves,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -52,13 +56,13 @@ public class StudentFragment extends Fragment {
     }
     public void init(){
         //simulation liste student
-/*        ArrayList<Student> students = new ArrayList<>();
+/*        ArrayList<Eleve> eleves = new ArrayList<>();
         Promotion promotion = new Promotion();
         promotion.setName("GOA");
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","WagnerWagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        students.add(new Student("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
-        this.students = students;*/
+        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        eleves.add(new Eleve("Tristan","WagnerWagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        eleves.add(new Eleve("Tristan","Wagner","8 rue Raymond Parès", new Entreprise(),Formation.CDSM, promotion, true));
+        this.eleves = eleves;*/
     }
 }
