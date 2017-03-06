@@ -2,29 +2,28 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.imerir.annuaireimerir">
 
-    <uses-permission android:nom="android.permission.INTERNET" />
-    <uses-permission android:nom="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:nom="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
-        android:nom=".tools.App"
+        android:name=".tools.App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:nom=".activities.MainActivity" />
         <activity
-            android:nom=".activities.SplashActivity"
+            android:name=".activities.SplashActivity"
             android:theme="@style/SplashTheme">
             <intent-filter>
-                <action android:nom="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN" />
 
-                <category android:nom="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:nom=".activities.ListActivity" />
-        <activity android:nom=".activities.LoginActivity"></activity>
+        <activity android:name=".activities.ListActivity" />
+        <activity android:name=".activities.LoginActivity"></activity>
 
     </application>
 

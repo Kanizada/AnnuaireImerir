@@ -61,12 +61,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-<<<<<<< HEAD:app/src/main/res/layout/fiche_eleve.xml
                     android:orientation="horizontal">
-=======
-                    android:textSize="20dp"
-                    tools:text="Adresse"/>
->>>>>>> origin/master:app/src/main/res/layout/activity_student_detail.xml
 
                     <TextView
                         android:id="@+id/Adresse"
