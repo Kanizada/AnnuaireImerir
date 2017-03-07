@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.adapters.PromotionListAdapter;
 import com.imerir.annuaireimerir.clients.ApiClient;
+import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Promotion;
 
 import java.util.ArrayList;
@@ -20,22 +21,29 @@ import java.util.ArrayList;
  * Created by student on 06/03/2017.
  */
 
-public class PromotionListFragment extends Fragment implements ApiClient.OnPromotionsListener{
+public class PromotionListFragment extends Fragment{
     RecyclerView recyclerView;
-    ArrayList<Promotion> promotions;
+    ArrayList<Promotion> liste_promotions;
     PromotionListAdapter adapter;
     PromotionListAdapter.OnPromotionClickedListener listener;
-    public PromotionListFragment(){
 
+    public PromotionListFragment(){
     }
 
-    public static PromotionListFragment newInstance(){
+    //création d'une instance statique du fragments prenant en paramètres une liste de Promotion qui est inclue
+    // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
+    //de la recyclerview
+    public static PromotionListFragment newInstance(ArrayList<Promotion> promotions){
         PromotionListFragment fragment = new PromotionListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("liste_promotions", promotions);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
+    //récuperation de la liste_promotions via les arguments du fragment
     public void init(){
-        ApiClient.getInstance().getPromotions("devTmpKey",this);
+        liste_promotions = (ArrayList<Promotion>) this.getArguments().getSerializable("liste_promotions");
     }
 
     @Override
@@ -43,10 +51,10 @@ public class PromotionListFragment extends Fragment implements ApiClient.OnPromo
         super.onCreateView(inflater, container, savedInstanceState);
         init();
         View rootView = inflater.inflate(R.layout.fragment_promotion_list, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.promotionList);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.promotionsList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        PromotionListAdapter adapter = new PromotionListAdapter(promotions,listener);
+        PromotionListAdapter adapter = new PromotionListAdapter(liste_promotions,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -54,16 +62,4 @@ public class PromotionListFragment extends Fragment implements ApiClient.OnPromo
         return rootView;
     }
 
-
-
-    @Override
-    public void onPromotionsReceived(ArrayList<Promotion> promotions) {
-        this.promotions = promotions;
-        Toast.makeText(this.getContext(), "Succès lors du chargement des promotions", Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onPromotionsFailed(String error) {
-        Toast.makeText(this.getContext(), "Erreur lors du chargement des promotions", Toast.LENGTH_LONG).show();
-    }
 }

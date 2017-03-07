@@ -13,15 +13,19 @@
         android:title="Mon compte"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_enterprise"
+        android:id="@+id/action_entreprise"
         android:orderInCategory="100"
         android:title="Liste des entreprises"
         app:showAsAction="never" />
     <item
-        android:id="@+id/action_student"
+        android:id="@+id/action_eleve"
         android:orderInCategory="100"
         android:title="Liste des élèves"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/action_promotion"
+        android:orderInCategory="100"
+        android:title="Liste des promotions"/>
     <item
         android:id="@+id/action_disconnect"
         android:orderInCategory="100"

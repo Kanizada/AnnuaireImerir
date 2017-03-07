@@ -21,6 +21,8 @@ public class EntrepriseDetailFragment extends Fragment {
 
     }
 
+    //création d'une instance statique du fragments prenant en paramètres une Entreprise qui est inclue
+    // en arguments du fragment pour passer les données de l'activité vers le fragment
     public static EntrepriseDetailFragment newInstance(Entreprise entreprise){
         Bundle bundle = new Bundle();
         bundle.putSerializable("entreprise", entreprise);
@@ -32,6 +34,7 @@ public class EntrepriseDetailFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //récuperation de l'objet entreprise via les arguments du fragment
         this.entreprise = (Entreprise) this.getArguments().getSerializable("entreprise");
     }
 

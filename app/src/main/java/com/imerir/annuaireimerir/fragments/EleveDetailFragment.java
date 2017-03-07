@@ -39,7 +39,7 @@ public class EleveDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_student_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_eleve_detail, container, false);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'eleve
         return rootView;
     }

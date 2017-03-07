@@ -63,8 +63,8 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
 
         public void update(Entreprise entreprise){
             this.entreprise = entreprise;
-            nomTV.setText(entreprise.getName());
-            villeTV.setText(entreprise.getCity());
+            nomTV.setText(entreprise.getNom());
+            //villeTV.setText(entreprise.getCity());
             //image
             //cardView.setOnClickListener(this);
         }

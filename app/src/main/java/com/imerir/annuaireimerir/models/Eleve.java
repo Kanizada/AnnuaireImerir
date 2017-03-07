@@ -1,5 +1,8 @@
 package com.imerir.annuaireimerir.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Eleve implements Serializable {
+public class Eleve implements Serializable ,Parcelable{
 
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
@@ -64,6 +67,33 @@ public class Eleve implements Serializable {
         this.formation = formation;
         this.promotion = promotion;
     }
+
+    protected Eleve(Parcel in) {
+        id = in.readInt();
+        prenom = in.readString();
+        nom = in.readString();
+        adresse = in.readString();
+        siteWeb = in.readString();
+        telephoneMobile = in.readString();
+        telephonePerso = in.readString();
+        dateInscription = in.readString();
+        email = in.readString();
+        entreprises = in.createTypedArrayList(Entreprise.CREATOR);
+        promotion = in.readParcelable(Promotion.class.getClassLoader());
+        entreprise = in.readParcelable(Entreprise.class.getClassLoader());
+    }
+
+    public static final Creator<Eleve> CREATOR = new Creator<Eleve>() {
+        @Override
+        public Eleve createFromParcel(Parcel in) {
+            return new Eleve(in);
+        }
+
+        @Override
+        public Eleve[] newArray(int size) {
+            return new Eleve[size];
+        }
+    };
 
     public String getPrenom() {
         return prenom;
@@ -169,4 +199,24 @@ public class Eleve implements Serializable {
         this.telephonePerso = telephonePerso;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(prenom);
+        dest.writeString(nom);
+        dest.writeString(adresse);
+        dest.writeString(siteWeb);
+        dest.writeString(telephoneMobile);
+        dest.writeString(telephonePerso);
+        dest.writeString(dateInscription);
+        dest.writeString(email);
+        dest.writeTypedList(entreprises);
+        dest.writeParcelable(promotion, flags);
+        //dest.writeParcelable(entreprise, flags);
+    }
 }

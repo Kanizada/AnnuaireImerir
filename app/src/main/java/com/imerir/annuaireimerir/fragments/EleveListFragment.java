@@ -13,6 +13,7 @@ import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.adapters.EleveListAdapter;
 import com.imerir.annuaireimerir.clients.ApiClient;
 import com.imerir.annuaireimerir.models.Eleve;
+import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
 
@@ -20,18 +21,24 @@ import java.util.ArrayList;
  * Created by student on 10/01/2017.
  */
 
-public class EleveListFragment extends Fragment implements ApiClient.OnElevesListener {
+public class EleveListFragment extends Fragment {
     RecyclerView recyclerView;
     EleveListAdapter adapter;
-    ArrayList<Eleve> eleves;
+    ArrayList<Eleve> liste_eleves;
     EleveListAdapter.OnEleveClickedListener listener;
 
     public EleveListFragment(){
 
     }
 
-    public static EleveListFragment newInstance(){
+    //création d'une instance statique du fragments prenant en paramètres une liste Eleve qui est inclue
+    // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
+    //de la recyclerview
+    public static EleveListFragment newInstance(ArrayList<Eleve> eleves){
         EleveListFragment fragment = new EleveListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("liste_eleves", eleves);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -45,29 +52,21 @@ public class EleveListFragment extends Fragment implements ApiClient.OnElevesLis
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         init();
-        View rootView = inflater.inflate(R.layout.fragment_student_list, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.studentList);
+        View rootView = inflater.inflate(R.layout.fragment_eleve_list, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.elevesList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        EleveListAdapter adapter = new EleveListAdapter(eleves,listener);
+        EleveListAdapter adapter = new EleveListAdapter(liste_eleves,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
         recyclerView.setAdapter(adapter);
         return rootView;
     }
+
+    //récuperation de la liste_eleves via les arguments du fragment
     public void init(){
-        ApiClient.getInstance().getEleves("devTmpKey",this);
+        liste_eleves = (ArrayList<Eleve>) this.getArguments().getSerializable("liste_eleves");
     }
 
-    @Override
-    public void onElevesReceived(ArrayList<Eleve> eleves) {
-        this.eleves = eleves;
-        Toast.makeText(this.getContext(),"Succès du chargement de la liste des élèves",Toast.LENGTH_LONG).show();
-    }
-
-    @Override
-    public void onElevesFailed(String error) {
-        Toast.makeText(this.getContext(),"Erreur lors du chargement de la liste des élèves",Toast.LENGTH_LONG).show();
-    }
 }

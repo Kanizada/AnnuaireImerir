@@ -20,17 +20,24 @@ import java.util.ArrayList;
  * Created by student on 12/01/2017.
  */
 
-public class EntrepriseListFragment extends Fragment implements ApiClient.OnEntreprisesListener {
+public class EntrepriseListFragment extends Fragment {
     RecyclerView recyclerView;
-    ArrayList<Entreprise> entreprises;
+    ArrayList<Entreprise> liste_entreprises;
     EntrepriseListAdapter adapter;
     EntrepriseListAdapter.OnEntrepriseClickedListener listener;
+
 
     public EntrepriseListFragment(){
     }
 
-    public static EntrepriseListFragment newInstance(){
+    //création d'une instance statique du fragments prenant en paramètres une liste  Entreprise qui est inclue
+    // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
+    //de la recyclerview
+    public static EntrepriseListFragment newInstance(ArrayList<Entreprise> entreprises){
         EntrepriseListFragment fragment = new EntrepriseListFragment();
+        Bundle bundle = new Bundle();
+        bundle.putSerializable("liste_entreprises", entreprises);
+        fragment.setArguments(bundle);
         return fragment;
     }
 
@@ -38,11 +45,11 @@ public class EntrepriseListFragment extends Fragment implements ApiClient.OnEntr
     public View onCreateView(LayoutInflater inflater,ViewGroup container,Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         init();
-        View rootView = inflater.inflate(R.layout.fragment_enterprise_list, container, false);
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.enterpriseList);
+        View rootView = inflater.inflate(R.layout.fragment_entreprise_list, container, false);
+        recyclerView = (RecyclerView) rootView.findViewById(R.id.entreprisesList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
-        EntrepriseListAdapter adapter = new EntrepriseListAdapter(entreprises,listener);
+        EntrepriseListAdapter adapter = new EntrepriseListAdapter(liste_entreprises,listener);
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
@@ -50,9 +57,9 @@ public class EntrepriseListFragment extends Fragment implements ApiClient.OnEntr
         return rootView;
     }
 
+    //récuperation de la liste_promotions via les arguments du fragment
     public void init(){
-        ApiClient.getInstance().getEntreprises("devTmpKey", this);
-
+        this.liste_entreprises = (ArrayList<Entreprise>) this.getArguments().getSerializable("liste_entreprises");
     }
 
     @Override
@@ -61,24 +68,9 @@ public class EntrepriseListFragment extends Fragment implements ApiClient.OnEntr
     }
 
 
-    @Override
-    public void onEntreprisesReceived(ArrayList<Entreprise> entreprises) {
-        this.entreprises = entreprises;
-        Toast.makeText(this.getContext(),"Succès du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
-    }
 
-    @Override
-    public void onEntreprisesFailed(String error) {
-        Toast.makeText(this.getContext(),"Erreur du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
-    }
+        //Toast.makeText(this.getContext(),"Succès du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
 
-    @Override
-    public void onEntrepriseReceived(Entreprise entreprise) {
+        //Toast.makeText(this.getContext(),"Erreur du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
 
-    }
-
-    @Override
-    public void onEntrepriseFailed(String error) {
-
-    }
 }

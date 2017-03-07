@@ -1,5 +1,8 @@
 package com.imerir.annuaireimerir.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -10,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Promotion implements Serializable {
+public class Promotion implements Serializable,Parcelable {
 
 
 
@@ -52,6 +55,24 @@ public class Promotion implements Serializable {
         this.eleves = eleves;
         this.formation = formation;
     }
+
+    protected Promotion(Parcel in) {
+        id = in.readInt();
+        nom = in.readString();
+        annee = in.readString();
+    }
+
+    public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
+        @Override
+        public Promotion createFromParcel(Parcel in) {
+            return new Promotion(in);
+        }
+
+        @Override
+        public Promotion[] newArray(int size) {
+            return new Promotion[size];
+        }
+    };
 
     public Integer getId() {
         return id;
@@ -119,5 +140,17 @@ public class Promotion implements Serializable {
 
     public void setPromoActuelle(Boolean promoActuelle) {
         this.promoActuelle = promoActuelle;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(nom);
+        dest.writeString(annee);
     }
 }

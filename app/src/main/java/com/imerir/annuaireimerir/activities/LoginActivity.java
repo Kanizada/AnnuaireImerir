@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -16,14 +17,22 @@ import android.widget.TextView;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.imerir.annuaireimerir.models.Eleve;
+import com.imerir.annuaireimerir.models.Entreprise;
+import com.imerir.annuaireimerir.models.Promotion;
 import com.imerir.annuaireimerir.tools.LoginRequest;
 import com.imerir.annuaireimerir.R;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
 
+    ArrayList<Eleve> liste_eleves = new ArrayList<>();
+    ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
+    ArrayList<Promotion> liste_promotions = new ArrayList<>();
     EditText usernameET, passwordET;
     CheckBox rememberCB;
     Button loginBtn;
@@ -61,6 +70,26 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
     }
+
+    //test au cas ou on load au splashscreen
+    /*public void passData(Intent intent){
+        liste_eleves = getIntent().getParcelableArrayListExtra("liste_eleves");
+        liste_entreprises = getIntent().getParcelableArrayListExtra("liste_entreprises");
+        liste_promotions = getIntent().getParcelableArrayListExtra("liste_promotions");
+        intent.putParcelableArrayListExtra("liste_eleves", liste_eleves);
+        intent.putParcelableArrayListExtra("liste_entreprises", liste_entreprises);
+        intent.putParcelableArrayListExtra("liste_promotions", liste_promotions);
+        for (Eleve eleve :liste_eleves) {
+            Log.e("LA onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
+        }
+        for (Entreprise entreprise :liste_entreprises) {
+            Log.e("LA onEntrepriReceived",entreprise.getNom() + " " +entreprise.getNom());
+        }
+        for (Promotion promotion :liste_promotions) {
+            Log.e("LA onPromotionReceived",promotion.getNom() + " " +promotion.getAnnee());
+        }
+
+    }*/
 
     @Override
     public void onBackPressed() {
@@ -134,6 +163,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 queue.add(loginRequest);
             } else {
                 Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
+                //passData(listIntent);
                 LoginActivity.this.startActivity(listIntent);
             }
         }

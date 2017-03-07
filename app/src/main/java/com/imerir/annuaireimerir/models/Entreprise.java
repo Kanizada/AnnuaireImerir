@@ -1,5 +1,8 @@
 package com.imerir.annuaireimerir.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -11,7 +14,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Entreprise implements Serializable{
+public class Entreprise implements Serializable, Parcelable{
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
     private String nom;
@@ -20,7 +23,7 @@ public class Entreprise implements Serializable{
     private String telephone;
     private String email;
     // ----------------------------------------------//
-    private ActivityDomain activityDomain;
+    private DomaineActivite domaineActivite;
     private URL website;
     private ArrayList<Eleve> linkedEleves;
     private Double lat;
@@ -40,15 +43,37 @@ public class Entreprise implements Serializable{
         this.email = jsonObject.optString("email");
     }
 
-    public Entreprise(String name, ActivityDomain activityDomain, URL website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
+    public Entreprise(String name, DomaineActivite domaineActivite, URL website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
         this.nom = name;
-        this.activityDomain = activityDomain;
+        this.domaineActivite = domaineActivite;
         this.website = website;
         this.linkedEleves = linkedEleves;
         this.city = city;
         this.lat = lat;
         this.lng = lng;
     }
+
+    protected Entreprise(Parcel in) {
+        id = in.readInt();
+        nom = in.readString();
+        adresse = in.readString();
+        code_postal = in.readString();
+        telephone = in.readString();
+        email = in.readString();
+        city = in.readString();
+    }
+
+    public static final Creator<Entreprise> CREATOR = new Creator<Entreprise>() {
+        @Override
+        public Entreprise createFromParcel(Parcel in) {
+            return new Entreprise(in);
+        }
+
+        @Override
+        public Entreprise[] newArray(int size) {
+            return new Entreprise[size];
+        }
+    };
 
     public String getCity() {
         return city;
@@ -58,20 +83,13 @@ public class Entreprise implements Serializable{
         this.city = city;
     }
 
-    public String getName() {
-        return nom;
+
+    public DomaineActivite getDomaineActivite() {
+        return domaineActivite;
     }
 
-    public void setName(String name) {
-        this.nom = name;
-    }
-
-    public ActivityDomain getActivityDomain() {
-        return activityDomain;
-    }
-
-    public void setActivityDomain(ActivityDomain activityDomain) {
-        this.activityDomain = activityDomain;
+    public void setDomaineActivite(DomaineActivite domaineActivite) {
+        this.domaineActivite = domaineActivite;
     }
 
     public URL getWebsite() {
@@ -152,5 +170,20 @@ public class Entreprise implements Serializable{
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeInt(id);
+        dest.writeString(nom);
+        dest.writeString(adresse);
+        dest.writeString(code_postal);
+        dest.writeString(telephone);
+        dest.writeString(email);
     }
 }

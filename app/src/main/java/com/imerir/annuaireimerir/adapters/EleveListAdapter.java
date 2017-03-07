@@ -68,7 +68,10 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
             this.eleve = eleve;
             nomTV.setText(eleve.getNom());
             prenomTV.setText(eleve.getPrenom());
-            promotionTV.setText(eleve.getPromotion().getNom());
+            if (eleve.getPromotion()!= null){
+                promotionTV.setText(eleve.getPromotion().getNom());
+            }
+
             //image
             //cardView.setOnClickListener(this);
         }

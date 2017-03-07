@@ -5,7 +5,7 @@ package com.imerir.annuaireimerir.models;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public enum ActivityDomain {
+public enum DomaineActivite {
     Bâtiment,
     Informatique_Réseaux,
     Santé;
