@@ -30,12 +30,15 @@ public class EleveListFragment extends Fragment {
     public EleveListFragment(){
 
     }
+    public EleveListFragment(EleveListAdapter.OnEleveClickedListener listener){
+        this.listener = listener;
+    }
 
     //création d'une instance statique du fragments prenant en paramètres une liste Eleve qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
     //de la recyclerview
-    public static EleveListFragment newInstance(ArrayList<Eleve> eleves){
-        EleveListFragment fragment = new EleveListFragment();
+    public static EleveListFragment newInstance(ArrayList<Eleve> eleves,EleveListAdapter.OnEleveClickedListener listener){
+        EleveListFragment fragment = new EleveListFragment(listener);
         Bundle bundle = new Bundle();
         bundle.putSerializable("liste_eleves", eleves);
         fragment.setArguments(bundle);

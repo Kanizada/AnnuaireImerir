@@ -30,11 +30,15 @@ public class EntrepriseListFragment extends Fragment {
     public EntrepriseListFragment(){
     }
 
+    public EntrepriseListFragment(EntrepriseListAdapter.OnEntrepriseClickedListener listener){
+        this.listener = listener;
+    }
+
     //création d'une instance statique du fragments prenant en paramètres une liste  Entreprise qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
     //de la recyclerview
-    public static EntrepriseListFragment newInstance(ArrayList<Entreprise> entreprises){
-        EntrepriseListFragment fragment = new EntrepriseListFragment();
+    public static EntrepriseListFragment newInstance(ArrayList<Entreprise> entreprises, EntrepriseListAdapter.OnEntrepriseClickedListener listener){
+        EntrepriseListFragment fragment = new EntrepriseListFragment(listener);
         Bundle bundle = new Bundle();
         bundle.putSerializable("liste_entreprises", entreprises);
         fragment.setArguments(bundle);

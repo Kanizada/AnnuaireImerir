@@ -187,7 +187,7 @@ public class ApiClient {
         queue.add(request);
     }
 
-    //GET ELEVE BY ID
+    //GET ELEVELIST BY ID
 
     public void getElevesByPromotionId(String idPromotion, String cleApi,final OnElevesListener listener){
         String url = "http://79.137.78.233/promotions/id/eleves?key="+cleApi;

@@ -13,7 +13,11 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.adapters.EleveListAdapter;
+import com.imerir.annuaireimerir.adapters.EntrepriseListAdapter;
 import com.imerir.annuaireimerir.clients.ApiClient;
+import com.imerir.annuaireimerir.fragments.EleveDetailFragment;
+import com.imerir.annuaireimerir.fragments.EntrepriseDetailFragment;
 import com.imerir.annuaireimerir.fragments.EntrepriseListFragment;
 import com.imerir.annuaireimerir.fragments.EleveListFragment;
 import com.imerir.annuaireimerir.fragments.PromotionListFragment;
@@ -23,23 +27,27 @@ import com.imerir.annuaireimerir.models.Promotion;
 
 import java.util.ArrayList;
 
-public class ListActivity extends AppCompatActivity implements View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener {
+public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener {
     FloatingActionButton fab;
     DisplayMode mode;
+    DisplayMode previousMode;
     Thread thread;
     ProgressDialog loading;
     ListActivity context = this;
     ArrayList<Eleve> liste_eleves = new ArrayList<>();
     ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
     ArrayList<Promotion> liste_promotions = new ArrayList<>();
+    Eleve displayedEleve;
+    Entreprise displayedEntreprise;
     Boolean dataDownloaded = false;
 
 
-
     enum DisplayMode {
-        ELEVE,
-        ENTREPRISE,
-        PROMOTION
+        ELEVELIST,
+        ENTREPRISELIST,
+        PROMOTIONLIST,
+        ELEVEDETAIL,
+        ENTREPRISEDETAIL
     }
 
     @Override
@@ -49,16 +57,47 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        setTitle("Liste des élèves");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        //back button sur la toolbar logique provisoire pour le moment un back press retourne le dernier fragment ou l'ou etait
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
+                    //getSupportFragmentManager().popBackStack();
+                    switch (previousMode){
+                        case ELEVELIST:
+                            mode = previousMode;
+                            //getSupportActionBar().setTitle("Liste des élèves");
+                            setMode(DisplayMode.ELEVELIST);
+                            break;
+                        case ENTREPRISELIST:
+                            mode = previousMode;
+                            //getSupportActionBar().setTitle("Liste des entreprises");
+                            setMode(DisplayMode.ENTREPRISELIST);
+                            break;
+                        case ELEVEDETAIL:
+                            mode = previousMode;
+                            //getSupportActionBar().setTitle(" ");
+                            setMode(DisplayMode.ELEVEDETAIL);
+                            break;
+                        case ENTREPRISEDETAIL:
+                            mode = previousMode;
+                            //getSupportActionBar().setTitle(" ");
+                            setMode(DisplayMode.ENTREPRISEDETAIL);
+                            break;
+                    }
+                }
+            }
+        });
         if (!dataDownloaded){
             dataLoading();
             dataDownloaded=true;
         }else {
-            setMode(DisplayMode.ELEVE);
+            setMode(DisplayMode.ELEVELIST);
         }
 
 
-        //setMode(DisplayMode.ELEVE);
+        //setMode(DisplayMode.ELEVELIST);
         //fab.setOnClickListener(this);
 
     }
@@ -66,31 +105,47 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onClick(View view) {
         if (view == fab){
-            if (mode == DisplayMode.ELEVE){
+            if (mode == DisplayMode.ELEVELIST){
 
-            }else if (mode == DisplayMode.ENTREPRISE){
+            }else if (mode == DisplayMode.ENTREPRISELIST){
 
-            }else if (mode == DisplayMode.PROMOTION){
+            }else if (mode == DisplayMode.PROMOTIONLIST){
 
             }
         }
     }
 
     public void setMode(DisplayMode newMode){
-        if(newMode==DisplayMode.ELEVE){
+        if(newMode==DisplayMode.ELEVELIST){
             /*fab.setImageDrawable(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.//àdefinir)
                     .color(Color.WHITE).sizeDp(24));*/
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves), "eleves").commit();
-        }else if (newMode==DisplayMode.ENTREPRISE){
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "eleves").addToBackStack("eleves").commit();
+            getSupportActionBar().setTitle("Liste des élèves");
+        }else if (newMode==DisplayMode.ENTREPRISELIST){
             /*fab.setImageDrawable(new IconicsDrawable(this)
                     .icon(GoogleMaterial.Icon.//àdefinir)
                     .color(Color.WHITE).sizeDp(24));*/
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises), "entreprises").commit();
-        }else if (newMode==DisplayMode.PROMOTION){
-            getSupportFragmentManager().beginTransaction().replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions").commit();
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "entreprises").addToBackStack("entreprises").commit();
+            getSupportActionBar().setTitle("Liste des entreprises");
+        }else if (newMode==DisplayMode.PROMOTIONLIST){
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions").addToBackStack("promotions").commit();
+            getSupportActionBar().setTitle("Liste des promotions");
+        }else if (newMode==DisplayMode.ELEVEDETAIL){
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve), "eleve").addToBackStack("eleve").commit();
+            getSupportActionBar().setTitle(displayedEleve.getPrenom() + " " + displayedEleve.getNom());
+        }else if (newMode==DisplayMode.ENTREPRISEDETAIL){
+            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise), "entreprise").addToBackStack("entreprise").commit();
+            getSupportActionBar().setTitle(displayedEntreprise.getNom());
         }
-        mode = newMode;
+
+        if (mode == null){
+            previousMode = newMode;
+            mode = newMode;
+        }else {
+            previousMode = mode;
+            mode = newMode;
+        }
     }
 
     @Override
@@ -110,13 +165,13 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
                 // go account page
                 return true;
             case R.id.action_entreprise:
-                setMode(DisplayMode.ENTREPRISE);
+                setMode(DisplayMode.ENTREPRISELIST);
                 return true;
             case R.id.action_eleve:
-                setMode(DisplayMode.ELEVE);
+                setMode(DisplayMode.ELEVELIST);
                 return true;
             case R.id.action_promotion:
-                setMode(DisplayMode.PROMOTION);
+                setMode(DisplayMode.PROMOTIONLIST);
                 return true;
             case R.id.action_disconnect:
                 Intent intent = new Intent(ListActivity.this, LoginActivity.class);
@@ -151,15 +206,16 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
+                Log.e("ListActivity","dataLoading() start");
                 ApiClient.getInstance().getEleves("devTmpKey",context);
                 ApiClient.getInstance().getEntreprises("devTmpKey",context);
                 ApiClient.getInstance().getPromotions("devTmpKey",context);
-
+                Log.e("ListActivity","dataLoading() end");
                 /*runOnUiThread(new Runnable() {
                     @Override
                     public void run()
                     {
-                        setMode(DisplayMode.ELEVE);
+                        setMode(DisplayMode.ELEVELIST);
                         Log.e("ListeActivity","setmode eleve dataLoading()");
                         loading.dismiss();
                     }
@@ -170,7 +226,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
         //trouver une maniere de savoir si le chargement est fini, si il est finit retirer le chargement et charger le frag eleves
         /*if (loading.isShowing() && !thread.isAlive()){
             loading.dismiss();
-            setMode(DisplayMode.ELEVE);
+            setMode(DisplayMode.ELEVELIST);
         }*/
     }
 
@@ -178,10 +234,11 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     public void onElevesReceived(ArrayList<Eleve> eleves) {
         liste_eleves = eleves;
         for (Eleve eleve :eleves) {
+            eleve.lierEntreprises();
             Log.e("ListAc onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
         }
         Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
-        setMode(DisplayMode.ELEVE);
+        setMode(DisplayMode.ELEVELIST);
         Log.e("ListeActivity","setmode eleve dataLoading()");
         loading.dismiss();
     }
@@ -189,6 +246,7 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onElevesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
+        //faire loading dismiss + snackbar proposant de recharger
     }
 
     @Override
@@ -228,5 +286,17 @@ public class ListActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void onPromotionsFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onEleveClicked(Eleve eleve) {
+        this.displayedEleve = eleve;
+        setMode(DisplayMode.ELEVEDETAIL);
+    }
+
+    @Override
+    public void onEntrepriseClicked(Entreprise entreprise) {
+        this.displayedEntreprise = entreprise;
+        setMode(DisplayMode.ENTREPRISEDETAIL);
     }
 }

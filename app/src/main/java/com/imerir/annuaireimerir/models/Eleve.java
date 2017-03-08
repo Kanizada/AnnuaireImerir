@@ -3,6 +3,8 @@ package com.imerir.annuaireimerir.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.Serializable;
@@ -20,9 +22,12 @@ public class Eleve implements Serializable ,Parcelable{
     private String prenom;
     private String nom;
     private String adresse;
+    private String codePostal;
+    private String ville;
     private String siteWeb;
     private String telephoneMobile;
-    private String telephonePerso;
+    //private String telephonePerso;
+    private String telephoneFixe;
     private String dateInscription;
     private String email;
     private ArrayList<Entreprise> entreprises = new ArrayList<>();
@@ -31,19 +36,29 @@ public class Eleve implements Serializable ,Parcelable{
 
 
     //constructor from JSON
-    public Eleve(JSONObject jsonObject){
+    public Eleve(JSONObject jsonObject) {
         this.id = jsonObject.optInt("id");
         this.prenom = jsonObject.optString("prenom");
         this.nom = jsonObject.optString("nom");
         this.adresse = jsonObject.optString("adresse");
+        this.codePostal = jsonObject.optString("code_postal");
+        this.ville = jsonObject.optString("ville");
         this.siteWeb = jsonObject.optString("site_web");
         this.telephoneMobile = jsonObject.optString("telephone_mobile");
-        this.telephonePerso = jsonObject.optString("telephone_perso");
+        this.telephoneFixe = jsonObject.optString("telephone_fixe");
         this.dateInscription = jsonObject.optString("date_inscription");
         this.email = jsonObject.optString("email");
-        //A VOIR POUR LA LISTE DENTREPRISE
         this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
-
+        //A VOIR POUR LA LISTE DENTREPRISE
+        JSONArray liste_entreprise = jsonObject.optJSONArray("entreprises");
+        if (liste_entreprise != null && liste_entreprise.length() > 0) {
+            for (int i = 0; i < liste_entreprise.length(); i++) {
+                JSONObject entrepriseJSON = liste_entreprise.optJSONObject(i);
+                Entreprise entreprise = new Entreprise(entrepriseJSON);
+                //entreprise.setEleve(this);
+                entreprises.add(entreprise);
+            }
+        }
     }
 
 
@@ -68,33 +83,17 @@ public class Eleve implements Serializable ,Parcelable{
         this.promotion = promotion;
     }
 
-    protected Eleve(Parcel in) {
-        id = in.readInt();
-        prenom = in.readString();
-        nom = in.readString();
-        adresse = in.readString();
-        siteWeb = in.readString();
-        telephoneMobile = in.readString();
-        telephonePerso = in.readString();
-        dateInscription = in.readString();
-        email = in.readString();
-        entreprises = in.createTypedArrayList(Entreprise.CREATOR);
-        promotion = in.readParcelable(Promotion.class.getClassLoader());
-        entreprise = in.readParcelable(Entreprise.class.getClassLoader());
+
+
+
+
+    //
+    public void lierEntreprises(){
+        ArrayList<Entreprise> tmp_entreprises = this.getEntreprises();
+        for (Entreprise entreprise:tmp_entreprises) {
+            entreprise.addEleve(this);
+        }
     }
-
-    public static final Creator<Eleve> CREATOR = new Creator<Eleve>() {
-        @Override
-        public Eleve createFromParcel(Parcel in) {
-            return new Eleve(in);
-        }
-
-        @Override
-        public Eleve[] newArray(int size) {
-            return new Eleve[size];
-        }
-    };
-
     public String getPrenom() {
         return prenom;
     }
@@ -191,13 +190,42 @@ public class Eleve implements Serializable ,Parcelable{
         this.telephoneMobile = telephoneMobile;
     }
 
-    public String getTelephonePerso() {
-        return telephonePerso;
+
+    public String getCodePostal() {
+        return codePostal;
     }
 
-    public void setTelephonePerso(String telephonePerso) {
-        this.telephonePerso = telephonePerso;
+    public void setCodePostal(String codePostal) {
+        this.codePostal = codePostal;
     }
+
+    public String getTelephoneFixe() {
+        return telephoneFixe;
+    }
+
+    public void setTelephoneFixe(String telephoneFixe) {
+        this.telephoneFixe = telephoneFixe;
+    }
+
+    public String getVille() {
+        return ville;
+    }
+
+    public void setVille(String ville) {
+        this.ville = ville;
+    }
+
+    public static final Creator<Eleve> CREATOR = new Creator<Eleve>() {
+        @Override
+        public Eleve createFromParcel(Parcel in) {
+            return new Eleve(in);
+        }
+
+        @Override
+        public Eleve[] newArray(int size) {
+            return new Eleve[size];
+        }
+    };
 
     @Override
     public int describeContents() {
@@ -210,13 +238,30 @@ public class Eleve implements Serializable ,Parcelable{
         dest.writeString(prenom);
         dest.writeString(nom);
         dest.writeString(adresse);
+        dest.writeString(codePostal);
+        dest.writeString(ville);
         dest.writeString(siteWeb);
         dest.writeString(telephoneMobile);
-        dest.writeString(telephonePerso);
+        dest.writeString(telephoneFixe);
         dest.writeString(dateInscription);
         dest.writeString(email);
         dest.writeTypedList(entreprises);
         dest.writeParcelable(promotion, flags);
         //dest.writeParcelable(entreprise, flags);
+    }
+    protected Eleve(Parcel in) {
+        id = in.readInt();
+        prenom = in.readString();
+        nom = in.readString();
+        adresse = in.readString();
+        codePostal = in.readString();
+        siteWeb = in.readString();
+        telephoneMobile = in.readString();
+        telephoneFixe = in.readString();
+        dateInscription = in.readString();
+        email = in.readString();
+        entreprises = in.createTypedArrayList(Entreprise.CREATOR);
+        promotion = in.readParcelable(Promotion.class.getClassLoader());
+        //entreprise = in.readParcelable(Entreprise.class.getClassLoader());
     }
 }

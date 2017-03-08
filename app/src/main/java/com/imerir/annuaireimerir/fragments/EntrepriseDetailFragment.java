@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.models.Eleve;
@@ -17,6 +18,8 @@ import com.imerir.annuaireimerir.models.Entreprise;
 
 public class EntrepriseDetailFragment extends Fragment {
     Entreprise entreprise;
+    TextView tvNom,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvMail;
+
     public EntrepriseDetailFragment(){
 
     }
@@ -42,7 +45,19 @@ public class EntrepriseDetailFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail_tmp, container, false);
+        tvNom = (TextView) rootView.findViewById(R.id.tvNom);
+        tvAdresse = (TextView) rootView.findViewById(R.id.tvAdresse);
+        tvCPetVille = (TextView) rootView.findViewById(R.id.tvCPetVille);
+        tvSiteWeb = (TextView) rootView.findViewById(R.id.tvSiteWeb);
+        tvTelFixe = (TextView) rootView.findViewById(R.id.tvTelephoneFixe);
+        tvMail = (TextView) rootView.findViewById(R.id.tvAdresseEmail);
+        tvNom.setText(entreprise.getNom());
+        tvAdresse.setText(entreprise.getAdresse());
+        tvCPetVille.setText(entreprise.getCode_postal()+" , "+entreprise.getVille());
+        tvSiteWeb.setText(entreprise.getSiteWeb());
+        tvTelFixe.setText(entreprise.getTelephone());
+        tvMail.setText(entreprise.getEmail());
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'entreprise
         return rootView;
     }

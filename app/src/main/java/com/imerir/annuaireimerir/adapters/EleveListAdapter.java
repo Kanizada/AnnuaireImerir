@@ -73,7 +73,7 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
             }
 
             //image
-            //cardView.setOnClickListener(this);
+            cardView.setOnClickListener(this);
         }
 
         @Override

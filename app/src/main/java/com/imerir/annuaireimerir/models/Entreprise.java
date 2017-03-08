@@ -22,14 +22,19 @@ public class Entreprise implements Serializable, Parcelable{
     private String code_postal;
     private String telephone;
     private String email;
+    private String siteWeb;
+    private String ville;
     // ----------------------------------------------//
     private DomaineActivite domaineActivite;
-    private URL website;
-    private ArrayList<Eleve> linkedEleves;
+
+    private ArrayList<Eleve> linkedEleves = new ArrayList<>();
     private Double lat;
     private Double lng;
-    private String city;
 
+
+    public void addEleve(Eleve eleve){
+        linkedEleves.add(eleve);
+    }
     public Entreprise(){
 
     }
@@ -39,16 +44,18 @@ public class Entreprise implements Serializable, Parcelable{
         this.nom = jsonObject.optString("nom");
         this.adresse = jsonObject.optString("adresse");
         this.code_postal = jsonObject.optString("code_postal");
+        this.ville = jsonObject.optString("ville");
         this.telephone = jsonObject.optString("telephone");
         this.email = jsonObject.optString("email");
+        this.siteWeb = jsonObject.optString("site");
     }
 
-    public Entreprise(String name, DomaineActivite domaineActivite, URL website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
+    public Entreprise(String name, DomaineActivite domaineActivite, String website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
         this.nom = name;
         this.domaineActivite = domaineActivite;
-        this.website = website;
+        this.siteWeb = website;
         this.linkedEleves = linkedEleves;
-        this.city = city;
+        this.ville = city;
         this.lat = lat;
         this.lng = lng;
     }
@@ -60,7 +67,8 @@ public class Entreprise implements Serializable, Parcelable{
         code_postal = in.readString();
         telephone = in.readString();
         email = in.readString();
-        city = in.readString();
+        ville = in.readString();
+        siteWeb = in.readString();
     }
 
     public static final Creator<Entreprise> CREATOR = new Creator<Entreprise>() {
@@ -75,12 +83,12 @@ public class Entreprise implements Serializable, Parcelable{
         }
     };
 
-    public String getCity() {
-        return city;
+    public String getVille() {
+        return ville;
     }
 
-    public void setCity(String city) {
-        this.city = city;
+    public void setVille(String city) {
+        this.ville = city;
     }
 
 
@@ -92,12 +100,12 @@ public class Entreprise implements Serializable, Parcelable{
         this.domaineActivite = domaineActivite;
     }
 
-    public URL getWebsite() {
-        return website;
+    public String getSiteWeb() {
+        return siteWeb;
     }
 
-    public void setWebsite(URL website) {
-        this.website = website;
+    public void setSiteWeb(String website) {
+        this.siteWeb = website;
     }
 
     public ArrayList<Eleve> getLinkedEleves() {
@@ -183,7 +191,9 @@ public class Entreprise implements Serializable, Parcelable{
         dest.writeString(nom);
         dest.writeString(adresse);
         dest.writeString(code_postal);
+        dest.writeString(ville);
         dest.writeString(telephone);
         dest.writeString(email);
+        dest.writeString(siteWeb);
     }
 }
