@@ -25,15 +25,11 @@ public class Entreprise implements Serializable, Parcelable{
     private String ville;
     // ----------------------------------------------//
     private DomaineActivite domaineActivite;
-
     private ArrayList<Eleve> eleves = new ArrayList<>();
     private Double lat;
     private Double lng;
 
 
-    public void addEleve(Eleve eleve){
-        eleves.add(eleve);
-    }
     public Entreprise(){
 
     }
@@ -46,41 +42,12 @@ public class Entreprise implements Serializable, Parcelable{
         this.ville = jsonObject.optString("ville");
         this.telephone = jsonObject.optString("telephone");
         this.email = jsonObject.optString("email");
-        this.siteWeb = jsonObject.optString("site");
+        this.siteWeb = jsonObject.optString("site_web");
     }
 
-    public Entreprise(String name, DomaineActivite domaineActivite, String website, ArrayList<Eleve> eleves, String city, Double lat, Double lng) {
-        this.nom = name;
-        this.domaineActivite = domaineActivite;
-        this.siteWeb = website;
-        this.eleves = eleves;
-        this.ville = city;
-        this.lat = lat;
-        this.lng = lng;
+    public void addEleve(Eleve eleve){
+        eleves.add(eleve);
     }
-
-    protected Entreprise(Parcel in) {
-        id = in.readInt();
-        nom = in.readString();
-        adresse = in.readString();
-        code_postal = in.readString();
-        telephone = in.readString();
-        email = in.readString();
-        ville = in.readString();
-        siteWeb = in.readString();
-    }
-
-    public static final Creator<Entreprise> CREATOR = new Creator<Entreprise>() {
-        @Override
-        public Entreprise createFromParcel(Parcel in) {
-            return new Entreprise(in);
-        }
-
-        @Override
-        public Entreprise[] newArray(int size) {
-            return new Entreprise[size];
-        }
-    };
 
     public String getVille() {
         return ville;
@@ -195,4 +162,26 @@ public class Entreprise implements Serializable, Parcelable{
         dest.writeString(email);
         dest.writeString(siteWeb);
     }
+    protected Entreprise(Parcel in) {
+        id = in.readInt();
+        nom = in.readString();
+        adresse = in.readString();
+        code_postal = in.readString();
+        telephone = in.readString();
+        email = in.readString();
+        ville = in.readString();
+        siteWeb = in.readString();
+    }
+
+    public static final Creator<Entreprise> CREATOR = new Creator<Entreprise>() {
+        @Override
+        public Entreprise createFromParcel(Parcel in) {
+            return new Entreprise(in);
+        }
+
+        @Override
+        public Entreprise[] newArray(int size) {
+            return new Entreprise[size];
+        }
+    };
 }

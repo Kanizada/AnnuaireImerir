@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -32,6 +33,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     FloatingActionButton fab;
     DisplayMode mode;
     //DisplayMode previousMode;
+    Toolbar toolbar;
     Thread thread;
     ProgressDialog loading;
     ListActivity context = this;
@@ -52,11 +54,30 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     }
 
     @Override
+    public void onBackPressed() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
+                    getSupportFragmentManager().popBackStack();
+                    getSupportActionBar().setTitle(" ");
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onResumeFragments() {
+        super.onResumeFragments();
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         //back button sur la toolbar logique provisoire pour le moment un back press retourne le dernier fragment ou l'ou etait
@@ -64,29 +85,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             @Override
             public void onClick(View v) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1){
-                    //getSupportFragmentManager().popBackStack();
-                    /*switch (previousMode){
-                        case ELEVELIST:
-                            mode = previousMode;
-                            //getSupportActionBar().setTitle("Liste des élèves");
-                            setMode(DisplayMode.ELEVELIST);
-                            break;
-                        case ENTREPRISELIST:
-                            mode = previousMode;
-                            //getSupportActionBar().setTitle("Liste des entreprises");
-                            setMode(DisplayMode.ENTREPRISELIST);
-                            break;
-                        case ELEVEDETAIL:
-                            mode = previousMode;
-                            //getSupportActionBar().setTitle(" ");
-                            setMode(DisplayMode.ELEVEDETAIL);
-                            break;
-                        case ENTREPRISEDETAIL:
-                            mode = previousMode;
-                            //getSupportActionBar().setTitle(" ");
-                            setMode(DisplayMode.ENTREPRISEDETAIL);
-                            break;
-                    }*/
+                    getSupportFragmentManager().popBackStack();
+                    getSupportActionBar().setTitle(" ");
                 }
             }
         });
@@ -96,11 +96,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         }else {
             setMode(DisplayMode.ELEVELIST);
         }
-
-
-        //setMode(DisplayMode.ELEVELIST);
-        //fab.setOnClickListener(this);
-
     }
 
     @Override
@@ -118,26 +113,62 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     public void setMode(DisplayMode newMode){
         if(newMode==DisplayMode.ELEVELIST){
-            /*fab.setImageDrawable(new IconicsDrawable(this)
-                    .icon(GoogleMaterial.Icon.//àdefinir)
-                    .color(Color.WHITE).sizeDp(24));*/
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "eleves").addToBackStack("eleves").commit();
-            getSupportActionBar().setTitle("Liste des élèves");
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "eleves")
+                    .addToBackStack("eleves")
+                    .commit();
+
+            getSupportActionBar()
+                    .setTitle("Liste des élèves");
+
         }else if (newMode==DisplayMode.ENTREPRISELIST){
-            /*fab.setImageDrawable(new IconicsDrawable(this)
-                    .icon(GoogleMaterial.Icon.//àdefinir)
-                    .color(Color.WHITE).sizeDp(24));*/
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "entreprises").addToBackStack("entreprises").commit();
-            getSupportActionBar().setTitle("Liste des entreprises");
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "entreprises")
+                    .addToBackStack("entreprises")
+                    .commit();
+
+            getSupportActionBar()
+                    .setTitle("Liste des entreprises");
+
         }else if (newMode==DisplayMode.PROMOTIONLIST){
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions").addToBackStack("promotions").commit();
-            getSupportActionBar().setTitle("Liste des promotions");
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions")
+                    .addToBackStack("promotions")
+                    .commit();
+
+            getSupportActionBar()
+                    .setTitle("Liste des promotions");
+
         }else if (newMode==DisplayMode.ELEVEDETAIL){
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve), "eleve").addToBackStack("eleve").commit();
-            getSupportActionBar().setTitle(displayedEleve.getPrenom() + " " + displayedEleve.getNom());
+
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve), "eleve")
+                    .addToBackStack("eleve")
+                    .commit();
+
+            getSupportActionBar()
+                    .setTitle(displayedEleve.getPrenom() + " " + displayedEleve.getNom());
+
         }else if (newMode==DisplayMode.ENTREPRISEDETAIL){
-            getSupportFragmentManager().beginTransaction().setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right).replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise), "entreprise").addToBackStack("entreprise").commit();
-            getSupportActionBar().setTitle(displayedEntreprise.getNom());
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise), "entreprise")
+                    .addToBackStack("entreprise")
+                    .commit();
+            getSupportActionBar()
+                    .setTitle(displayedEntreprise.getNom());
         }
 
         mode = newMode;
@@ -201,6 +232,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             }
     }*/
 
+    //Methode provisoire pour le chargement des données depuis l'API
     public void dataLoading(){
         loading = ProgressDialog.show(context,
                 "Veuillez patienter..",
@@ -214,23 +246,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 ApiClient.getInstance().getEntreprises("devTmpKey",context);
                 ApiClient.getInstance().getPromotions("devTmpKey",context);
                 Log.e("ListActivity","dataLoading() end");
-                /*runOnUiThread(new Runnable() {
-                    @Override
-                    public void run()
-                    {
-                        setMode(DisplayMode.ELEVELIST);
-                        Log.e("ListeActivity","setmode eleve dataLoading()");
-                        loading.dismiss();
-                    }
-                });*/
             }
         });
         thread.start();
-        //trouver une maniere de savoir si le chargement est fini, si il est finit retirer le chargement et charger le frag eleves
-        /*if (loading.isShowing() && !thread.isAlive()){
-            loading.dismiss();
-            setMode(DisplayMode.ELEVELIST);
-        }*/
     }
 
     @Override
@@ -253,7 +271,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         //faire loading dismiss + snackbar proposant de recharger
         if (loading.isShowing()){
             loading.dismiss();
-            Snackbar.make(this.getCurrentFocus(),
+            //snackbar bug
+            /*Snackbar.make(this.getCurrentFocus(),
                     "Erreur lors du chargement des listes",
                     Snackbar.LENGTH_LONG)
                     .setAction("Réessayer", new View.OnClickListener() {
@@ -265,7 +284,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     true);
                             dataLoading();
                         }
-                    }).show();
+                    }).show();*/
         }
     }
 
@@ -284,7 +303,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         Toast.makeText(this,"Erreur du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
         if (loading.isShowing()){
             loading.dismiss();
-            Snackbar.make(this.getCurrentFocus(),
+            //snackbar bug
+            /*Snackbar.make(this.getCurrentFocus(),
                     "Erreur lors du chargement des listes",
                     Snackbar.LENGTH_LONG)
                     .setAction("Réessayer", new View.OnClickListener() {
@@ -296,13 +316,13 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     true);
                             dataLoading();
                         }
-                    }).show();
+                    }).show();*/
         }
     }
 
     @Override
     public void onEntrepriseReceived(Entreprise entreprise) {
-
+        //interface de recuperation d'une seule entreprise , pas utilisé atm
     }
 
     @Override
@@ -325,7 +345,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
         if (loading.isShowing()){
             loading.dismiss();
-            Snackbar.make(this.getCurrentFocus(),
+            //snackbar bug
+            /*Snackbar.make(this.getCurrentFocus(),
                     "Erreur lors du chargement des listes",
                     Snackbar.LENGTH_LONG)
                     .setAction("Réessayer", new View.OnClickListener() {
@@ -337,7 +358,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     true);
                             dataLoading();
                         }
-                    }).show();
+                    }).show();*/
         }
     }
 

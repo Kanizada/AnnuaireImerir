@@ -26,7 +26,6 @@ public class Eleve implements Serializable ,Parcelable{
     private String ville;
     private String siteWeb;
     private String telephoneMobile;
-    //private String telephonePerso;
     private String telephoneFixe;
     private String dateInscription;
     private String email;
@@ -55,7 +54,6 @@ public class Eleve implements Serializable ,Parcelable{
             for (int i = 0; i < liste_entreprise.length(); i++) {
                 JSONObject entrepriseJSON = liste_entreprise.optJSONObject(i);
                 Entreprise entreprise = new Entreprise(entrepriseJSON);
-                //entreprise.setEleve(this);
                 entreprises.add(entreprise);
             }
         }

@@ -72,9 +72,4 @@ public class EntrepriseListFragment extends Fragment {
     }
 
 
-
-        //Toast.makeText(this.getContext(),"Succès du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
-
-        //Toast.makeText(this.getContext(),"Erreur du chargement de la liste des entreprises",Toast.LENGTH_LONG).show();
-
 }

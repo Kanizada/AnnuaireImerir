@@ -83,13 +83,16 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
     @Override
     public void onClick(View v) {
         if (v==siteWebContainer){
+            //l'api doit retourner des urls complétes avec le http:// ou https://
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(entreprise.getSiteWeb()));
             startActivity(intent);
         }else if (v==callFixeBtn){
+            //Check si l'application a l'autorisation d'appeler, si oui la methode showcalldialog() est appelée
             if(ContextCompat.checkSelfPermission(this.getActivity(),
                     Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
                 showCallDialog();
             }
+            //sinon il demande l'autorisation à l'utilisateur
             else {
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.CALL_PHONE},
@@ -98,12 +101,14 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
         }
     }
 
+    //Methode créant une boite de dialogue demandant confirmation pour appeler
     public void showCallDialog() {
         new AlertDialog.Builder(this.getContext())
                 .setTitle("Appeler ?").setMessage("Voulez-vous appeler " + entreprise.getNom() + " ?")
                 .setPositiveButton("Appeler", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
+                        //Si l'utilisateur appuie sur appeler , on charge une intent d'appel du numéro
                         Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + entreprise.getTelephone()));
                         try {
                             startActivity(intent);
@@ -125,9 +130,10 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case CALL_PHONE_PERMISSION: {
-                // If request is cancelled, the result arrays are empty.
+                //Si la requete est annulée l'array granResults est vide
                 if (grantResults.length > 0
                         && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Si la requete est validée, on appelle la méthode pour demander si l'utilisateur veut vraiment appeler
                     showCallDialog();
                 }
             }

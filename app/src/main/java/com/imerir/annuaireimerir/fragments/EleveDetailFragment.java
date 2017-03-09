@@ -30,7 +30,8 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     CardView siteWebContainer;
     ImageButton callFixeBtn,callMobileBtn;
     TextView tvNom,tvPromo,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvTelMobile,tvMail;
-    private final static int CALL_PHONE_PERMISSION = 1;
+    private final static int CALL_PHONE_PERMISSION_FIXE = 1;
+    private final static int CALL_PHONE_PERMISSION_MOBILE = 2;
 
     public EleveDetailFragment(){
 
@@ -82,6 +83,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         return rootView;
     }
 
+    //Methode créant une boite de dialogue demandant confirmation pour appeler le numero fixe
     public void showCallDialogFixe() {
         new AlertDialog.Builder(this.getContext())
                 .setTitle("Appeler ?").setMessage("Voulez-vous appeler " + eleve.getPrenom()+" "+ eleve.getNom() + " ?")
@@ -105,6 +107,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
                 }).show();
     }
 
+    //Methode créant une boite de dialogue demandant confirmation pour appeler le numero mobile
     public void showCallDialogMobile() {
         new AlertDialog.Builder(this.getContext())
                 .setTitle("Appeler ?").setMessage("Voulez-vous appeler " + eleve.getPrenom()+" "+ eleve.getNom() + " ?")
@@ -131,28 +134,58 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v==siteWebContainer){
+            //l'api doit retourner des urls complétes avec le http:// ou https://
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(eleve.getSiteWeb()));
             startActivity(intent);
         }else if (v==callFixeBtn){
+            //Check si l'application a l'autorisation d'appeler, si oui la methode showcalldialogfixe() est appelée
             if(ContextCompat.checkSelfPermission(this.getActivity(),
                     Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
                 showCallDialogFixe();
             }
+            //sinon il demande l'autorisation à l'utilisateur
             else {
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.CALL_PHONE},
-                        CALL_PHONE_PERMISSION);
+                        CALL_PHONE_PERMISSION_FIXE);
             }
         }else if (v==callMobileBtn){
+            //Check si l'application a l'autorisation d'appeler, si oui la methode showcalldialogmobile() est appelée
             if(ContextCompat.checkSelfPermission(this.getActivity(),
                     Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
                 showCallDialogMobile();
             }
+            //sinon il demande l'autorisation à l'utilisateur
             else {
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.CALL_PHONE},
-                        CALL_PHONE_PERMISSION);
+                        CALL_PHONE_PERMISSION_MOBILE);
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case CALL_PHONE_PERMISSION_FIXE: {
+                //Si la requete est annulée l'array granResults est vide
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showCallDialogFixe();
+                }
+            }
+            break;
+            case CALL_PHONE_PERMISSION_MOBILE:{
+                //Si la requete est annulée l'array granResults est vide
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //Si la requete est validée, on appelle la méthode pour demander si l'utilisateur veut vraiment appeler
+                    showCallDialogMobile();
+                }
+            }
+            default:
+                break;
         }
     }
 }

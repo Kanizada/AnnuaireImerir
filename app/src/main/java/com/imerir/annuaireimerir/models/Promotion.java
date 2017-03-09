@@ -24,6 +24,10 @@ public class Promotion implements Serializable,Parcelable {
     private String annee;
     private Boolean promoActuelle;
     //
+    private Integer yearStart;
+    private Integer yearEnd;
+    private ArrayList<Eleve> eleves;
+    private Formation formation;
 
     //constructeur JSON
     public Promotion(JSONObject jsonObject){
@@ -33,19 +37,9 @@ public class Promotion implements Serializable,Parcelable {
         this.promoActuelle = jsonObject.optBoolean("promo_actuelle");
     }
 
-
-
-
-    private Integer yearStart;
-    private Integer yearEnd;
-    private ArrayList<Eleve> eleves;
-    private Formation formation;
-
     public Promotion(){
 
     }
-
-
 
     public Promotion(Integer id, String nom, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves, Formation formation) {
         this.id = id;
@@ -56,23 +50,7 @@ public class Promotion implements Serializable,Parcelable {
         this.formation = formation;
     }
 
-    protected Promotion(Parcel in) {
-        id = in.readInt();
-        nom = in.readString();
-        annee = in.readString();
-    }
 
-    public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
-        @Override
-        public Promotion createFromParcel(Parcel in) {
-            return new Promotion(in);
-        }
-
-        @Override
-        public Promotion[] newArray(int size) {
-            return new Promotion[size];
-        }
-    };
 
     public Integer getId() {
         return id;
@@ -153,4 +131,21 @@ public class Promotion implements Serializable,Parcelable {
         dest.writeString(nom);
         dest.writeString(annee);
     }
+    protected Promotion(Parcel in) {
+        id = in.readInt();
+        nom = in.readString();
+        annee = in.readString();
+    }
+
+    public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
+        @Override
+        public Promotion createFromParcel(Parcel in) {
+            return new Promotion(in);
+        }
+
+        @Override
+        public Promotion[] newArray(int size) {
+            return new Promotion[size];
+        }
+    };
 }
