@@ -6,7 +6,6 @@ import android.os.Parcelable;
 import org.json.JSONObject;
 
 import java.io.Serializable;
-import java.net.URL;
 import java.util.ArrayList;
 
 /**
@@ -27,13 +26,13 @@ public class Entreprise implements Serializable, Parcelable{
     // ----------------------------------------------//
     private DomaineActivite domaineActivite;
 
-    private ArrayList<Eleve> linkedEleves = new ArrayList<>();
+    private ArrayList<Eleve> eleves = new ArrayList<>();
     private Double lat;
     private Double lng;
 
 
     public void addEleve(Eleve eleve){
-        linkedEleves.add(eleve);
+        eleves.add(eleve);
     }
     public Entreprise(){
 
@@ -50,11 +49,11 @@ public class Entreprise implements Serializable, Parcelable{
         this.siteWeb = jsonObject.optString("site");
     }
 
-    public Entreprise(String name, DomaineActivite domaineActivite, String website, ArrayList<Eleve> linkedEleves, String city, Double lat, Double lng) {
+    public Entreprise(String name, DomaineActivite domaineActivite, String website, ArrayList<Eleve> eleves, String city, Double lat, Double lng) {
         this.nom = name;
         this.domaineActivite = domaineActivite;
         this.siteWeb = website;
-        this.linkedEleves = linkedEleves;
+        this.eleves = eleves;
         this.ville = city;
         this.lat = lat;
         this.lng = lng;
@@ -108,12 +107,12 @@ public class Entreprise implements Serializable, Parcelable{
         this.siteWeb = website;
     }
 
-    public ArrayList<Eleve> getLinkedEleves() {
-        return linkedEleves;
+    public ArrayList<Eleve> getEleves() {
+        return eleves;
     }
 
-    public void setLinkedEleves(ArrayList<Eleve> linkedEleves) {
-        this.linkedEleves = linkedEleves;
+    public void setEleves(ArrayList<Eleve> eleves) {
+        this.eleves = eleves;
     }
 
     public Double getLat() {

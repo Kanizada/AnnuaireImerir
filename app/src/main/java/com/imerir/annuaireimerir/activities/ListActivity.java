@@ -3,6 +3,7 @@ package com.imerir.annuaireimerir.activities;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
 public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener {
     FloatingActionButton fab;
     DisplayMode mode;
-    DisplayMode previousMode;
+    //DisplayMode previousMode;
     Thread thread;
     ProgressDialog loading;
     ListActivity context = this;
@@ -64,7 +65,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             public void onClick(View v) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1){
                     //getSupportFragmentManager().popBackStack();
-                    switch (previousMode){
+                    /*switch (previousMode){
                         case ELEVELIST:
                             mode = previousMode;
                             //getSupportActionBar().setTitle("Liste des élèves");
@@ -85,7 +86,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                             //getSupportActionBar().setTitle(" ");
                             setMode(DisplayMode.ENTREPRISEDETAIL);
                             break;
-                    }
+                    }*/
                 }
             }
         });
@@ -139,13 +140,15 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportActionBar().setTitle(displayedEntreprise.getNom());
         }
 
-        if (mode == null){
+        mode = newMode;
+
+        /*if (mode == null){
             previousMode = newMode;
             mode = newMode;
         }else {
             previousMode = mode;
             mode = newMode;
-        }
+        }*/
     }
 
     @Override
@@ -234,6 +237,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public void onElevesReceived(ArrayList<Eleve> eleves) {
         liste_eleves = eleves;
         for (Eleve eleve :eleves) {
+            //fonction experementale liant les eleves aux entreprises permettant de retourner une liste d'elves en appelant entreprise.getEleves();
             eleve.lierEntreprises();
             Log.e("ListAc onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
         }
@@ -247,6 +251,22 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public void onElevesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
         //faire loading dismiss + snackbar proposant de recharger
+        if (loading.isShowing()){
+            loading.dismiss();
+            Snackbar.make(this.getCurrentFocus(),
+                    "Erreur lors du chargement des listes",
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Réessayer", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loading = ProgressDialog.show(context,
+                                    "Veuillez patienter..",
+                                    "Chagement des données..",
+                                    true);
+                            dataLoading();
+                        }
+                    }).show();
+        }
     }
 
     @Override
@@ -255,12 +275,29 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         for (Entreprise entreprise :entreprises) {
             Log.e("ListAc onElevesReceived",entreprise.getNom() + " " +entreprise.getNom());
         }
+
         //Toast.makeText(this,"Succès du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onEntreprisesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
+        if (loading.isShowing()){
+            loading.dismiss();
+            Snackbar.make(this.getCurrentFocus(),
+                    "Erreur lors du chargement des listes",
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Réessayer", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loading = ProgressDialog.show(context,
+                                    "Veuillez patienter..",
+                                    "Chagement des données..",
+                                    true);
+                            dataLoading();
+                        }
+                    }).show();
+        }
     }
 
     @Override
@@ -286,6 +323,22 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     public void onPromotionsFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
+        if (loading.isShowing()){
+            loading.dismiss();
+            Snackbar.make(this.getCurrentFocus(),
+                    "Erreur lors du chargement des listes",
+                    Snackbar.LENGTH_LONG)
+                    .setAction("Réessayer", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loading = ProgressDialog.show(context,
+                                    "Veuillez patienter..",
+                                    "Chagement des données..",
+                                    true);
+                            dataLoading();
+                        }
+                    }).show();
+        }
     }
 
     @Override

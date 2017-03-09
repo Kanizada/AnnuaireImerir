@@ -1,11 +1,22 @@
 package com.imerir.annuaireimerir.fragments;
 
+import android.Manifest;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
@@ -16,9 +27,12 @@ import com.imerir.annuaireimerir.models.Entreprise;
  * Created by student on 06/03/2017.
  */
 
-public class EntrepriseDetailFragment extends Fragment {
+public class EntrepriseDetailFragment extends Fragment implements View.OnClickListener {
     Entreprise entreprise;
+    CardView siteWebContainer;
+    ImageButton callFixeBtn;
     TextView tvNom,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvMail;
+    private final static int CALL_PHONE_PERMISSION = 1;
 
     public EntrepriseDetailFragment(){
 
@@ -52,13 +66,74 @@ public class EntrepriseDetailFragment extends Fragment {
         tvSiteWeb = (TextView) rootView.findViewById(R.id.tvSiteWeb);
         tvTelFixe = (TextView) rootView.findViewById(R.id.tvTelephoneFixe);
         tvMail = (TextView) rootView.findViewById(R.id.tvAdresseEmail);
+        siteWebContainer = (CardView) rootView.findViewById(R.id.sitewebContainer);
+        callFixeBtn = (ImageButton) rootView.findViewById(R.id.callFixeBtn);
         tvNom.setText(entreprise.getNom());
         tvAdresse.setText(entreprise.getAdresse());
         tvCPetVille.setText(entreprise.getCode_postal()+" , "+entreprise.getVille());
         tvSiteWeb.setText(entreprise.getSiteWeb());
         tvTelFixe.setText(entreprise.getTelephone());
         tvMail.setText(entreprise.getEmail());
+        siteWebContainer.setOnClickListener(this);
+        callFixeBtn.setOnClickListener(this);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'entreprise
         return rootView;
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v==siteWebContainer){
+            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(entreprise.getSiteWeb()));
+            startActivity(intent);
+        }else if (v==callFixeBtn){
+            if(ContextCompat.checkSelfPermission(this.getActivity(),
+                    Manifest.permission.CALL_PHONE)== PackageManager.PERMISSION_GRANTED) {
+                showCallDialog();
+            }
+            else {
+                ActivityCompat.requestPermissions(this.getActivity(),
+                        new String[]{Manifest.permission.CALL_PHONE},
+                        CALL_PHONE_PERMISSION);
+            }
+        }
+    }
+
+    public void showCallDialog() {
+        new AlertDialog.Builder(this.getContext())
+                .setTitle("Appeler ?").setMessage("Voulez-vous appeler " + entreprise.getNom() + " ?")
+                .setPositiveButton("Appeler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Intent intent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + entreprise.getTelephone()));
+                        try {
+                            startActivity(intent);
+                        }
+                        catch(SecurityException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .setNegativeButton("Annuler", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                }).show();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case CALL_PHONE_PERMISSION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    showCallDialog();
+                }
+            }
+            break;
+            default:
+                break;
+        }
     }
 }
