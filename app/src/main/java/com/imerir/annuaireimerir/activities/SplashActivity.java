@@ -62,7 +62,7 @@ public class SplashActivity extends AppCompatActivity implements ApiClient.OnEnt
         for (Eleve eleve :eleves) {
             Log.e("SC onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
         }
-        intent.putParcelableArrayListExtra("liste_eleves",liste_eleves);
+        //intent.putParcelableArrayListExtra("liste_eleves",liste_eleves);
         Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
     }
 
@@ -77,7 +77,7 @@ public class SplashActivity extends AppCompatActivity implements ApiClient.OnEnt
         for (Entreprise entreprise :entreprises) {
             Log.e("SC onElevesReceived",entreprise.getNom() + " " +entreprise.getNom());
         }
-        intent.putParcelableArrayListExtra("liste_entreprises",liste_entreprises);
+        //intent.putParcelableArrayListExtra("liste_entreprises",liste_entreprises);
 
         Toast.makeText(this,"Succès du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
     }
@@ -103,7 +103,7 @@ public class SplashActivity extends AppCompatActivity implements ApiClient.OnEnt
         for (Promotion promotion :promotions) {
             Log.e("SC onElevesReceived",promotion.getNom() + " " +promotion.getAnnee());
         }
-        intent.putParcelableArrayListExtra("liste_promotions",liste_promotions);
+        //intent.putParcelableArrayListExtra("liste_promotions",liste_promotions);
         Toast.makeText(this,"Succès du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
     }
 

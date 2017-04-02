@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "541979502946",
+    "project_id": "annuaire-imerir"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541979502946:android:e619b42285dce0fb",
+        "android_client_info": {
+          "package_name": "com.imerir.annuaireimerir"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541979502946-oo3j0cfb6oqqnpdaqljcsqv1kuvc346q.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.imerir.annuaireimerir",
+            "certificate_hash": "71d6f3c6c574fb73809bc1fb59232297e75287c7"
+          }
+        },
+        {
+          "client_id": "541979502946-56dopkm01bv3ec606579l9kfiakk9r3h.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC4wjadIfHKUbrdgv_kPUUibI8Rtn_uoe4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

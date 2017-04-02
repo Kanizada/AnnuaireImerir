@@ -16,10 +16,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.models.Eleve;
+import com.imerir.annuaireimerir.models.Entreprise;
 
 /**
  * Created by student on 06/03/2017.
@@ -76,6 +78,14 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         tvTelFixe.setText(eleve.getTelephoneFixe());
         tvTelMobile.setText(eleve.getTelephoneMobile());
         tvMail.setText(eleve.getEmail());
+        //test implementation liste entreprise de leleve avec layout dynamique
+        if (eleve.getEntreprises() != null){
+            RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.entrepriseContainer);
+            for (Entreprise entreprise:eleve.getEntreprises()) {
+                //EntrepriseItemView entrepriseItem = new EntrepriseItemView(this.getContext(),entreprise);
+                layout.addView(new EntrepriseItemView(this.getContext(),entreprise).getView());
+            }
+        }
         siteWebContainer.setOnClickListener(this);
         callMobileBtn.setOnClickListener(this);
         callFixeBtn.setOnClickListener(this);
