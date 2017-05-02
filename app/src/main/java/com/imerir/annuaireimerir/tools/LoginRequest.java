@@ -6,11 +6,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by Axel Zapata on 10/01/2017.
- * For Imerir.
- * axel.zapata@imerir.com
- */
+
 public class LoginRequest extends StringRequest {
 
     // path jusqu'au script de requete login

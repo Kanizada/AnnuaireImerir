@@ -2,16 +2,22 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.imerir.annuaireimerir.activities.ListActivity">
+
+    <item android:id="@+id/action_search"
+        android:icon="@android:drawable/ic_menu_search"
+        app:showAsAction="always"
+        android:actionViewClass="android.support.v7.widget.SearchView"
+        android:title="Seach"/>
     <item
         android:id="@+id/action_sortby"
         android:orderInCategory="100"
         android:title="Trier par"
         app:showAsAction="never" />
-    <item
+    <!--<item
         android:id="@+id/action_account"
         android:orderInCategory="100"
         android:title="Mon compte"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_entreprise"
         android:orderInCategory="100"
@@ -22,10 +28,10 @@
         android:orderInCategory="100"
         android:title="Liste des élèves"
         app:showAsAction="never" />
-    <item
+    <!--<item
         android:id="@+id/action_promotion"
         android:orderInCategory="100"
-        android:title="Liste des promotions"/>
+        android:title="Liste des promotions"/>-->
     <item
         android:id="@+id/action_disconnect"
         android:orderInCategory="100"

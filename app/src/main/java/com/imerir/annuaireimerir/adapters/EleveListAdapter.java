@@ -18,9 +18,12 @@ import java.util.ArrayList;
  */
 
 public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.EleveViewHolder> {
-
+    View v;
     ArrayList<Eleve> eleves;
     private OnEleveClickedListener listener;
+    int defaultLayout = R.layout.item_eleve;
+    int eleveLayout = R.layout.item_eleve_in_entreprise;
+    boolean isInEntrepriseDetail = false;
 
 
     public EleveListAdapter(ArrayList<Eleve> eleves, final OnEleveClickedListener listener){
@@ -28,10 +31,22 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
         this.listener = listener;
     }
 
+    public EleveListAdapter(ArrayList<Eleve> eleves, final OnEleveClickedListener listener, boolean isInEntrepriseDetail){
+        this.eleves = eleves;
+        this.listener = listener;
+        this.isInEntrepriseDetail = isInEntrepriseDetail;
+    }
+
 
     @Override
     public EleveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_student, parent, false);
+        if (!isInEntrepriseDetail)
+        {
+            v = LayoutInflater.from(parent.getContext()).inflate(defaultLayout, parent, false);
+        }else {
+            v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
+        }
+
         return new EleveViewHolder(v);
     }
 

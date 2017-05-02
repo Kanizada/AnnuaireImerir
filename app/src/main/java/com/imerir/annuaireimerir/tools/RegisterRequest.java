@@ -7,9 +7,7 @@ import com.android.volley.toolbox.StringRequest;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by student on 12/01/2017.
- */
+
 
 public class RegisterRequest extends StringRequest{
 

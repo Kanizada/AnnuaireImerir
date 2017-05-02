@@ -12,6 +12,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,18 +24,23 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.adapters.EntrepriseListAdapter;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 
-/**
- * Created by student on 06/03/2017.
- */
+import java.util.ArrayList;
+
 
 public class EleveDetailFragment extends Fragment implements View.OnClickListener {
     Eleve eleve;
+    ArrayList<Integer> entreprisesId = new ArrayList<>();
     CardView siteWebContainer;
     ImageButton callFixeBtn,callMobileBtn;
     TextView tvNom,tvPromo,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvTelMobile,tvMail;
+    ArrayList<Entreprise> entreprises;
+    SparseArray<Entreprise> entrepriseById = new SparseArray<>();
+    EntrepriseListAdapter.OnEntrepriseClickedListener listener;
+    EntrepriseListAdapter adapter;
     private final static int CALL_PHONE_PERMISSION_FIXE = 1;
     private final static int CALL_PHONE_PERMISSION_MOBILE = 2;
 
@@ -39,18 +48,22 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
 
     }
 
-    public static EleveDetailFragment newInstance(Eleve eleve){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("eleve", eleve);
-        EleveDetailFragment fragment = new EleveDetailFragment();
-        fragment.setArguments(bundle);
+    public EleveDetailFragment(Eleve eleve,EntrepriseListAdapter.OnEntrepriseClickedListener listener,SparseArray<Entreprise> entrepriseById)
+    {
+        this.eleve = eleve;
+        this.listener = listener;
+        this.entrepriseById = entrepriseById;
+        this.entreprisesId = eleve.getEntreprisesId();
+    }
+
+    public static EleveDetailFragment newInstance(Eleve eleve , EntrepriseListAdapter.OnEntrepriseClickedListener listener , SparseArray<Entreprise> entreprisesById){
+        EleveDetailFragment fragment = new EleveDetailFragment(eleve,listener,entreprisesById);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.eleve = (Eleve) this.getArguments().getSerializable("eleve");
     }
 
     @Nullable
@@ -71,20 +84,30 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         callFixeBtn = (ImageButton) rootView.findViewById(R.id.callFixeBtn);
         callMobileBtn = (ImageButton) rootView.findViewById(R.id.callMobileBtn);
         tvNom.setText(eleve.getPrenom()+" "+eleve.getNom());
-        tvPromo.setText(eleve.getPromotion().getNom()+ " " +eleve.getPromotion().getAnnee());
+        if (eleve.getPromotion() != null){
+            tvPromo.setText(eleve.getPromotion().getNom()+ " " +eleve.getPromotion().getAnnee());
+        }
         tvAdresse.setText(eleve.getAdresse());
         tvCPetVille.setText(eleve.getCodePostal()+" , " +eleve.getVille());
         tvSiteWeb.setText(eleve.getSiteWeb());
         tvTelFixe.setText(eleve.getTelephoneFixe());
         tvTelMobile.setText(eleve.getTelephoneMobile());
         tvMail.setText(eleve.getEmail());
-        //test implementation liste entreprise de leleve avec layout dynamique
-        if (eleve.getEntreprises() != null){
-            RelativeLayout layout = (RelativeLayout) rootView.findViewById(R.id.entrepriseContainer);
-            for (Entreprise entreprise:eleve.getEntreprises()) {
-                //EntrepriseItemView entrepriseItem = new EntrepriseItemView(this.getContext(),entreprise);
-                layout.addView(new EntrepriseItemView(this.getContext(),entreprise).getView());
+        if (entreprises == null){
+            entreprises = new ArrayList<>();
+            for (int i:entreprisesId) {
+                entreprises.add(entrepriseById.get(i));
             }
+        }
+        //test implementation liste entreprise de leleve avec layout dynamique
+        if (entreprises != null){
+            RecyclerView entrepriseList = (RecyclerView) rootView.findViewById(R.id.entrepriseContainer);
+            final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
+            entrepriseList.setLayoutManager(mlayoutManager);
+            adapter = new EntrepriseListAdapter(entreprises,listener,true);
+            entrepriseList.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+            entrepriseList.setViewCacheExtension(null);
+            entrepriseList.setAdapter(adapter);
         }
         siteWebContainer.setOnClickListener(this);
         callMobileBtn.setOnClickListener(this);

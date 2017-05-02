@@ -23,8 +23,17 @@ public class Entreprise implements Serializable, Parcelable{
     private String email;
     private String siteWeb;
     private String ville;
+
+    public ArrayList<Integer> getElevesId() {
+        return elevesId;
+    }
+
+    public void setElevesId(ArrayList<Integer> elevesId) {
+        this.elevesId = elevesId;
+    }
+
     // ----------------------------------------------//
-    private DomaineActivite domaineActivite;
+    private ArrayList<Integer> elevesId = new ArrayList<>();
     private ArrayList<Eleve> eleves = new ArrayList<>();
     private Double lat;
     private Double lng;
@@ -45,8 +54,10 @@ public class Entreprise implements Serializable, Parcelable{
         this.siteWeb = jsonObject.optString("site_web");
     }
 
+
+
     public void addEleve(Eleve eleve){
-        eleves.add(eleve);
+        this.eleves.add(eleve);
     }
 
     public String getVille() {
@@ -55,15 +66,6 @@ public class Entreprise implements Serializable, Parcelable{
 
     public void setVille(String city) {
         this.ville = city;
-    }
-
-
-    public DomaineActivite getDomaineActivite() {
-        return domaineActivite;
-    }
-
-    public void setDomaineActivite(DomaineActivite domaineActivite) {
-        this.domaineActivite = domaineActivite;
     }
 
     public String getSiteWeb() {

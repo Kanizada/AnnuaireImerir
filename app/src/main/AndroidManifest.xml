@@ -23,8 +23,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.ListActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name=".activities.LoginActivity"></activity>
+            android:screenOrientation="portrait">
+        </activity>
+
+        <activity android:name=".activities.LoginActivity"/>
+        <activity android:name=".activities.SearchableActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/searchable"/>
+        </activity>
 
     </application>
 

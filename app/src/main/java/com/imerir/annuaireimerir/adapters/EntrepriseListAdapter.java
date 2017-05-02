@@ -18,18 +18,33 @@ import java.util.ArrayList;
  */
 
 public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAdapter.EnterpriseViewHolder> {
-
+    View v;
     ArrayList<Entreprise> entreprises;
     private OnEntrepriseClickedListener listener;
+    int defaultLayout = R.layout.item_enterprise;
+    int eleveLayout = R.layout.item_entreprise_in_eleve_detail;
+    boolean isInEleveDetail = false;
 
     public EntrepriseListAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener){
         this.entreprises = entreprises;
         this.listener = listener;
 
+
+    }
+
+    public EntrepriseListAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener, boolean isInEleveDetail){
+        this.entreprises = entreprises;
+        this.listener = listener;
+        this.isInEleveDetail = isInEleveDetail;
     }
     @Override
     public EnterpriseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_enterprise, parent, false);
+        if (!isInEleveDetail){
+            v = LayoutInflater.from(parent.getContext()).inflate(defaultLayout, parent, false);
+        }else {
+            v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
+        }
+
         return new EnterpriseViewHolder(v);
     }
 

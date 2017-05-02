@@ -3,6 +3,7 @@ package com.imerir.annuaireimerir.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -13,13 +14,23 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.toolbox.Volley;
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.SignInButton;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
+import com.imerir.annuaireimerir.tools.App;
 import com.imerir.annuaireimerir.tools.LoginRequest;
 import com.imerir.annuaireimerir.R;
 
@@ -28,68 +39,75 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends AppCompatActivity implements  View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
-    ArrayList<Eleve> liste_eleves = new ArrayList<>();
-    ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
-    ArrayList<Promotion> liste_promotions = new ArrayList<>();
+    GoogleApiClient googleApiClient;
     EditText usernameET, passwordET;
-    CheckBox rememberCB;
     Button loginBtn;
     TextView forgotBtn, singupBtn;
-    Boolean rememberMe;
-    SharedPreferences loginPreferences;
-    SharedPreferences.Editor loginPrefEditor;
+    SignInButton signinBtn;
+    private static final int REQUEST_CODE = 647;
 
-    Boolean local = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_google_sign_in_only);
 
-        usernameET = (EditText) findViewById(R.id.usernameET);
+        //mContext = getApplicationContext();
+
+        /*usernameET = (EditText) findViewById(R.id.usernameET);
         passwordET = (EditText) findViewById(R.id.passwordET);
-        rememberCB = (CheckBox) findViewById(R.id.remind_checkbox);
         loginBtn = (Button) findViewById(R.id.login_button);
         forgotBtn = (TextView) findViewById(R.id.password_loose);
-        singupBtn = (TextView) findViewById(R.id.signup);
+        singupBtn = (TextView) findViewById(R.id.signup);*/
+        //forgotBtn.setOnClickListener(this);
+        //singupBtn.setOnClickListener(this);
+        //loginBtn.setOnClickListener(this);
 
-        forgotBtn.setOnClickListener(this);
-        singupBtn.setOnClickListener(this);
-        loginBtn.setOnClickListener(this);
 
-        loginPreferences = getSharedPreferences("loginPrefs", MODE_PRIVATE);
-        loginPrefEditor = loginPreferences.edit();
-        rememberMe = loginPreferences.getBoolean("rememberMe", false);
-
-        if(rememberMe){
-            usernameET.setText(loginPreferences.getString("username", ""));
-            passwordET.setText(loginPreferences.getString("password", ""));
-            rememberCB.setChecked(true);
-        }
+        signinBtn = (SignInButton) findViewById(R.id.sign_in_button);
+        signinBtn.setOnClickListener(this);
+        GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().setHostedDomain("imerir.com").build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this,this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
+                .build();
 
     }
 
-    //test au cas ou on load au splashscreen
-    /*public void passData(Intent intent){
-        liste_eleves = getIntent().getParcelableArrayListExtra("liste_eleves");
-        liste_entreprises = getIntent().getParcelableArrayListExtra("liste_entreprises");
-        liste_promotions = getIntent().getParcelableArrayListExtra("liste_promotions");
-        intent.putParcelableArrayListExtra("liste_eleves", liste_eleves);
-        intent.putParcelableArrayListExtra("liste_entreprises", liste_entreprises);
-        intent.putParcelableArrayListExtra("liste_promotions", liste_promotions);
-        for (Eleve eleve :liste_eleves) {
-            Log.e("LA onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
-        }
-        for (Entreprise entreprise :liste_entreprises) {
-            Log.e("LA onEntrepriReceived",entreprise.getNom() + " " +entreprise.getNom());
-        }
-        for (Promotion promotion :liste_promotions) {
-            Log.e("LA onPromotionReceived",promotion.getNom() + " " +promotion.getAnnee());
-        }
 
-    }*/
+    private void signIn()
+    {
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        startActivityForResult(intent,REQUEST_CODE);
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE)
+        {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            handleResult(result);
+
+        }
+    }
+
+
+    private void handleResult(GoogleSignInResult result)
+    {
+        if (result.isSuccess())
+        {
+            googleApiClient.connect();
+            Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
+            LoginActivity.this.startActivity(listIntent);
+            finish();
+        }
+    }
+
+
 
     @Override
     public void onBackPressed() {
@@ -99,73 +117,23 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     public void onClick(View view) {
 
-        if (view == forgotBtn){
-
-        }else if (view == singupBtn){
-
-            //Intent registerIntent = new Intent(LoginActivity.this,ListActivity.class);
-            //LoginActivity.this.startActivity(registerIntent);
-
-        }else if (view == loginBtn){
-
-            if(!local) {
-                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.hideSoftInputFromWindow(usernameET.getWindowToken(), 0);
-                InputMethodManager imm1 = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm1.hideSoftInputFromWindow(passwordET.getWindowToken(), 0);
-
-                // get les infos dans Edit Text et conversion to string
-                final String username = usernameET.getText().toString();
-                final String password = passwordET.getText().toString();
-
-                
-
-                if (rememberCB.isChecked()) {
-                    loginPrefEditor.putBoolean("rememberMe", true);
-                    loginPrefEditor.putString("username", username);
-                    loginPrefEditor.putString("password", password);
-                    loginPrefEditor.apply();
-                } else {
-                    loginPrefEditor.clear();
-                    loginPrefEditor.apply();
-                }
-
-                Response.Listener<String> responseListener = new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            // compare la reponse de la DB en JSON
-                            JSONObject jsonResponse = new JSONObject(response);
-                            boolean success = jsonResponse.getBoolean("success");
-
-                            if (success) {
-                                // Si login reussi > ListActivity
-                                Intent loginIntent = new Intent(LoginActivity.this, ListActivity.class);
-                                LoginActivity.this.startActivity(loginIntent);
-                                finish();
-
-                            } else {
-                                // message d'erreur en cas de réponse login negative
-                                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this);
-                                builder.setMessage("Nom d'utilisateur ou mot de passe incorrect")
-                                        .setNegativeButton("Ressayer", null)
-                                        .create()
-                                        .show();
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                };
-
-                LoginRequest loginRequest = new LoginRequest(username, password, responseListener);
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                queue.add(loginRequest);
-            } else {
-                Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
-                //passData(listIntent);
-                LoginActivity.this.startActivity(listIntent);
-            }
+        if (view == signinBtn){
+            signIn();
         }
+        /*else if (view == forgotBtn)
+        {
+
+        }
+        else if (view == loginBtn) {
+            Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
+            LoginActivity.this.startActivity(listIntent);
+            finish();
+        }*/
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Connection échouée..", Toast.LENGTH_SHORT).show();
+    }
+
 }

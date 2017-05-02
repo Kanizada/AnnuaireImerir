@@ -13,6 +13,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,39 +24,50 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
+import com.imerir.annuaireimerir.adapters.EleveListAdapter;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
+
+import java.util.ArrayList;
 
 /**
  * Created by student on 06/03/2017.
  */
 
 public class EntrepriseDetailFragment extends Fragment implements View.OnClickListener {
+    EleveListAdapter.OnEleveClickedListener listener;
+    EleveListAdapter adapter;
+    RecyclerView recyclerView;
     Entreprise entreprise;
     CardView siteWebContainer;
     ImageButton callFixeBtn;
     TextView tvNom,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvMail;
+    ArrayList<Eleve> eleves;
+    ArrayList<Integer> elevesId =new ArrayList<>();
+    SparseArray<Eleve> elevesById = new SparseArray<>();
+
     private final static int CALL_PHONE_PERMISSION = 1;
 
     public EntrepriseDetailFragment(){
 
     }
 
+    public EntrepriseDetailFragment(Entreprise entreprise,EleveListAdapter.OnEleveClickedListener listener,SparseArray<Eleve> elevesById){
+        this.listener = listener;
+        this.entreprise = entreprise;
+        this.elevesById = elevesById;
+    }
+
     //création d'une instance statique du fragments prenant en paramètres une Entreprise qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment
-    public static EntrepriseDetailFragment newInstance(Entreprise entreprise){
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("entreprise", entreprise);
-        EntrepriseDetailFragment fragment = new EntrepriseDetailFragment();
-        fragment.setArguments(bundle);
+    public static EntrepriseDetailFragment newInstance(Entreprise entreprise, EleveListAdapter.OnEleveClickedListener listener,SparseArray<Eleve> elevesById){
+        EntrepriseDetailFragment fragment = new EntrepriseDetailFragment(entreprise,listener,elevesById);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //récuperation de l'objet entreprise via les arguments du fragment
-        this.entreprise = (Entreprise) this.getArguments().getSerializable("entreprise");
     }
 
     @Nullable
@@ -70,10 +85,29 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
         callFixeBtn = (ImageButton) rootView.findViewById(R.id.callFixeBtn);
         tvNom.setText(entreprise.getNom());
         tvAdresse.setText(entreprise.getAdresse());
-        tvCPetVille.setText(entreprise.getCode_postal()+" , "+entreprise.getVille());
+        tvCPetVille.setText(entreprise.getCode_postal()+", "+entreprise.getVille());
         tvSiteWeb.setText(entreprise.getSiteWeb());
         tvTelFixe.setText(entreprise.getTelephone());
         tvMail.setText(entreprise.getEmail());
+        elevesId = entreprise.getElevesId();
+        eleves = entreprise.getEleves();
+        if (eleves == null){
+            eleves = new ArrayList<>();
+            for (int i:elevesId) {
+                eleves.add(elevesById.get(i));
+            }
+        }
+        if (eleves != null)
+        {
+            recyclerView = (RecyclerView) rootView.findViewById(R.id.elevesList);
+            final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
+            recyclerView.setLayoutManager(mlayoutManager);
+            EleveListAdapter adapter = new EleveListAdapter(eleves,listener,true);
+            this.adapter = adapter;
+            recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
+            recyclerView.setViewCacheExtension(null);
+            recyclerView.setAdapter(adapter);
+        }
         siteWebContainer.setOnClickListener(this);
         callFixeBtn.setOnClickListener(this);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'entreprise

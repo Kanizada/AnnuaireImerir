@@ -27,7 +27,6 @@ public class Promotion implements Serializable,Parcelable {
     private Integer yearStart;
     private Integer yearEnd;
     private ArrayList<Eleve> eleves;
-    private Formation formation;
 
     //constructeur JSON
     public Promotion(JSONObject jsonObject){
@@ -41,13 +40,12 @@ public class Promotion implements Serializable,Parcelable {
 
     }
 
-    public Promotion(Integer id, String nom, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves, Formation formation) {
+    public Promotion(Integer id, String nom, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves) {
         this.id = id;
         this.nom = nom;
         this.yearStart = yearStart;
         this.yearEnd = yearEnd;
         this.eleves = eleves;
-        this.formation = formation;
     }
 
 
@@ -92,13 +90,7 @@ public class Promotion implements Serializable,Parcelable {
         this.eleves = eleves;
     }
 
-    public Formation getFormation() {
-        return formation;
-    }
 
-    public void setFormation(Formation formation) {
-        this.formation = formation;
-    }
 
     public void setId(int id) {
         this.id = id;

@@ -31,6 +31,16 @@ public class Eleve implements Serializable ,Parcelable{
     private String email;
     private ArrayList<Entreprise> entreprises = new ArrayList<>();
     private Promotion promotion;
+
+    public ArrayList<Integer> getEntreprisesId() {
+        return entreprisesId;
+    }
+
+    public void setEntreprisesId(ArrayList<Integer> entreprisesId) {
+        this.entreprisesId = entreprisesId;
+    }
+
+    private ArrayList<Integer> entreprisesId = new ArrayList<>();
     //
 
 
@@ -47,14 +57,16 @@ public class Eleve implements Serializable ,Parcelable{
         this.telephoneFixe = jsonObject.optString("telephone_fixe");
         this.dateInscription = jsonObject.optString("date_inscription");
         this.email = jsonObject.optString("email");
-        this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
+        if (jsonObject.has("promotion")){
+            this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
+        }
+
         //A VOIR POUR LA LISTE DENTREPRISE
         JSONArray liste_entreprise = jsonObject.optJSONArray("entreprises");
         if (liste_entreprise != null && liste_entreprise.length() > 0) {
             for (int i = 0; i < liste_entreprise.length(); i++) {
                 JSONObject entrepriseJSON = liste_entreprise.optJSONObject(i);
-                Entreprise entreprise = new Entreprise(entrepriseJSON);
-                entreprises.add(entreprise);
+                entreprisesId.add(entrepriseJSON.optInt("id"));
             }
         }
     }
@@ -62,7 +74,6 @@ public class Eleve implements Serializable ,Parcelable{
 
 
 
-    private Formation formation;
     private Entreprise entreprise;
 
 
@@ -71,27 +82,8 @@ public class Eleve implements Serializable ,Parcelable{
     }
 
 
-    //premier jet constructor
-    public Eleve(String prenom, String nom, String adresse, Entreprise entreprise, Formation formation, Promotion promotion) {
-        this.prenom = prenom;
-        this.nom = nom;
-        this.adresse = adresse;
-        this.entreprise = entreprise;
-        this.formation = formation;
-        this.promotion = promotion;
-    }
+    public void setEntrepriseInList(Entreprise entreprise){this.entreprises.add(entreprise);}
 
-
-
-
-
-    //
-    public void lierEntreprises(){
-        ArrayList<Entreprise> tmp_entreprises = this.getEntreprises();
-        for (Entreprise entreprise:tmp_entreprises) {
-            entreprise.addEleve(this);
-        }
-    }
     public String getPrenom() {
         return prenom;
     }
@@ -124,13 +116,6 @@ public class Eleve implements Serializable ,Parcelable{
         this.entreprise = entreprise;
     }
 
-    public Formation getFormation() {
-        return formation;
-    }
-
-    public void setFormation(Formation formation) {
-        this.formation = formation;
-    }
 
     public Promotion getPromotion() {
         return promotion;

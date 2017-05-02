@@ -1,19 +1,28 @@
 package com.imerir.annuaireimerir.activities;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.common.api.Status;
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.adapters.EleveListAdapter;
 import com.imerir.annuaireimerir.adapters.EntrepriseListAdapter;
@@ -29,21 +38,7 @@ import com.imerir.annuaireimerir.models.Promotion;
 
 import java.util.ArrayList;
 
-public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener {
-    FloatingActionButton fab;
-    DisplayMode mode;
-    //DisplayMode previousMode;
-    Toolbar toolbar;
-    Thread thread;
-    ProgressDialog loading;
-    ListActivity context = this;
-    ArrayList<Eleve> liste_eleves = new ArrayList<>();
-    ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
-    ArrayList<Promotion> liste_promotions = new ArrayList<>();
-    Eleve displayedEleve;
-    Entreprise displayedEntreprise;
-    Boolean dataDownloaded = false;
-
+public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener {
 
     enum DisplayMode {
         ELEVELIST,
@@ -53,30 +48,29 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         ENTREPRISEDETAIL
     }
 
-    @Override
-    public void onBackPressed() {
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
-                    getSupportFragmentManager().popBackStack();
-                    getSupportActionBar().setTitle(" ");
-                }
-            }
-        });
-    }
+    DisplayMode mode;
+    SearchView searchView;
+    //DisplayMode previousMode;
+    GoogleApiClient googleApiClient;
+    GoogleSignInOptions signInOptions;
+    Toolbar toolbar;
+    Thread thread;
+    ProgressDialog loading;
+    ListActivity context = this;
+    ArrayList<Eleve> liste_eleves = new ArrayList<>();
+    ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
+    ArrayList<Promotion> liste_promotions = new ArrayList<>();
+    SparseArray<Eleve> elevesById = new SparseArray<>();
+    SparseArray<Entreprise> entreprisesById = new SparseArray<>();
+    Eleve displayedEleve;
+    Entreprise displayedEntreprise;
+    Boolean dataDownloaded = false;
 
-    @Override
-    protected void onResumeFragments() {
-        super.onResumeFragments();
-
-    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
-        fab = (FloatingActionButton) findViewById(R.id.fab);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -90,6 +84,11 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 }
             }
         });
+        signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().setHostedDomain("imerir.com").build();
+        googleApiClient = new GoogleApiClient.Builder(this)
+                .enableAutoManage(this, this)
+                .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
+                .build();
         if (!dataDownloaded){
             dataLoading();
             dataDownloaded=true;
@@ -100,15 +99,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     @Override
     public void onClick(View view) {
-        if (view == fab){
-            if (mode == DisplayMode.ELEVELIST){
 
-            }else if (mode == DisplayMode.ENTREPRISELIST){
-
-            }else if (mode == DisplayMode.PROMOTIONLIST){
-
-            }
-        }
     }
 
     public void setMode(DisplayMode newMode){
@@ -153,7 +144,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve), "eleve")
+                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve,this,entreprisesById), "eleve")
                     .addToBackStack("eleve")
                     .commit();
 
@@ -164,7 +155,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise), "entreprise")
+                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise,this,elevesById), "entreprise")
                     .addToBackStack("entreprise")
                     .commit();
             getSupportActionBar()
@@ -173,19 +164,17 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
         mode = newMode;
 
-        /*if (mode == null){
-            previousMode = newMode;
-            mode = newMode;
-        }else {
-            previousMode = mode;
-            mode = newMode;
-        }*/
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list, menu);
-        return true;
+        /*MenuItem searchItem = menu.findItem(R.id.action_search);
+        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        searchView = (SearchView) searchItem.getActionView();
+        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
+        searchView.setIconifiedByDefault(false);
+*/        return true;
     }
 
     @Override
@@ -195,55 +184,75 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             case R.id.action_sortby:
                 //pop up du dialogue pour changer le mode de tri
                 return true;
-            case R.id.action_account:
+            /*case R.id.action_account:
                 // go account page
-                return true;
+                return true;*/
             case R.id.action_entreprise:
                 setMode(DisplayMode.ENTREPRISELIST);
                 return true;
             case R.id.action_eleve:
                 setMode(DisplayMode.ELEVELIST);
                 return true;
-            case R.id.action_promotion:
+            /*case R.id.action_promotion:
                 setMode(DisplayMode.PROMOTIONLIST);
-                return true;
+                return true;*/
             case R.id.action_disconnect:
-                Intent intent = new Intent(ListActivity.this, LoginActivity.class);
-                ListActivity.this.startActivity(intent);
-                finish();
+                signOut();
                 return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    //test au cas ou on load au splashscreen
-    /*public void getData(){
-            liste_eleves = getIntent().getParcelableArrayListExtra("liste_eleves");
-            liste_entreprises = getIntent().getParcelableArrayListExtra("liste_entreprises");
-            liste_promotions = getIntent().getParcelableArrayListExtra("liste_promotions");
-            for (Eleve eleve :liste_eleves) {
-                Log.e("ListAc onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
+    //signout google
+    private void signOut()
+    {
+        Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
+            @Override
+            public void onResult(@NonNull Status status) {
+                if (status.isSuccess()){
+                    Intent intent = new Intent(ListActivity.this, LoginActivity.class);
+                    ListActivity.this.startActivity(intent);
+                    finish();
+                }
             }
-            for (Entreprise entreprise :liste_entreprises) {
-                Log.e("ListAc onEntReceived",entreprise.getNom() + " " +entreprise.getNom());
+        });
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        Toast.makeText(this, "Connection échouée..", Toast.LENGTH_SHORT).show();
+    }
+
+
+
+
+
+    @Override
+    public void onBackPressed() {
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
+                    getSupportFragmentManager().popBackStack();
+                    getSupportActionBar().setTitle(" ");
+                }
             }
-            for (Promotion promotion :liste_promotions) {
-                Log.e("ListAc onPromReceived",promotion.getNom() + " " +promotion.getAnnee());
-            }
-    }*/
+        });
+    }
 
     //Methode provisoire pour le chargement des données depuis l'API
-    public void dataLoading(){
+    private void dataLoading(){
         loading = ProgressDialog.show(context,
                 "Veuillez patienter..",
-                "Chagement des données..",
+                "Chargement des données..",
                 true);
         thread = new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.e("ListActivity","dataLoading() start");
-                ApiClient.getInstance().getEleves("devTmpKey",context);
+
                 ApiClient.getInstance().getEntreprises("devTmpKey",context);
+                ApiClient.getInstance().getEleves("devTmpKey",context);
                 ApiClient.getInstance().getPromotions("devTmpKey",context);
                 Log.e("ListActivity","dataLoading() end");
             }
@@ -251,19 +260,47 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         thread.start();
     }
 
-    @Override
-    public void onElevesReceived(ArrayList<Eleve> eleves) {
-        liste_eleves = eleves;
-        for (Eleve eleve :eleves) {
-            //fonction experementale liant les eleves aux entreprises permettant de retourner une liste d'elves en appelant entreprise.getEleves();
-            eleve.lierEntreprises();
-            Log.e("ListAc onElevesReceived",eleve.getNom() + " " +eleve.getPrenom());
+    /*void linkEntreprisesID(){
+        for (Eleve eleve:liste_eleves) {
+            ArrayList<Integer> entreprisesId =  eleve.getEntreprisesId();
+            for (int i:entreprisesId) {
+                ArrayList<Integer> elevesId = entreprisesById.get(i).getElevesId();
+                elevesId.add(eleve.getId());
+                Log.e("ListActivity","eleveid"+ eleve.getId() + "added to entreprise"+entreprisesById.get(i).getNom());
+            }
+
         }
+        if (loading.isShowing()){
+            loading.dismiss();
+        }
+    }*/
+    void linkEntreprises(){
+        for (Eleve eleve:liste_eleves) {
+            ArrayList<Integer> entreprisesId =  eleve.getEntreprisesId();
+            for (int i:entreprisesId) {
+                ArrayList<Eleve> eleves = entreprisesById.get(i).getEleves();
+                eleves.add(eleve);
+                Log.e("ListActivity","eleveid"+ eleve.getId() + "added to entreprise"+entreprisesById.get(i).getNom());
+            }
+
+        }
+        if (loading.isShowing()){
+            loading.dismiss();
+        }
+    }
+
+    @Override
+    public void onElevesReceivedSparse(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj) {
+        liste_eleves = eleves;
+        elevesById = elevesIdObj;
         Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
         setMode(DisplayMode.ELEVELIST);
-        Log.e("ListeActivity","setmode eleve dataLoading()");
-        loading.dismiss();
+        Log.e("ListActivity","setmode eleve dataLoading()");
+        linkEntreprises();
+
+        //loading.dismiss();
     }
+
 
     @Override
     public void onElevesFailed(String error) {
@@ -289,14 +326,16 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     }
 
     @Override
-    public void onEntreprisesReceived(ArrayList<Entreprise> entreprises) {
+    public void onEntreprisesReceivedSparse(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj) {
         liste_entreprises = entreprises;
+        entreprisesById = entrepriseIdObj;
         for (Entreprise entreprise :entreprises) {
             Log.e("ListAc onElevesReceived",entreprise.getNom() + " " +entreprise.getNom());
         }
 
-        //Toast.makeText(this,"Succès du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
     }
+
+
 
     @Override
     public void onEntreprisesFailed(String error) {
@@ -320,15 +359,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         }
     }
 
-    @Override
-    public void onEntrepriseReceived(Entreprise entreprise) {
-        //interface de recuperation d'une seule entreprise , pas utilisé atm
-    }
 
-    @Override
-    public void onEntrepriseFailed(String error) {
-
-    }
 
     @Override
     public void onPromotionsReceived(ArrayList<Promotion> promotions) {
@@ -373,4 +404,5 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         this.displayedEntreprise = entreprise;
         setMode(DisplayMode.ENTREPRISEDETAIL);
     }
+
 }
