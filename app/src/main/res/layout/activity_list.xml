@@ -7,7 +7,7 @@
     android:orientation="vertical"
     android:layout_height="match_parent"
     tools:context=".activities.ListActivity"
-    android:background="@color/bleugris">
+    android:background="@color/grisclair">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

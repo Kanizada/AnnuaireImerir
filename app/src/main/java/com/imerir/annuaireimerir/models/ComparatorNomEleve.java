@@ -1,4 +1,4 @@
-package com.imerir.annuaireimerir.tools;
+package com.imerir.annuaireimerir.models;
 
 import com.imerir.annuaireimerir.models.Eleve;
 

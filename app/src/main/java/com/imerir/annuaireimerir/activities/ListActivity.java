@@ -1,13 +1,9 @@
 package com.imerir.annuaireimerir.activities;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
-import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -37,8 +33,11 @@ import com.imerir.annuaireimerir.fragments.PromotionListFragment;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
+import com.imerir.annuaireimerir.models.ComparatorNomEleve;
+import com.imerir.annuaireimerir.models.ComparatorNomEntreprise;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -50,7 +49,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         ENTREPRISEDETAIL
     }
 
-    DisplayMode mode;
+    DisplayMode mode = DisplayMode.ELEVELIST;
     SearchView searchView;
     //DisplayMode previousMode;
     GoogleApiClient googleApiClient;
@@ -64,6 +63,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     ArrayList<Promotion> liste_promotions = new ArrayList<>();
     SparseArray<Eleve> elevesById = new SparseArray<>();
     SparseArray<Entreprise> entreprisesById = new SparseArray<>();
+    TreeSet<Entreprise> sorted_entreprises = new TreeSet<>(new ComparatorNomEntreprise());
+    TreeSet<Eleve> sorted_eleves = new TreeSet<>(new ComparatorNomEleve());
     Eleve displayedEleve;
     Entreprise displayedEntreprise;
     boolean dataDownloaded = false;
@@ -75,14 +76,45 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         setContentView(R.layout.activity_list);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
+        ApiClient.createInstance(this);
         //back button sur la toolbar logique provisoire pour le moment un back press retourne le dernier fragment ou l'ou etait
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (getSupportFragmentManager().getBackStackEntryCount() > 1){
-                    getSupportFragmentManager().popBackStack();
-                    getSupportActionBar().setTitle(" ");
+                    switch (mode){
+                        case ELEVEDETAIL:
+                            setMode(DisplayMode.ELEVELIST);
+                            break;
+                        case ENTREPRISEDETAIL:
+                            setMode(DisplayMode.ENTREPRISELIST);
+                            break;
+                        case ENTREPRISELIST:
+                            setMode(DisplayMode.ELEVELIST);
+                            break;
+                        case ELEVELIST:
+                            setMode(DisplayMode.ENTREPRISELIST);
+                            break;
+                        default:
+                            getSupportFragmentManager().popBackStack();
+                            break;
+                    }
+
+                    /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
+                    Log.e("fragment tag", f.getTag());
+                    switch (f.getTag()){
+                        case "eleves":
+                            getSupportActionBar().setTitle("Liste des élèves");
+                            break;
+                        case "entreprises":
+                            getSupportActionBar().setTitle("Liste des entreprises");
+                            break;
+                        default:
+                            getSupportActionBar().setTitle(" ");
+                            break;
+                    }*/
+
+                    //getSupportActionBar().setTitle(" ");
                 }
             }
         });
@@ -115,9 +147,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "eleves")
-                    .addToBackStack("eleves")
+                    .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
+                    .replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "")
+                    .addToBackStack("")
                     .commit();
 
             getSupportActionBar()
@@ -127,9 +159,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "entreprises")
-                    .addToBackStack("entreprises")
+                    .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
+                    .replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "")
+                    .addToBackStack("")
                     .commit();
 
             getSupportActionBar()
@@ -152,8 +184,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve,this,entreprisesById), "eleve")
-                    .addToBackStack("eleve")
+                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve,this,entreprisesById), "eleves")
+                    .addToBackStack("eleves")
                     .commit();
 
             getSupportActionBar()
@@ -163,8 +195,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise,this,elevesById), "entreprise")
-                    .addToBackStack("entreprise")
+                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise,this,elevesById), "entreprises")
+                    .addToBackStack("entreprises")
                     .commit();
             getSupportActionBar()
                     .setTitle(displayedEntreprise.getNom());
@@ -189,9 +221,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            case R.id.action_sortby:
+            /*case R.id.action_sortby:
                 //pop up du dialogue pour changer le mode de tri
-                return true;
+                return true;*/
             /*case R.id.action_account:
                 // go account page
                 return true;*/
@@ -248,6 +280,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         });
     }
 
+
+
     //Methode provisoire pour le chargement des données depuis l'API
     private void dataLoading(){
         loading = ProgressDialog.show(context,
@@ -298,7 +332,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     @Override
     public void onElevesReceivedSparse(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj) {
-        liste_eleves = eleves;
+        sorted_eleves.addAll(eleves);
+        this.liste_eleves = new ArrayList<>(sorted_eleves);
         elevesById = elevesIdObj;
         Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
         if (loading.isShowing()){
@@ -337,7 +372,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     @Override
     public void onEntreprisesReceivedSparse(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj) {
-        liste_entreprises = entreprises;
+        sorted_entreprises.addAll(entreprises);
+        this.liste_entreprises = new ArrayList<>(sorted_entreprises);
         entreprisesById = entrepriseIdObj;
         for (Entreprise entreprise :entreprises) {
             Log.e("ListAc onElevesReceived",entreprise.getNom() + " " +entreprise.getNom());

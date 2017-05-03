@@ -65,7 +65,7 @@ public class EleveListViewAdapter extends BaseAdapter implements SectionIndexer,
         text.setTextColor(Color.WHITE);
         text.setText(label.substring(0, 1).toUpperCase());
         text.setTextSize(20);
-        text.setPadding(5, 0, 0, 0);
+        text.setPadding(15, 0, 0, 0);
         text.setGravity(Gravity.CENTER_VERTICAL);
         header.addView(text);
     }

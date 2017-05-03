@@ -8,11 +8,11 @@
         app:showAsAction="always"
         android:actionViewClass="android.support.v7.widget.SearchView"
         android:title="Seach"/>
-    <item
+    <!--<item
         android:id="@+id/action_sortby"
         android:orderInCategory="100"
         android:title="Trier par"
-        app:showAsAction="never" />
+        app:showAsAction="never" />-->
     <!--<item
         android:id="@+id/action_account"
         android:orderInCategory="100"

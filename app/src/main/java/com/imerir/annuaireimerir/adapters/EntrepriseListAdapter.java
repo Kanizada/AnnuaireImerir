@@ -23,7 +23,7 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
     ArrayList<Entreprise> entreprises;
     private OnEntrepriseClickedListener listener;
     int defaultLayout = R.layout.item_enterprise;
-    int eleveLayout = R.layout.item_entreprise_in_eleve_detail;
+    int eleveLayout = R.layout.item_entreprise_in_eleve_detail2;
     boolean isInEleveDetail = false;
 
 
@@ -79,7 +79,7 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
         public void update(Entreprise entreprise){
             this.entreprise = entreprise;
             nomTV.setText(entreprise.getNom());
-            //villeTV.setText(entreprise.getCity());
+            villeTV.setText(entreprise.getVille());
             //image
             cardView.setOnClickListener(this);
         }

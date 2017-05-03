@@ -10,6 +10,7 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical"
     android:weightSum="7"
+    android:background="@color/grisclair"
     android:gravity="center_horizontal"
     tools:context="com.imerir.annuaireimerir.activities.LoginActivity">
 

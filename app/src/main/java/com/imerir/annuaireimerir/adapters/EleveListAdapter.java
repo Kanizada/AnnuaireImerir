@@ -22,7 +22,7 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
     ArrayList<Eleve> eleves;
     private OnEleveClickedListener listener;
     int defaultLayout = R.layout.item_eleve;
-    int eleveLayout = R.layout.item_eleve_in_entreprise;
+    int eleveLayout = R.layout.item_eleve_in_entreprise2;
     boolean isInEntrepriseDetail = false;
 
 

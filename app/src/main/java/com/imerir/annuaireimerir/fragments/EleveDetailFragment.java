@@ -70,7 +70,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_eleve_detail_tmp, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_eleve_detail_tmp2, container, false);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'eleve
         tvNom = (TextView) rootView.findViewById(R.id.tvNom);
         tvPromo = (TextView) rootView.findViewById(R.id.tvPromotion);

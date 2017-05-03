@@ -74,7 +74,7 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail_tmp, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail_tmp2, container, false);
         tvNom = (TextView) rootView.findViewById(R.id.tvNom);
         tvAdresse = (TextView) rootView.findViewById(R.id.tvAdresse);
         tvCPetVille = (TextView) rootView.findViewById(R.id.tvCPetVille);

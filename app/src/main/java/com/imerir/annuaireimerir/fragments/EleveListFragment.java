@@ -11,12 +11,10 @@ import android.widget.ListView;
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.adapters.EleveListAdapter;
 import com.imerir.annuaireimerir.adapters.EleveListViewAdapter;
-import com.imerir.annuaireimerir.tools.ComparatorNomEleve;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.tools.SideBar;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 /**
  * Created by student on 10/01/2017.
@@ -26,7 +24,6 @@ public class EleveListFragment extends Fragment {
     RecyclerView recyclerView;
     EleveListAdapter adapter;
     ArrayList<Eleve> liste_eleves;
-    TreeSet<Eleve> sorted_eleves = new TreeSet<>(new ComparatorNomEleve());
     EleveListAdapter.OnEleveClickedListener listener;
 
     public EleveListFragment(){
@@ -34,8 +31,7 @@ public class EleveListFragment extends Fragment {
     }
     public EleveListFragment(ArrayList<Eleve> liste_eleves, EleveListAdapter.OnEleveClickedListener listener){
         this.listener = listener;
-        sorted_eleves.addAll(liste_eleves);
-        this.liste_eleves = new ArrayList<>(sorted_eleves);
+        this.liste_eleves = liste_eleves;
     }
 
     //création d'une instance statique du fragments prenant en paramètres une liste Eleve qui est inclue

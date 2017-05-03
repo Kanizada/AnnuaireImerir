@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/grisclair">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNom"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_marginStart="100dp"
+            android:layout_marginBottom="8dp"
+            android:layout_centerHorizontal="true"
+            android:lines="1"
+            tools:text="Tristan WAGNER"/>
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tvNom"
+            android:layout_marginBottom="8dp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:id="@+id/tvPromotion"
+            tools:text="GOA 2016-2017"/>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/tvPromotion"
+            android:layout_width="match_parent"
+            android:layout_height="92dp"
+            android:id="@+id/adresseContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresse"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Adresse" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_below="@+id/labelAdresse"
+                    android:id="@+id/tvAdresse"
+                    android:padding="2dp"
+                    tools:text="8 rue Raymond Parès"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_below="@id/tvAdresse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvCPetVille"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="66250, Saint-laurent-de-la-Salanque"/>
+
+            </RelativeLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/adresseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="64dp"
+            android:id="@+id/sitewebContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelSiteWeb"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Site Web"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvSiteWeb"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="www.imerir.com"/>
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/sitewebContainer"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:id="@+id/telephoneMobileContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelTelephoneMobile"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Telephone mobile"/>
+                <TextView
+                    android:layout_toStartOf="@+id/callMobileBtn"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvTelephoneMobile"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="0625660278"/>
+
+                <ImageButton
+                    android:id="@+id/callMobileBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_call_green_600_36dp"
+                    android:background="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"
+                    />
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/telephoneMobileContainer"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:id="@+id/telephoneFixeContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelTelephoneFixe"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Telephone fixe"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@+id/callFixeBtn"
+                    android:id="@+id/tvTelephoneFixe"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="0625660278"/>
+
+                <ImageButton
+                    android:id="@+id/callFixeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_call_green_600_36dp"
+                    android:background="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/telephoneFixeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:id="@+id/emailContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresseEmail"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Adresse email"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvAdresseEmail"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="tristan.wagner@imerir.com"/>
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/entrepriseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/emailContainer">
+
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
+    </ScrollView>
+
+</FrameLayout>

@@ -28,7 +28,7 @@ public class SideBar extends View {
     private void init() {
         l = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
                 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
-        setBackgroundColor(0x44FFFFFF);
+        setBackgroundColor(0xFFFFFFFF);
     }
     public SideBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
