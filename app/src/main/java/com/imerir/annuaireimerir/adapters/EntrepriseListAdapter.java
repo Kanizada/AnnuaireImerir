@@ -12,6 +12,7 @@ import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Created by eleve on 12/01/2017.
@@ -25,11 +26,10 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
     int eleveLayout = R.layout.item_entreprise_in_eleve_detail;
     boolean isInEleveDetail = false;
 
+
     public EntrepriseListAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener){
         this.entreprises = entreprises;
         this.listener = listener;
-
-
     }
 
     public EntrepriseListAdapter(ArrayList<Entreprise> entreprises, OnEntrepriseClickedListener listener, boolean isInEleveDetail){

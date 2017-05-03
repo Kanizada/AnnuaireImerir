@@ -2,20 +2,21 @@ package com.imerir.annuaireimerir.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.ListView;
 
 import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.adapters.EleveListAdapter;
-import com.imerir.annuaireimerir.clients.ApiClient;
+import com.imerir.annuaireimerir.adapters.EleveListViewAdapter;
+import com.imerir.annuaireimerir.tools.ComparatorNomEleve;
 import com.imerir.annuaireimerir.models.Eleve;
-import com.imerir.annuaireimerir.models.Entreprise;
+import com.imerir.annuaireimerir.tools.SideBar;
 
 import java.util.ArrayList;
+import java.util.TreeSet;
 
 /**
  * Created by student on 10/01/2017.
@@ -25,23 +26,23 @@ public class EleveListFragment extends Fragment {
     RecyclerView recyclerView;
     EleveListAdapter adapter;
     ArrayList<Eleve> liste_eleves;
+    TreeSet<Eleve> sorted_eleves = new TreeSet<>(new ComparatorNomEleve());
     EleveListAdapter.OnEleveClickedListener listener;
 
     public EleveListFragment(){
 
     }
-    public EleveListFragment(EleveListAdapter.OnEleveClickedListener listener){
+    public EleveListFragment(ArrayList<Eleve> liste_eleves, EleveListAdapter.OnEleveClickedListener listener){
         this.listener = listener;
+        sorted_eleves.addAll(liste_eleves);
+        this.liste_eleves = new ArrayList<>(sorted_eleves);
     }
 
     //création d'une instance statique du fragments prenant en paramètres une liste Eleve qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
     //de la recyclerview
     public static EleveListFragment newInstance(ArrayList<Eleve> eleves,EleveListAdapter.OnEleveClickedListener listener){
-        EleveListFragment fragment = new EleveListFragment(listener);
-        Bundle bundle = new Bundle();
-        bundle.putSerializable("liste_eleves", eleves);
-        fragment.setArguments(bundle);
+        EleveListFragment fragment = new EleveListFragment(eleves,listener);
         return fragment;
     }
 
@@ -54,8 +55,7 @@ public class EleveListFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        init();
-        View rootView = inflater.inflate(R.layout.fragment_eleve_list, container, false);
+        /*View rootView = inflater.inflate(R.layout.fragment_eleve_list_test, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.elevesList);
         final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mlayoutManager);
@@ -63,13 +63,15 @@ public class EleveListFragment extends Fragment {
         this.adapter = adapter;
         recyclerView.setRecycledViewPool(new RecyclerView.RecycledViewPool());
         recyclerView.setViewCacheExtension(null);
-        recyclerView.setAdapter(adapter);
-        return rootView;
-    }
+        recyclerView.setAdapter(adapter);*/
+        View rootView = inflater.inflate(R.layout.fragment_eleve_list_test, container, false);
+        ListView listView = (ListView) rootView.findViewById(R.id.elevesList);
+        EleveListViewAdapter adapter = new EleveListViewAdapter(getContext(),liste_eleves, listener);
+        listView.setAdapter(adapter);
+        SideBar indexBar = (SideBar) rootView.findViewById(R.id.sidebar);
+        indexBar.setListView(listView);
 
-    //récuperation de la liste_eleves via les arguments du fragment
-    public void init(){
-        liste_eleves = (ArrayList<Eleve>) this.getArguments().getSerializable("liste_eleves");
+        return rootView;
     }
 
 }

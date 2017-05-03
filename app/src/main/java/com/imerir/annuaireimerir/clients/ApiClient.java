@@ -29,6 +29,9 @@ public class ApiClient {
     private static ApiClient instance;
     Context context;
     RequestQueue queue;
+    boolean entreprisesLoaded;
+    boolean elevesLoaded;
+    boolean promotionsLoaded;
 
 
     public ApiClient(Context context) {
@@ -41,6 +44,21 @@ public class ApiClient {
     }
 
     public static ApiClient getInstance() {return instance;}
+
+    public boolean loadData(String cleApi, final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3){
+        elevesLoaded = false;
+        promotionsLoaded = false;
+        entreprisesLoaded = false;
+        getEleves(cleApi,listener);
+        getEntreprises(cleApi,listener2);
+        getPromotions(cleApi,listener3);
+        if (entreprisesLoaded && elevesLoaded && promotionsLoaded){
+            return true;
+        }
+        else {
+            return false;
+        }
+    }
 
     public void getEntreprises(String cleApi, final OnEntreprisesListener listener){
         String url = "http://79.137.78.233/entreprises/list?key="+cleApi;
@@ -63,9 +81,11 @@ public class ApiClient {
                         //LISTENER HERE
                         //listener.onEntreprisesReceived(entreprises);
                         listener.onEntreprisesReceivedSparse(entreprises,entreprisesIdObj);
+                        entreprisesLoaded = true;
                     }else {
                         Log.e("ApiClient","getEntreprises() requete HTTP SUCCESS = 0");
                         listener.onEntreprisesFailed("getEntreprises() requete HTTP SUCCESS = 0");
+                        entreprisesLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -104,9 +124,12 @@ public class ApiClient {
                         //LISTENER HERE
                         //listener.onElevesReceived(eleves);
                         listener.onElevesReceivedSparse(eleves,elevesIdObj);
+                        elevesLoaded = true;
+
                     }else {
                         Log.e("ApiClient","getEleves() requete HTTP SUCCESS = 0");
                         listener.onElevesFailed("getEleves() requete HTTP SUCCESS = 0");
+                        elevesLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -142,9 +165,11 @@ public class ApiClient {
                         }
                         //LISTENER HERE
                         listener.onPromotionsReceived(promotions);
+                        promotionsLoaded = true;
                     }else {
                         Log.e("ApiClient","getPromotions() requete HTTP SUCCESS = 0");
                         listener.onPromotionsFailed("getPromotions() requete HTTP SUCCESS = 0");
+                        promotionsLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -291,5 +316,6 @@ public class ApiClient {
         void onPromotionsReceived(ArrayList<Promotion> promotions);
         void onPromotionsFailed(String error);
     }
+
 
 }

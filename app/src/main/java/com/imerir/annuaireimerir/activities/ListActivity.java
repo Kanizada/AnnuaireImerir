@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -64,7 +66,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     SparseArray<Entreprise> entreprisesById = new SparseArray<>();
     Eleve displayedEleve;
     Entreprise displayedEntreprise;
-    Boolean dataDownloaded = false;
+    boolean dataDownloaded = false;
 
 
     @Override
@@ -73,7 +75,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         setContentView(R.layout.activity_list);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
         //back button sur la toolbar logique provisoire pour le moment un back press retourne le dernier fragment ou l'ou etait
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -90,7 +92,13 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
                 .build();
         if (!dataDownloaded){
-            dataLoading();
+            //dataLoading();
+            if (!ApiClient.getInstance().loadData("devTmpKey",this,this,this)){
+                loading = ProgressDialog.show(context,
+                        "Veuillez patienter..",
+                        "Chargement des données..",
+                        true);
+            }
             dataDownloaded=true;
         }else {
             setMode(DisplayMode.ELEVELIST);
@@ -104,7 +112,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     public void setMode(DisplayMode newMode){
         if(newMode==DisplayMode.ELEVELIST){
-
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
@@ -250,7 +258,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             @Override
             public void run() {
                 Log.e("ListActivity","dataLoading() start");
-
                 ApiClient.getInstance().getEntreprises("devTmpKey",context);
                 ApiClient.getInstance().getEleves("devTmpKey",context);
                 ApiClient.getInstance().getPromotions("devTmpKey",context);
@@ -284,9 +291,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             }
 
         }
-        if (loading.isShowing()){
+        /*if (loading.isShowing()){
             loading.dismiss();
-        }
+        }*/
     }
 
     @Override
@@ -294,24 +301,27 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         liste_eleves = eleves;
         elevesById = elevesIdObj;
         Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
+        if (loading.isShowing()){
+            loading.dismiss();
+        }
         setMode(DisplayMode.ELEVELIST);
         Log.e("ListActivity","setmode eleve dataLoading()");
         linkEntreprises();
 
-        //loading.dismiss();
     }
 
 
     @Override
     public void onElevesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
-        //faire loading dismiss + snackbar proposant de recharger
+        dataDownloaded = false;
         if (loading.isShowing()){
             loading.dismiss();
             //snackbar bug
-            /*Snackbar.make(this.getCurrentFocus(),
+            View view = findViewById(R.id.fragmentContainer);
+            Snackbar.make(view,
                     "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_LONG)
+                    Snackbar.LENGTH_INDEFINITE)
                     .setAction("Réessayer", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -319,9 +329,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     "Veuillez patienter..",
                                     "Chagement des données..",
                                     true);
-                            dataLoading();
+                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
                         }
-                    }).show();*/
+                    }).show();
         }
     }
 
@@ -340,12 +350,13 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     public void onEntreprisesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
-        if (loading.isShowing()){
+        /*if (loading.isShowing()){
             loading.dismiss();
             //snackbar bug
-            /*Snackbar.make(this.getCurrentFocus(),
+            View view = findViewById(R.id.fragmentContainer);
+            Snackbar.make(view,
                     "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_LONG)
+                    Snackbar.LENGTH_INDEFINITE)
                     .setAction("Réessayer", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -353,10 +364,10 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     "Veuillez patienter..",
                                     "Chagement des données..",
                                     true);
-                            dataLoading();
+                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
                         }
-                    }).show();*/
-        }
+                    }).show();
+        }*/
     }
 
 
@@ -365,21 +376,27 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public void onPromotionsReceived(ArrayList<Promotion> promotions) {
         liste_promotions = promotions;
         for (Promotion promotion :promotions) {
-            Log.e("ListAc onElevesReceived",promotion.getNom() + " " +promotion.getAnnee());
+            Log.e("ListAc onPromoReceived",promotion.getNom() + " " +promotion.getAnnee());
         }
+        /*if (loading.isShowing()){
+            loading.dismiss();
+            setMode(DisplayMode.ELEVELIST);
+
+        }*/
         //Toast.makeText(this,"Succès du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
 
     }
 
     @Override
     public void onPromotionsFailed(String error) {
-        Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
-        if (loading.isShowing()){
+        Toast.makeText(this,"Erreur du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
+        /*if (loading.isShowing()){
             loading.dismiss();
             //snackbar bug
-            /*Snackbar.make(this.getCurrentFocus(),
+            View view = findViewById(R.id.fragmentContainer);
+            Snackbar.make(view,
                     "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_LONG)
+                    Snackbar.LENGTH_INDEFINITE)
                     .setAction("Réessayer", new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -387,10 +404,10 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                                     "Veuillez patienter..",
                                     "Chagement des données..",
                                     true);
-                            dataLoading();
+                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
                         }
-                    }).show();*/
-        }
+                    }).show();
+        }*/
     }
 
     @Override
