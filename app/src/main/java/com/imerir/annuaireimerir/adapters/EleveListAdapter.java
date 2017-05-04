@@ -75,14 +75,12 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
             cardView = (CardView) itemView.findViewById(R.id.card_view);
             image = (ImageView) itemView.findViewById(R.id.student_image);
             nomTV = (TextView) itemView.findViewById(R.id.student_last_name);
-            prenomTV = (TextView) itemView.findViewById(R.id.student_first_name);
             promotionTV = (TextView) itemView.findViewById(R.id.student_promotion);
         }
 
         public void update(Eleve eleve){
             this.eleve = eleve;
-            nomTV.setText(eleve.getNom());
-            prenomTV.setText(eleve.getPrenom());
+            nomTV.setText(eleve.getPrenom()+" "+eleve.getNom());
             if (eleve.getPromotion()!= null){
                 promotionTV.setText(eleve.getPromotion().getNom());
             }

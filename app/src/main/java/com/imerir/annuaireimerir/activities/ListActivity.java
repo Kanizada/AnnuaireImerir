@@ -1,9 +1,12 @@
 package com.imerir.annuaireimerir.activities;
 
 import android.app.ProgressDialog;
+import android.app.SearchManager;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.SearchView;
@@ -49,6 +52,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         ENTREPRISEDETAIL
     }
 
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
     DisplayMode mode = DisplayMode.ELEVELIST;
     SearchView searchView;
     //DisplayMode previousMode;
@@ -210,11 +215,11 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list, menu);
         /*MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
         searchView = (SearchView) searchItem.getActionView();
         searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);
-*/        return true;
+        searchView.setIconifiedByDefault(false);*/
+        return true;
     }
 
     @Override

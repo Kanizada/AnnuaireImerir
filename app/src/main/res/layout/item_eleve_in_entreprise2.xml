@@ -32,25 +32,16 @@
                 android:weightSum="2">
 
                 <TextView
-                    android:paddingRight="5dp"
-                    android:id="@+id/student_first_name"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:layout_marginLeft="4dp"
-                    android:gravity="center|right"
-                    android:textStyle="bold"
-                    tools:text="Prenom"/>
-                <TextView
                     android:paddingLeft="5dp"
                     android:id="@+id/student_last_name"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
-                    android:layout_weight="1"
+                    android:layout_weight="2"
                     android:layout_marginRight="4dp"
+                    android:textAlignment="center"
                     android:gravity="center_vertical"
                     android:textStyle="bold"
-                    tools:text="Nom"/>
+                    tools:text="Prénom Nom"/>
 
             </LinearLayout>
 
