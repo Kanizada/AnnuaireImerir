@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Entreprise implements Serializable, Parcelable{
+public class Entreprise {
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
     private String nom;
@@ -24,13 +24,7 @@ public class Entreprise implements Serializable, Parcelable{
     private String siteWeb;
     private String ville;
 
-    public ArrayList<Integer> getElevesId() {
-        return elevesId;
-    }
 
-    public void setElevesId(ArrayList<Integer> elevesId) {
-        this.elevesId = elevesId;
-    }
 
     // ----------------------------------------------//
     private ArrayList<Integer> elevesId = new ArrayList<>();
@@ -52,6 +46,18 @@ public class Entreprise implements Serializable, Parcelable{
         this.telephone = jsonObject.optString("telephone");
         this.email = jsonObject.optString("email");
         this.siteWeb = jsonObject.optString("site_web");
+    }
+
+    public ArrayList<Integer> getElevesId() {
+        return elevesId;
+    }
+
+    public void setElevesId(ArrayList<Integer> elevesId) {
+        this.elevesId = elevesId;
+    }
+
+    public void addEleveId(int ideleve){
+        this.elevesId.add(ideleve);
     }
 
 
@@ -148,42 +154,4 @@ public class Entreprise implements Serializable, Parcelable{
         this.telephone = telephone;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(nom);
-        dest.writeString(adresse);
-        dest.writeString(code_postal);
-        dest.writeString(ville);
-        dest.writeString(telephone);
-        dest.writeString(email);
-        dest.writeString(siteWeb);
-    }
-    protected Entreprise(Parcel in) {
-        id = in.readInt();
-        nom = in.readString();
-        adresse = in.readString();
-        code_postal = in.readString();
-        telephone = in.readString();
-        email = in.readString();
-        ville = in.readString();
-        siteWeb = in.readString();
-    }
-
-    public static final Creator<Entreprise> CREATOR = new Creator<Entreprise>() {
-        @Override
-        public Entreprise createFromParcel(Parcel in) {
-            return new Entreprise(in);
-        }
-
-        @Override
-        public Entreprise[] newArray(int size) {
-            return new Entreprise[size];
-        }
-    };
 }

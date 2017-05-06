@@ -3,35 +3,53 @@ package com.imerir.annuaireimerir.tools;
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.util.AttributeSet;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.widget.ListView;
 import android.widget.SectionIndexer;
 
 import com.imerir.annuaireimerir.R;
 
+import java.util.logging.Logger;
+
 public class SideBar extends View {
 
+    private Context context;
     private char[] l;
     private SectionIndexer sectionIndexter = null;
     private ListView list;
-    private final int m_nItemHeight = 82;
+    private int m_nItemHeight = 82;
     public SideBar(Context context) {
         super(context);
+        this.context = context;
         init();
     }
     public SideBar(Context context, AttributeSet attrs) {
         super(context, attrs);
+        this.context = context;
         init();
     }
     private void init() {
+        DisplayMetrics metrics = new DisplayMetrics();
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        wm.getDefaultDisplay().getMetrics(metrics);
+        int densityDpi = metrics.densityDpi;
+
+        this.m_nItemHeight = (int)(densityDpi / 7.8);
+
         l = new char[] { 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S',
                 'T', 'U', 'V', 'W', 'X', 'Y', 'Z' };
         setBackgroundColor(0xFFFFFFFF);
     }
     public SideBar(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        this.context = context;
         init();
     }
     public void setListView(ListView _list) {

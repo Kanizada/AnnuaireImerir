@@ -42,9 +42,6 @@ import java.util.ArrayList;
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
     GoogleApiClient googleApiClient;
-    EditText usernameET, passwordET;
-    Button loginBtn;
-    TextView forgotBtn, singupBtn;
     SignInButton signinBtn;
     private static final int REQUEST_CODE = 647;
 
@@ -53,19 +50,6 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_google_sign_in_only);
-
-        //mContext = getApplicationContext();
-
-        /*usernameET = (EditText) findViewById(R.id.usernameET);
-        passwordET = (EditText) findViewById(R.id.passwordET);
-        loginBtn = (Button) findViewById(R.id.login_button);
-        forgotBtn = (TextView) findViewById(R.id.password_loose);
-        singupBtn = (TextView) findViewById(R.id.signup);*/
-        //forgotBtn.setOnClickListener(this);
-        //singupBtn.setOnClickListener(this);
-        //loginBtn.setOnClickListener(this);
-
-
         signinBtn = (SignInButton) findViewById(R.id.sign_in_button);
         signinBtn.setOnClickListener(this);
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().setHostedDomain("imerir.com").build();
@@ -116,24 +100,14 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
 
     @Override
     public void onClick(View view) {
-
         if (view == signinBtn){
             signIn();
         }
-        /*else if (view == forgotBtn)
-        {
-
-        }
-        else if (view == loginBtn) {
-            Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
-            LoginActivity.this.startActivity(listIntent);
-            finish();
-        }*/
     }
 
     @Override
     public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-        Toast.makeText(this, "Connection échouée..", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Connexion échouée..", Toast.LENGTH_SHORT).show();
     }
 
 }

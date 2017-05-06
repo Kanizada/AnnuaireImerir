@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Eleve implements Serializable ,Parcelable{
+public class Eleve {
 
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
@@ -30,21 +30,16 @@ public class Eleve implements Serializable ,Parcelable{
     private String dateInscription;
     private String email;
     private ArrayList<Entreprise> entreprises = new ArrayList<>();
-    private Promotion promotion;
-
-    public ArrayList<Integer> getEntreprisesId() {
-        return entreprisesId;
-    }
-
-    public void setEntreprisesId(ArrayList<Integer> entreprisesId) {
-        this.entreprisesId = entreprisesId;
-    }
-
     private ArrayList<Integer> entreprisesId = new ArrayList<>();
-    //
+    private Promotion promotion;
+    private int idpromotion;
 
 
-    //constructor from JSON
+    public Eleve(){
+
+    }
+
+    //constructeur JSON
     public Eleve(JSONObject jsonObject) {
         this.id = jsonObject.optInt("id");
         this.prenom = jsonObject.optString("prenom");
@@ -57,7 +52,8 @@ public class Eleve implements Serializable ,Parcelable{
         this.telephoneFixe = jsonObject.optString("telephone_fixe");
         this.dateInscription = jsonObject.optString("date_inscription");
         this.email = jsonObject.optString("email");
-        if (jsonObject.has("promotion")){
+        this.idpromotion = jsonObject.optInt("idpromotion");
+        /*if (jsonObject.has("promotion")){
             this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
         }
 
@@ -68,21 +64,33 @@ public class Eleve implements Serializable ,Parcelable{
                 JSONObject entrepriseJSON = liste_entreprise.optJSONObject(i);
                 entreprisesId.add(entrepriseJSON.optInt("id"));
             }
-        }
+        }*/
     }
 
 
 
+    public int getIdpromotion() {
+        return idpromotion;
+    }
 
-    private Entreprise entreprise;
+    public void setIdpromotion(int idpromotion) {
+        this.idpromotion = idpromotion;
+    }
 
+    public ArrayList<Integer> getEntreprisesId() {
+        return entreprisesId;
+    }
 
-    public Eleve(){
+    public void setEntreprisesId(ArrayList<Integer> entreprisesId) {
+        this.entreprisesId = entreprisesId;
+    }
 
+    public void setInEntreprisesId(int entrepriseId) {
+        this.entreprisesId.add(entrepriseId);
     }
 
 
-    public void setEntrepriseInList(Entreprise entreprise){this.entreprises.add(entreprise);}
+    public void addEntreprise(Entreprise entreprise){this.entreprises.add(entreprise);}
 
     public String getPrenom() {
         return prenom;
@@ -106,14 +114,6 @@ public class Eleve implements Serializable ,Parcelable{
 
     public void setAdresse(String adresse) {
         this.adresse = adresse;
-    }
-
-    public Entreprise getEntreprise() {
-        return entreprise;
-    }
-
-    public void setEntreprise(Entreprise entreprise) {
-        this.entreprise = entreprise;
     }
 
 
@@ -198,53 +198,4 @@ public class Eleve implements Serializable ,Parcelable{
         this.ville = ville;
     }
 
-    public static final Creator<Eleve> CREATOR = new Creator<Eleve>() {
-        @Override
-        public Eleve createFromParcel(Parcel in) {
-            return new Eleve(in);
-        }
-
-        @Override
-        public Eleve[] newArray(int size) {
-            return new Eleve[size];
-        }
-    };
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(prenom);
-        dest.writeString(nom);
-        dest.writeString(adresse);
-        dest.writeString(codePostal);
-        dest.writeString(ville);
-        dest.writeString(siteWeb);
-        dest.writeString(telephoneMobile);
-        dest.writeString(telephoneFixe);
-        dest.writeString(dateInscription);
-        dest.writeString(email);
-        dest.writeTypedList(entreprises);
-        dest.writeParcelable(promotion, flags);
-        //dest.writeParcelable(entreprise, flags);
-    }
-    protected Eleve(Parcel in) {
-        id = in.readInt();
-        prenom = in.readString();
-        nom = in.readString();
-        adresse = in.readString();
-        codePostal = in.readString();
-        siteWeb = in.readString();
-        telephoneMobile = in.readString();
-        telephoneFixe = in.readString();
-        dateInscription = in.readString();
-        email = in.readString();
-        entreprises = in.createTypedArrayList(Entreprise.CREATOR);
-        promotion = in.readParcelable(Promotion.class.getClassLoader());
-        //entreprise = in.readParcelable(Entreprise.class.getClassLoader());
-    }
 }

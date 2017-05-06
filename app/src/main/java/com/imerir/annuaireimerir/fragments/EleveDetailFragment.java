@@ -17,6 +17,8 @@ import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
@@ -64,6 +66,14 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        menu.clear();
+        inflater.inflate(R.menu.menu_detail,menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
     @Nullable
@@ -93,12 +103,13 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         tvTelFixe.setText(eleve.getTelephoneFixe());
         tvTelMobile.setText(eleve.getTelephoneMobile());
         tvMail.setText(eleve.getEmail());
-        if (entreprises == null){
+        /*if (entreprises == null){
             entreprises = new ArrayList<>();
             for (int i:entreprisesId) {
                 entreprises.add(entrepriseById.get(i));
             }
-        }
+        }*/
+        entreprises = eleve.getEntreprises();
         //test implementation liste entreprise de leleve avec layout dynamique
         if (entreprises != null){
             RecyclerView entrepriseList = (RecyclerView) rootView.findViewById(R.id.entrepriseContainer);
@@ -168,8 +179,13 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     public void onClick(View v) {
         if (v==siteWebContainer){
             //l'api doit retourner des urls complétes avec le http:// ou https://
-            Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(eleve.getSiteWeb()));
-            startActivity(intent);
+            if (eleve.getSiteWeb() == null || eleve.getSiteWeb().isEmpty()){
+
+            }else {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(eleve.getSiteWeb()));
+                startActivity(intent);
+            }
+
         }else if (v==callFixeBtn){
             //Check si l'application a l'autorisation d'appeler, si oui la methode showcalldialogfixe() est appelée
             if(ContextCompat.checkSelfPermission(this.getActivity(),

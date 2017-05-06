@@ -13,6 +13,7 @@ import com.android.volley.toolbox.Volley;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
+import com.imerir.annuaireimerir.models.Relation;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -27,6 +28,8 @@ import java.util.HashMap;
 
 public class ApiClient {
     private static ApiClient instance;
+    private String URLHeader = "http://79.137.78.233/api/";
+    private String cleApi = "BcngKw4Qg1TOxUAVOs2Hu5LtemrakphVBEclagcri6fQ0PLPhNwLSif7FGhZ5zVHe73pofQGl5wlVhbd5IZY1e5GUnFZXAGbIJA6YqNkwjGrBREHADGBRLhM9XL6yshhcSnajavPubg63VNDyteqfw";
     Context context;
     RequestQueue queue;
     boolean entreprisesLoaded;
@@ -45,14 +48,15 @@ public class ApiClient {
 
     public static ApiClient getInstance() {return instance;}
 
-    public boolean loadData(String cleApi, final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3){
+    public boolean loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4){
         elevesLoaded = false;
         promotionsLoaded = false;
         entreprisesLoaded = false;
         getEleves(cleApi,listener);
         getEntreprises(cleApi,listener2);
         getPromotions(cleApi,listener3);
-        if (entreprisesLoaded && elevesLoaded && promotionsLoaded){
+        getRelations(cleApi,listener4);
+        if (entreprisesLoaded && elevesLoaded && promotionsLoaded ){
             return true;
         }
         else {
@@ -60,8 +64,45 @@ public class ApiClient {
         }
     }
 
+    public void getRelations(String cleApi, final OnRelationsListener listener){
+        String url = URLHeader+"relations/list/"+cleApi;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONObject retourJSON = new JSONObject(response);
+                    int success = retourJSON.getInt("success");
+                    if (success == 1){
+                        JSONArray bodyArray = retourJSON.getJSONArray("body");
+                        ArrayList<Relation> relations = new ArrayList<>();
+                        for (int i = 0; i<bodyArray.length();i++){
+                            JSONObject relationJSON = bodyArray.getJSONObject(i);
+                            Relation relation = new Relation(relationJSON);
+                            relations.add(relation);
+                        }
+                        listener.onRelationsReceived(relations);
+                    }else {
+                        Log.e("ApiClient","getRelations() requete HTTP SUCCESS = 0");
+                        listener.onRelationsFailed("getRelations() requete HTTP SUCCESS = 0");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("ApiClient", "getRelations() JSON error");
+                }
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.e("ApiClient","getRelations() Volley error"+error);
+                listener.onRelationsFailed(error.toString());
+            }
+        });
+        queue.add(request);
+    }
+
     public void getEntreprises(String cleApi, final OnEntreprisesListener listener){
-        String url = "http://79.137.78.233/entreprises/list?key="+cleApi;
+        String url = URLHeader+"entreprises/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -104,7 +145,7 @@ public class ApiClient {
     }
 
     public void getEleves(String cleApi, final OnElevesListener listener){
-        String url = "http://79.137.78.233/eleves/list?key="+cleApi;
+        String url = URLHeader+"eleves/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -148,7 +189,7 @@ public class ApiClient {
     }
 
     public void getPromotions(String cleApi,final OnPromotionsListener listener){
-        String url = "http://79.137.78.233/promotions/list?key="+cleApi;
+        String url = URLHeader+"promotions/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -158,13 +199,15 @@ public class ApiClient {
                     if (success == 1){
                         JSONArray bodyArray = retourJSON.getJSONArray("body");
                         ArrayList<Promotion> promotions = new ArrayList<>();
+                        SparseArray<Promotion> promotionsById = new SparseArray<>();
                         for (int i = 0; i<bodyArray.length();i++){
                             JSONObject promotionJSON = bodyArray.getJSONObject(i);
                             Promotion promotion = new Promotion(promotionJSON);
                             promotions.add(promotion);
+                            promotionsById.append(promotion.getId(),promotion);
                         }
                         //LISTENER HERE
-                        listener.onPromotionsReceived(promotions);
+                        listener.onPromotionsReceived(promotions,promotionsById);
                         promotionsLoaded = true;
                     }else {
                         Log.e("ApiClient","getPromotions() requete HTTP SUCCESS = 0");
@@ -188,122 +231,14 @@ public class ApiClient {
     }
 
 
-    /*public void getElevesByPromotionId(String idPromotion, String cleApi,final OnElevesListener listener){
-        String url = "http://79.137.78.233/promotions/id/eleves?key="+cleApi;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject retourJSON = new JSONObject(response);
-                    int success = retourJSON.getInt("success");
-                    if (success == 1){
-                        JSONArray bodyArray = retourJSON.getJSONArray("body");
-                        //AJOUTER UNE VERIFICATION DU CONTENU DE BODY
-                        //if ((bodyArray.isNull(0)){}
-                        ArrayList<Eleve> eleves = new ArrayList<>();
-                        for (int i = 0; i<bodyArray.length();i++){
-                            JSONObject eleveJSON = bodyArray.getJSONObject(i);
-                            Eleve eleve = new Eleve(eleveJSON);
-                            eleves.add(eleve);
-                        }
-                        //LISTENER HERE
-                        listener.onElevesReceived(eleves);
-                    }else {
-                        Log.e("ApiClient","getEleveByPromotion() requete HTTP SUCCESS = 0");
-                        listener.onElevesFailed("getEleveByPromotion() requete HTTP SUCCESS = 0");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("ApiClient", "getEleveByPromotion() JSON error");
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("ApiClient","getEleveByPromotion() Volley error"+error);
-                listener.onElevesFailed(error.toString());
-            }
-        });
-        queue.add(request);
-    }*/
-
-    /*public void getEntreprisesByDepartement(String numeroDepartement, String cleApi, final OnEntreprisesListener listener){
-        String url = "http://79.137.78.233/entreprises/departement/"+numeroDepartement+"?key="+cleApi;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject retourJSON = new JSONObject(response);
-                    int success = retourJSON.getInt("success");
-                    if (success == 1){
-                        JSONArray bodyArray = retourJSON.getJSONArray("body");
-                        ArrayList<Entreprise> entreprises = new ArrayList<>();
-                        for (int i = 0; i<bodyArray.length();i++){
-                            JSONObject entrepriseJSON = bodyArray.getJSONObject(i);
-                            Entreprise entreprise = new Entreprise(entrepriseJSON);
-                            entreprises.add(entreprise);
-                        }
-                        //LISTENER HERE
-                        listener.onEntreprisesReceived(entreprises);
-                    }else {
-                        Log.e("ApiClient","getEntreprisesByDepartement() requete HTTP SUCCESS = 0");
-                        listener.onEntrepriseFailed("getEntreprisesByDepartement() requete HTTP SUCCESS = 0");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("ApiClient", "getEntreprisesByDepartement() JSON error");
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("ApiClient","getEntreprisesByDepartement() Volley error"+error);
-                listener.onEntrepriseFailed(error.toString());
-            }
-        });
-        queue.add(request);
-    }*/
-
-    /*public void getEntrepriseById(String idEntreprise, String cleApi, final OnEntreprisesListener listener){
-        String url = "http://79.137.78.233/entreprises/"+idEntreprise+"?key="+cleApi;
-        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                try {
-                    JSONObject retourJSON = new JSONObject(response);
-                    int success = retourJSON.getInt("success");
-                    if (success == 1){
-                        JSONArray bodyArray = retourJSON.getJSONArray("body");
-                        Entreprise entreprise = new Entreprise(bodyArray.getJSONObject(0));
-                        //LISTENER HERE
-                        listener.onEntrepriseReceived(entreprise);
-                    }else {
-                        Log.e("ApiClient","getEntrepriseById() requete HTTP SUCCESS = 0");
-                        listener.onEntrepriseFailed("getEntrepriseById() requete HTTP SUCCESS = 0");
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.e("ApiClient", "getEnterpriseById() JSON error");
-                }
-
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                Log.e("ApiClient","getEnterpriseById() Volley error"+error);
-                listener.onEntrepriseFailed(error.toString());
-            }
-        });
-        queue.add(request);
-    }*/
-
-
-
     public interface OnElevesListener {
         void onElevesReceivedSparse(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj);
         void onElevesFailed(String error);
+    }
+
+    public interface OnRelationsListener{
+        void onRelationsReceived(ArrayList<Relation> relations);
+        void onRelationsFailed(String error);
     }
 
     public interface OnEntreprisesListener {
@@ -313,7 +248,7 @@ public class ApiClient {
     }
 
     public interface OnPromotionsListener {
-        void onPromotionsReceived(ArrayList<Promotion> promotions);
+        void onPromotionsReceived(ArrayList<Promotion> promotions, SparseArray<Promotion> promotionsById);
         void onPromotionsFailed(String error);
     }
 

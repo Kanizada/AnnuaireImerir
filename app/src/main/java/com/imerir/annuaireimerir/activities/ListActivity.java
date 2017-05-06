@@ -38,11 +38,12 @@ import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
 import com.imerir.annuaireimerir.models.ComparatorNomEleve;
 import com.imerir.annuaireimerir.models.ComparatorNomEntreprise;
+import com.imerir.annuaireimerir.models.Relation;
 
 import java.util.ArrayList;
 import java.util.TreeSet;
 
-public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener {
+public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener {
 
     enum DisplayMode {
         ELEVELIST,
@@ -55,7 +56,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     private Fragment fragment;
     private FragmentManager fragmentManager;
     DisplayMode mode = DisplayMode.ELEVELIST;
-    SearchView searchView;
     //DisplayMode previousMode;
     GoogleApiClient googleApiClient;
     GoogleSignInOptions signInOptions;
@@ -66,13 +66,20 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     ArrayList<Eleve> liste_eleves = new ArrayList<>();
     ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
     ArrayList<Promotion> liste_promotions = new ArrayList<>();
+    ArrayList<Relation> liste_relations = new ArrayList<>();
     SparseArray<Eleve> elevesById = new SparseArray<>();
     SparseArray<Entreprise> entreprisesById = new SparseArray<>();
+    SparseArray<Promotion> promotionsById = new SparseArray<>();
     TreeSet<Entreprise> sorted_entreprises = new TreeSet<>(new ComparatorNomEntreprise());
     TreeSet<Eleve> sorted_eleves = new TreeSet<>(new ComparatorNomEleve());
     Eleve displayedEleve;
     Entreprise displayedEntreprise;
     boolean dataDownloaded = false;
+    boolean relationLoaded = false;
+    boolean elevesLoaded = false;
+    boolean entreprisesLoaded = false;
+    boolean promoLoaded = false;
+    int pendingRequest;
 
 
     @Override
@@ -128,20 +135,42 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
                 .build();
-        if (!dataDownloaded){
-            //dataLoading();
-            if (!ApiClient.getInstance().loadData("devTmpKey",this,this,this)){
-                loading = ProgressDialog.show(context,
-                        "Veuillez patienter..",
-                        "Chargement des données..",
-                        true);
-            }
-            dataDownloaded=true;
-        }else {
-            setMode(DisplayMode.ELEVELIST);
-        }
+
+        loadData();
     }
 
+    private void loadData(){
+        pendingRequest = 4;
+        ApiClient.getInstance().loadData(this,this,this,this);
+        loading = ProgressDialog.show(context,
+                "Veuillez patienter..",
+                "Chargement des données..",
+                true);
+    }
+
+    private void checkLoadData(){
+        if (pendingRequest == 0){
+            loading.dismiss();
+            linkPromotions();
+            linkRelation();
+            setMode(DisplayMode.ELEVELIST);
+        }else if (pendingRequest == -10){
+            if (loading.isShowing()) {
+                loading.dismiss();
+            }
+            View view = findViewById(R.id.fragmentContainer);
+            Snackbar.make(view,
+                    "Erreur lors du chargement des données",
+                    Snackbar.LENGTH_INDEFINITE)
+                    .setAction("Réessayer", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            loadData();
+                        }
+                    }).show();
+
+        }
+    }
     @Override
     public void onClick(View view) {
 
@@ -214,11 +243,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_list, menu);
-        /*MenuItem searchItem = menu.findItem(R.id.action_search);
-        SearchManager searchManager = (SearchManager) getSystemService(SEARCH_SERVICE);
-        searchView = (SearchView) searchItem.getActionView();
-        searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-        searchView.setIconifiedByDefault(false);*/
         return true;
     }
 
@@ -288,51 +312,29 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
 
     //Methode provisoire pour le chargement des données depuis l'API
-    private void dataLoading(){
-        loading = ProgressDialog.show(context,
-                "Veuillez patienter..",
-                "Chargement des données..",
-                true);
-        thread = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("ListActivity","dataLoading() start");
-                ApiClient.getInstance().getEntreprises("devTmpKey",context);
-                ApiClient.getInstance().getEleves("devTmpKey",context);
-                ApiClient.getInstance().getPromotions("devTmpKey",context);
-                Log.e("ListActivity","dataLoading() end");
-            }
-        });
-        thread.start();
+
+    void linkRelation(){
+        for (Relation relation:liste_relations) {
+            int ideleve = relation.getIdeleve();
+            int identreprise = relation.getIdentreprise();
+
+            Eleve eleve = elevesById.get(ideleve);
+            Entreprise entreprise = entreprisesById.get(identreprise);
+            Promotion promotion = promotionsById.get(eleve.getIdpromotion());
+            eleve.addEntreprise(entreprise);
+            entreprise.addEleve(eleve);
+            eleve.setPromotion(promotion);
+            //promotion.addEleve(eleve);
+        }
     }
 
-    /*void linkEntreprisesID(){
+    void linkPromotions(){
         for (Eleve eleve:liste_eleves) {
-            ArrayList<Integer> entreprisesId =  eleve.getEntreprisesId();
-            for (int i:entreprisesId) {
-                ArrayList<Integer> elevesId = entreprisesById.get(i).getElevesId();
-                elevesId.add(eleve.getId());
-                Log.e("ListActivity","eleveid"+ eleve.getId() + "added to entreprise"+entreprisesById.get(i).getNom());
-            }
-
+            int idpromotion = eleve.getIdpromotion();
+            Promotion promotion = promotionsById.get(idpromotion);
+            eleve.setPromotion(promotion);
+            //promotion.addEleve(eleve);
         }
-        if (loading.isShowing()){
-            loading.dismiss();
-        }
-    }*/
-    void linkEntreprises(){
-        for (Eleve eleve:liste_eleves) {
-            ArrayList<Integer> entreprisesId =  eleve.getEntreprisesId();
-            for (int i:entreprisesId) {
-                ArrayList<Eleve> eleves = entreprisesById.get(i).getEleves();
-                eleves.add(eleve);
-                Log.e("ListActivity","eleveid"+ eleve.getId() + "added to entreprise"+entreprisesById.get(i).getNom());
-            }
-
-        }
-        /*if (loading.isShowing()){
-            loading.dismiss();
-        }*/
     }
 
     @Override
@@ -340,13 +342,11 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         sorted_eleves.addAll(eleves);
         this.liste_eleves = new ArrayList<>(sorted_eleves);
         elevesById = elevesIdObj;
-        Toast.makeText(this,"Succès du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
-        if (loading.isShowing()){
-            loading.dismiss();
-        }
-        setMode(DisplayMode.ELEVELIST);
-        Log.e("ListActivity","setmode eleve dataLoading()");
-        linkEntreprises();
+        pendingRequest--;
+        checkLoadData();
+        Log.e("pendingRequest", ""+pendingRequest);
+
+
 
     }
 
@@ -354,25 +354,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     public void onElevesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
-        dataDownloaded = false;
-        if (loading.isShowing()){
-            loading.dismiss();
-            //snackbar bug
-            View view = findViewById(R.id.fragmentContainer);
-            Snackbar.make(view,
-                    "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Réessayer", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            loading = ProgressDialog.show(context,
-                                    "Veuillez patienter..",
-                                    "Chagement des données..",
-                                    true);
-                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
-                        }
-                    }).show();
-        }
+        pendingRequest = -10;
     }
 
     @Override
@@ -380,9 +362,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         sorted_entreprises.addAll(entreprises);
         this.liste_entreprises = new ArrayList<>(sorted_entreprises);
         entreprisesById = entrepriseIdObj;
-        for (Entreprise entreprise :entreprises) {
-            Log.e("ListAc onElevesReceived",entreprise.getNom() + " " +entreprise.getNom());
-        }
+        pendingRequest--;
+        Log.e("pendingRequest", ""+pendingRequest);
+        checkLoadData();
 
     }
 
@@ -391,64 +373,37 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     public void onEntreprisesFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
-        /*if (loading.isShowing()){
-            loading.dismiss();
-            //snackbar bug
-            View view = findViewById(R.id.fragmentContainer);
-            Snackbar.make(view,
-                    "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Réessayer", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            loading = ProgressDialog.show(context,
-                                    "Veuillez patienter..",
-                                    "Chagement des données..",
-                                    true);
-                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
-                        }
-                    }).show();
-        }*/
+        pendingRequest = -10;
     }
 
 
 
     @Override
-    public void onPromotionsReceived(ArrayList<Promotion> promotions) {
+    public void onPromotionsReceived(ArrayList<Promotion> promotions, SparseArray<Promotion> promotionsId) {
         liste_promotions = promotions;
-        for (Promotion promotion :promotions) {
-            Log.e("ListAc onPromoReceived",promotion.getNom() + " " +promotion.getAnnee());
-        }
-        /*if (loading.isShowing()){
-            loading.dismiss();
-            setMode(DisplayMode.ELEVELIST);
-
-        }*/
-        //Toast.makeText(this,"Succès du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
-
+        promotionsById = promotionsId;
+        pendingRequest--;
+        checkLoadData();
+        Log.e("pendingRequest", ""+pendingRequest);
     }
 
     @Override
     public void onPromotionsFailed(String error) {
         Toast.makeText(this,"Erreur du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
-        /*if (loading.isShowing()){
-            loading.dismiss();
-            //snackbar bug
-            View view = findViewById(R.id.fragmentContainer);
-            Snackbar.make(view,
-                    "Erreur lors du chargement des listes",
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Réessayer", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            loading = ProgressDialog.show(context,
-                                    "Veuillez patienter..",
-                                    "Chagement des données..",
-                                    true);
-                            ApiClient.getInstance().loadData("devTmpKey",context,context,context);
-                        }
-                    }).show();
-        }*/
+        pendingRequest = -10;
+    }
+
+    @Override
+    public void onRelationsReceived(ArrayList<Relation> relations) {
+        this.liste_relations = relations;
+        pendingRequest--;
+        checkLoadData();
+        Log.e("pendingRequest", ""+pendingRequest);
+    }
+
+    @Override
+    public void onRelationsFailed(String error) {
+        pendingRequest = -10;
     }
 
     @Override
@@ -462,5 +417,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         this.displayedEntreprise = entreprise;
         setMode(DisplayMode.ENTREPRISEDETAIL);
     }
+
+
 
 }
