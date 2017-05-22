@@ -36,9 +36,8 @@ import java.util.ArrayList;
 public class EleveDetailFragment extends Fragment implements View.OnClickListener {
     Eleve eleve;
     ArrayList<Integer> entreprisesId = new ArrayList<>();
-    CardView siteWebContainer;
     ImageButton callFixeBtn,callMobileBtn;
-    TextView tvNom,tvPromo,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvTelMobile,tvMail;
+    TextView tvNom,tvPromo,tvAdresse,tvCPetVille,tvSiteWeb,tvTelFixe,tvTelMobile,tvMail,siteWebContainer;
     ArrayList<Entreprise> entreprises;
     SparseArray<Entreprise> entrepriseById = new SparseArray<>();
     EntrepriseListAdapter.OnEntrepriseClickedListener listener;
@@ -80,7 +79,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_eleve_detail_tmp2, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_eleve_detail_tmp3, container, false);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'eleve
         tvNom = (TextView) rootView.findViewById(R.id.tvNom);
         tvPromo = (TextView) rootView.findViewById(R.id.tvPromotion);
@@ -90,7 +89,6 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         tvTelFixe = (TextView) rootView.findViewById(R.id.tvTelephoneFixe);
         tvTelMobile = (TextView) rootView.findViewById(R.id.tvTelephoneMobile);
         tvMail = (TextView) rootView.findViewById(R.id.tvAdresseEmail);
-        siteWebContainer = (CardView) rootView.findViewById(R.id.sitewebContainer);
         callFixeBtn = (ImageButton) rootView.findViewById(R.id.callFixeBtn);
         callMobileBtn = (ImageButton) rootView.findViewById(R.id.callMobileBtn);
         tvNom.setText(eleve.getPrenom()+" "+eleve.getNom());
@@ -103,12 +101,6 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         tvTelFixe.setText(eleve.getTelephoneFixe());
         tvTelMobile.setText(eleve.getTelephoneMobile());
         tvMail.setText(eleve.getEmail());
-        /*if (entreprises == null){
-            entreprises = new ArrayList<>();
-            for (int i:entreprisesId) {
-                entreprises.add(entrepriseById.get(i));
-            }
-        }*/
         entreprises = eleve.getEntreprises();
         //test implementation liste entreprise de leleve avec layout dynamique
         if (entreprises != null){
@@ -120,9 +112,12 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
             entrepriseList.setViewCacheExtension(null);
             entrepriseList.setAdapter(adapter);
         }
-        siteWebContainer.setOnClickListener(this);
+        tvSiteWeb.setOnClickListener(this);
+        tvAdresse.setOnClickListener(this);
+        tvCPetVille.setOnClickListener(this);
         callMobileBtn.setOnClickListener(this);
         callFixeBtn.setOnClickListener(this);
+        tvMail.setOnClickListener(this);
 
         return rootView;
     }
@@ -177,7 +172,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v==siteWebContainer){
+        if (v==tvSiteWeb){
             //l'api doit retourner des urls complétes avec le http:// ou https://
             if (eleve.getSiteWeb() == null || eleve.getSiteWeb().isEmpty()){
 
@@ -209,6 +204,22 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.CALL_PHONE},
                         CALL_PHONE_PERMISSION_MOBILE);
+            }
+        }else if (v == tvCPetVille || v == tvAdresse){
+            if (!eleve.getAdresse().isEmpty() || eleve.getAdresse() != null && !eleve.getVille().isEmpty() || eleve.getVille() != null){
+                try {
+                    String address = eleve.getAdresse()+"+"+eleve.getVille();
+                    Intent geoIntent = new Intent (android.content.Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + address));
+                    startActivity(geoIntent);
+                } catch (Exception e){
+                    Log.e("EleveDetailFrag",""+e);
+                }
+            }
+        }else if (v == tvMail){
+            if (!eleve.getEmail().isEmpty() || eleve.getEmail() != null){
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto: " + eleve.getEmail()));
+                startActivity(Intent.createChooser(emailIntent, "Envoyer un email"));
             }
         }
     }

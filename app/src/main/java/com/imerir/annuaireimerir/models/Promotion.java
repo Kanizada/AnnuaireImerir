@@ -40,15 +40,6 @@ public class Promotion implements Serializable,Parcelable {
 
     }
 
-    public Promotion(Integer id, String nom, Integer yearStart, Integer yearEnd, ArrayList<Eleve> eleves) {
-        this.id = id;
-        this.nom = nom;
-        this.yearStart = yearStart;
-        this.yearEnd = yearEnd;
-        this.eleves = eleves;
-    }
-
-
 
     public Integer getId() {
         return id;

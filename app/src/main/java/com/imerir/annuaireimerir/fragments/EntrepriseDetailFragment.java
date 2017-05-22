@@ -118,6 +118,9 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
             recyclerView.setViewCacheExtension(null);
             recyclerView.setAdapter(adapter);
         }
+        tvAdresse.setOnClickListener(this);
+        tvCPetVille.setOnClickListener(this);
+        tvMail.setOnClickListener(this);
         siteWebContainer.setOnClickListener(this);
         callFixeBtn.setOnClickListener(this);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'entreprise
@@ -141,6 +144,22 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
                 ActivityCompat.requestPermissions(this.getActivity(),
                         new String[]{Manifest.permission.CALL_PHONE},
                         CALL_PHONE_PERMISSION);
+            }
+        }else if (v == tvCPetVille || v == tvAdresse){
+            if (!entreprise.getAdresse().isEmpty() || entreprise.getAdresse() != null && !entreprise.getVille().isEmpty() || entreprise.getVille() != null){
+                try {
+                    String address = entreprise.getAdresse()+"+"+entreprise.getVille();
+                    Intent geoIntent = new Intent (android.content.Intent.ACTION_VIEW, Uri.parse("geo:0,0?q=" + address));
+                    startActivity(geoIntent);
+                } catch (Exception e){
+                    Log.e("EntrepriseDetail",""+e);
+                }
+            }
+        }else if (v == tvMail){
+            if (!entreprise.getEmail().isEmpty() || entreprise.getEmail() != null){
+                Intent emailIntent = new Intent(Intent.ACTION_SENDTO);
+                emailIntent.setData(Uri.parse("mailto: " + entreprise.getEmail()));
+                startActivity(Intent.createChooser(emailIntent, "Envoyer un email"));
             }
         }
     }

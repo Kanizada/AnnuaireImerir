@@ -82,7 +82,7 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
             this.eleve = eleve;
             nomTV.setText(eleve.getPrenom()+" "+eleve.getNom());
             if (eleve.getPromotion()!= null){
-                promotionTV.setText(eleve.getPromotion().getNom());
+                promotionTV.setText(eleve.getPromotion().getNom() + " " + eleve.getPromotion().getAnnee());
             }
 
             //image

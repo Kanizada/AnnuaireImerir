@@ -193,29 +193,32 @@
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="1dp"
-                    android:layout_margin="8dp"
-                    android:background="@color/black"/>
+                    android:layout_margin="4dp"
+                    android:background="@color/grey"/>
 
                 <TextView
                     android:layout_margin="4dp"
-                    android:layout_height="wrap_content"
-                    android:layout_width="wrap_content"
+                    android:layout_height="26dp"
+                    android:layout_width="match_parent"
                     android:id="@+id/labelEntreprise"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:text="Entreprise"/>
+                    android:textAlignment="center"
+                    android:text="Entreprises"/>
 
-                <android.support.v7.widget.RecyclerView
-                    android:background="@color/grisclair"
-                    android:id="@+id/entrepriseContainer"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="8dp"/>
+
 
             </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
+        <android.support.v7.widget.RecyclerView
+            android:background="@color/grisclair"
+            android:id="@+id/entrepriseContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/info_contact_container"
+            android:paddingTop="8dp"/>
 
     </RelativeLayout>
     </ScrollView>

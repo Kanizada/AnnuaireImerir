@@ -46,7 +46,6 @@ public class PromotionListAdapter extends RecyclerView.Adapter<PromotionListAdap
 
     public class PromotionViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardView;
-        ImageView image;
         TextView nomTV;
         TextView anneeTV;
         Promotion promotion;
@@ -55,7 +54,6 @@ public class PromotionListAdapter extends RecyclerView.Adapter<PromotionListAdap
         public PromotionViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            image = (ImageView) itemView.findViewById(R.id.promotion_image);
             nomTV = (TextView) itemView.findViewById(R.id.promotion_nom);
             anneeTV = (TextView) itemView.findViewById(R.id.promotion_annee);
         }

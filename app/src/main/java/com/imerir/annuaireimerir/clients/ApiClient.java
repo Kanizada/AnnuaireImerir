@@ -20,7 +20,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by student on 10/01/2017.
@@ -47,6 +46,15 @@ public class ApiClient {
     }
 
     public static ApiClient getInstance() {return instance;}
+
+    public void cancelQueue(){
+        queue.cancelAll(new RequestQueue.RequestFilter() {
+            @Override
+            public boolean apply(Request<?> request) {
+                return true;
+            }
+        });
+    }
 
     public boolean loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4){
         elevesLoaded = false;
@@ -121,7 +129,7 @@ public class ApiClient {
                         }
                         //LISTENER HERE
                         //listener.onEntreprisesReceived(entreprises);
-                        listener.onEntreprisesReceivedSparse(entreprises,entreprisesIdObj);
+                        listener.onEntreprisesReceived(entreprises,entreprisesIdObj);
                         entreprisesLoaded = true;
                     }else {
                         Log.e("ApiClient","getEntreprises() requete HTTP SUCCESS = 0");
@@ -164,7 +172,7 @@ public class ApiClient {
                         }
                         //LISTENER HERE
                         //listener.onElevesReceived(eleves);
-                        listener.onElevesReceivedSparse(eleves,elevesIdObj);
+                        listener.onElevesReceived(eleves,elevesIdObj);
                         elevesLoaded = true;
 
                     }else {
@@ -232,7 +240,7 @@ public class ApiClient {
 
 
     public interface OnElevesListener {
-        void onElevesReceivedSparse(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj);
+        void onElevesReceived(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj);
         void onElevesFailed(String error);
     }
 
@@ -242,7 +250,7 @@ public class ApiClient {
     }
 
     public interface OnEntreprisesListener {
-        void onEntreprisesReceivedSparse(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj);
+        void onEntreprisesReceived(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj);
         void onEntreprisesFailed(String error);
 
     }

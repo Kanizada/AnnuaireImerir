@@ -3,21 +3,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="com.imerir.annuaireimerir.activities.ListActivity">
 
-    <item android:id="@+id/action_search"
-        android:icon="@android:drawable/ic_menu_search"
-        app:showAsAction="always"
-        app:actionViewClass="android.support.v7.widget.SearchView"
-        android:title="Serach"/>
-    <!--<item
-        android:id="@+id/action_sortby"
-        android:orderInCategory="100"
-        android:title="Trier par"
-        app:showAsAction="never" />-->
-    <!--<item
-        android:id="@+id/action_account"
-        android:orderInCategory="100"
-        android:title="Mon compte"
-        app:showAsAction="never" />-->
     <item
         android:id="@+id/action_entreprise"
         android:orderInCategory="100"

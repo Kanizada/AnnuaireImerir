@@ -2,6 +2,7 @@ package com.imerir.annuaireimerir.activities;
 
 import android.app.ProgressDialog;
 import android.app.SearchManager;
+import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
@@ -16,11 +17,13 @@ import android.util.SparseArray;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -74,11 +77,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     TreeSet<Eleve> sorted_eleves = new TreeSet<>(new ComparatorNomEleve());
     Eleve displayedEleve;
     Entreprise displayedEntreprise;
-    boolean dataDownloaded = false;
-    boolean relationLoaded = false;
-    boolean elevesLoaded = false;
-    boolean entreprisesLoaded = false;
-    boolean promoLoaded = false;
     int pendingRequest;
 
 
@@ -93,24 +91,25 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
-                    switch (mode){
-                        case ELEVEDETAIL:
-                            setMode(DisplayMode.ELEVELIST);
-                            break;
-                        case ENTREPRISEDETAIL:
-                            setMode(DisplayMode.ENTREPRISELIST);
-                            break;
-                        case ENTREPRISELIST:
-                            setMode(DisplayMode.ELEVELIST);
-                            break;
-                        case ELEVELIST:
-                            setMode(DisplayMode.ENTREPRISELIST);
-                            break;
-                        default:
-                            getSupportFragmentManager().popBackStack();
-                            break;
-                    }
+                switch (mode){
+                    case ELEVEDETAIL:
+                        setMode(DisplayMode.ELEVELIST);
+                        break;
+                    case ENTREPRISEDETAIL:
+                        setMode(DisplayMode.ENTREPRISELIST);
+                        break;
+                    case ENTREPRISELIST:
+                        setMode(DisplayMode.PROMOTIONLIST);
+                        break;
+                    case ELEVELIST:
+                        setMode(DisplayMode.ENTREPRISELIST);
+                        break;
+                    case PROMOTIONLIST:
+                        setMode(DisplayMode.ELEVELIST);
+                        break;
+                    default:
+                        getSupportFragmentManager().popBackStack();
+                        break;
 
                     /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
                     Log.e("fragment tag", f.getTag());
@@ -148,35 +147,44 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 true);
     }
 
-    private void checkLoadData(){
-        if (pendingRequest == 0){
+    private void loadFailed(){
+        if (loading.isShowing()) {
             loading.dismiss();
-            linkPromotions();
-            linkRelation();
-            setMode(DisplayMode.ELEVELIST);
-        }else if (pendingRequest == -10){
-            if (loading.isShowing()) {
-                loading.dismiss();
-            }
-            View view = findViewById(R.id.fragmentContainer);
-            Snackbar.make(view,
-                    "Erreur lors du chargement des données",
-                    Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Réessayer", new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            loadData();
-                        }
-                    }).show();
-
         }
+        ApiClient.getInstance().cancelQueue();
+        View view = findViewById(R.id.fragmentContainer);
+        Snackbar.make(view,
+                "Erreur lors du chargement des données",
+                Snackbar.LENGTH_INDEFINITE)
+                .setAction("Réessayer", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        loadData();
+                    }
+                }).show();
+    }
+
+    private void loadDone(){
+        loading.dismiss();
+        linkPromotions();
+        linkRelation();
+        setMode(DisplayMode.ELEVELIST);
     }
     @Override
     public void onClick(View view) {
 
     }
 
+    public void hideKeyBoard(){
+        View view = this.getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
     public void setMode(DisplayMode newMode){
+        hideKeyBoard();
         if(newMode==DisplayMode.ELEVELIST){
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager()
@@ -205,7 +213,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
             getSupportFragmentManager()
                     .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
+                    .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
                     .replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions")
                     .addToBackStack("promotions")
                     .commit();
@@ -262,9 +270,9 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             case R.id.action_eleve:
                 setMode(DisplayMode.ELEVELIST);
                 return true;
-            /*case R.id.action_promotion:
+            case R.id.action_promotion:
                 setMode(DisplayMode.PROMOTIONLIST);
-                return true;*/
+                return true;
             case R.id.action_disconnect:
                 signOut();
                 return true;
@@ -301,9 +309,25 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getSupportFragmentManager().getBackStackEntryCount() > 1){
-                    getSupportFragmentManager().popBackStack();
-                    getSupportActionBar().setTitle(" ");
+                switch (mode) {
+                    case ELEVEDETAIL:
+                        setMode(DisplayMode.ELEVELIST);
+                        break;
+                    case ENTREPRISEDETAIL:
+                        setMode(DisplayMode.ENTREPRISELIST);
+                        break;
+                    case ENTREPRISELIST:
+                        setMode(DisplayMode.PROMOTIONLIST);
+                        break;
+                    case ELEVELIST:
+                        setMode(DisplayMode.ENTREPRISELIST);
+                        break;
+                    case PROMOTIONLIST:
+                        setMode(DisplayMode.ELEVELIST);
+                        break;
+                    default:
+                        getSupportFragmentManager().popBackStack();
+                        break;
                 }
             }
         });
@@ -320,11 +344,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
             Eleve eleve = elevesById.get(ideleve);
             Entreprise entreprise = entreprisesById.get(identreprise);
-            Promotion promotion = promotionsById.get(eleve.getIdpromotion());
             eleve.addEntreprise(entreprise);
             entreprise.addEleve(eleve);
-            eleve.setPromotion(promotion);
-            //promotion.addEleve(eleve);
         }
     }
 
@@ -338,12 +359,25 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     }
 
     @Override
-    public void onElevesReceivedSparse(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj) {
-        sorted_eleves.addAll(eleves);
-        this.liste_eleves = new ArrayList<>(sorted_eleves);
-        elevesById = elevesIdObj;
-        pendingRequest--;
-        checkLoadData();
+    public void onElevesReceived(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj) {
+        switch (pendingRequest){
+            case -10:
+                loadFailed();
+                break;
+            case 1:
+                sorted_eleves.addAll(eleves);
+                this.liste_eleves = new ArrayList<>(sorted_eleves);
+                elevesById = elevesIdObj;
+                pendingRequest--;
+                loadDone();
+                break;
+            default:
+                sorted_eleves.addAll(eleves);
+                this.liste_eleves = new ArrayList<>(sorted_eleves);
+                elevesById = elevesIdObj;
+                pendingRequest--;
+        }
+
         Log.e("pendingRequest", ""+pendingRequest);
 
 
@@ -353,18 +387,31 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     @Override
     public void onElevesFailed(String error) {
-        Toast.makeText(this,"Erreur du chargement de la liste des élèves",Toast.LENGTH_SHORT).show();
         pendingRequest = -10;
+        loadFailed();
     }
 
     @Override
-    public void onEntreprisesReceivedSparse(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj) {
-        sorted_entreprises.addAll(entreprises);
-        this.liste_entreprises = new ArrayList<>(sorted_entreprises);
-        entreprisesById = entrepriseIdObj;
-        pendingRequest--;
+    public void onEntreprisesReceived(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj) {
+        switch (pendingRequest){
+            case -10:
+                loadFailed();
+                break;
+            case 1:
+                sorted_entreprises.addAll(entreprises);
+                this.liste_entreprises = new ArrayList<>(sorted_entreprises);
+                entreprisesById = entrepriseIdObj;
+                pendingRequest--;
+                loadDone();
+                break;
+            default:
+                sorted_entreprises.addAll(entreprises);
+                this.liste_entreprises = new ArrayList<>(sorted_entreprises);
+                entreprisesById = entrepriseIdObj;
+                pendingRequest--;
+        }
         Log.e("pendingRequest", ""+pendingRequest);
-        checkLoadData();
+
 
     }
 
@@ -372,38 +419,62 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     @Override
     public void onEntreprisesFailed(String error) {
-        Toast.makeText(this,"Erreur du chargement de la liste des entreprises",Toast.LENGTH_SHORT).show();
         pendingRequest = -10;
+        loadFailed();
     }
 
 
 
     @Override
     public void onPromotionsReceived(ArrayList<Promotion> promotions, SparseArray<Promotion> promotionsId) {
-        liste_promotions = promotions;
-        promotionsById = promotionsId;
-        pendingRequest--;
-        checkLoadData();
+        switch (pendingRequest){
+            case -10:
+                loadFailed();
+                break;
+            case 1:
+                liste_promotions = promotions;
+                promotionsById = promotionsId;
+                pendingRequest--;
+                loadDone();
+                break;
+            default:
+                liste_promotions = promotions;
+                promotionsById = promotionsId;
+                pendingRequest--;
+        }
+
         Log.e("pendingRequest", ""+pendingRequest);
     }
 
     @Override
     public void onPromotionsFailed(String error) {
-        Toast.makeText(this,"Erreur du chargement de la liste des promotions",Toast.LENGTH_SHORT).show();
         pendingRequest = -10;
+        loadFailed();
     }
 
     @Override
     public void onRelationsReceived(ArrayList<Relation> relations) {
-        this.liste_relations = relations;
-        pendingRequest--;
-        checkLoadData();
+        switch (pendingRequest){
+            case -10:
+                loadFailed();
+                break;
+            case 1:
+                this.liste_relations = relations;
+                pendingRequest--;
+                loadDone();
+                break;
+            default:
+                this.liste_relations = relations;
+                pendingRequest--;
+        }
+
         Log.e("pendingRequest", ""+pendingRequest);
     }
 
     @Override
     public void onRelationsFailed(String error) {
         pendingRequest = -10;
+        loadFailed();
     }
 
     @Override
