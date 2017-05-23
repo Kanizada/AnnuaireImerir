@@ -42,7 +42,7 @@ public class EleveListFragment extends Fragment {
 
     //création d'une instance statique du fragments prenant en paramètres une liste Eleve qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
-    //de la recyclerview
+    //de la listview
     public static EleveListFragment newInstance(ArrayList<Eleve> eleves,EleveListAdapter.OnEleveClickedListener listener){
         EleveListFragment fragment = new EleveListFragment(eleves,listener);
         return fragment;

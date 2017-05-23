@@ -32,7 +32,7 @@ public class PromotionListFragment extends Fragment{
 
     //création d'une instance statique du fragments prenant en paramètres une liste de Promotion qui est inclue
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
-    //de la recyclerview
+    //de la listview
     public static PromotionListFragment newInstance(ArrayList<Promotion> promotions){
         PromotionListFragment fragment = new PromotionListFragment();
         Bundle bundle = new Bundle();
