@@ -11,7 +11,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.widget.CardView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -22,7 +21,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
@@ -79,7 +77,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_eleve_detail_tmp3, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_eleve_detail, container, false);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'eleve
         tvNom = (TextView) rootView.findViewById(R.id.tvNom);
         tvPromo = (TextView) rootView.findViewById(R.id.tvPromotion);
@@ -102,7 +100,7 @@ public class EleveDetailFragment extends Fragment implements View.OnClickListene
         tvTelMobile.setText(eleve.getTelephoneMobile());
         tvMail.setText(eleve.getEmail());
         entreprises = eleve.getEntreprises();
-        //test implementation liste entreprise de leleve avec layout dynamique
+        //implementation liste entreprise de leleve avec layout dynamique
         if (entreprises != null){
             RecyclerView entrepriseList = (RecyclerView) rootView.findViewById(R.id.entrepriseContainer);
             final RecyclerView.LayoutManager mlayoutManager = new LinearLayoutManager(getActivity());

@@ -53,18 +53,6 @@ public class Eleve {
         this.dateInscription = jsonObject.optString("date_inscription");
         this.email = jsonObject.optString("email");
         this.idpromotion = jsonObject.optInt("idpromotion");
-        /*if (jsonObject.has("promotion")){
-            this.promotion = new Promotion(jsonObject.optJSONObject("promotion"));
-        }
-
-        //A VOIR POUR LA LISTE DENTREPRISE
-        JSONArray liste_entreprise = jsonObject.optJSONArray("entreprises");
-        if (liste_entreprise != null && liste_entreprise.length() > 0) {
-            for (int i = 0; i < liste_entreprise.length(); i++) {
-                JSONObject entrepriseJSON = liste_entreprise.optJSONObject(i);
-                entreprisesId.add(entrepriseJSON.optInt("id"));
-            }
-        }*/
     }
 
 

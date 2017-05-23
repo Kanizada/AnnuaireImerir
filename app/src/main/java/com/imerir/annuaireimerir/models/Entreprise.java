@@ -14,7 +14,6 @@ import java.util.ArrayList;
  * axel.zapata@imerir.com
  */
 public class Entreprise {
-    // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
     private String nom;
     private String adresse;
@@ -23,14 +22,8 @@ public class Entreprise {
     private String email;
     private String siteWeb;
     private String ville;
-
-
-
-    // ----------------------------------------------//
     private ArrayList<Integer> elevesId = new ArrayList<>();
     private ArrayList<Eleve> eleves = new ArrayList<>();
-    private Double lat;
-    private Double lng;
 
 
     public Entreprise(){
@@ -88,22 +81,6 @@ public class Entreprise {
 
     public void setEleves(ArrayList<Eleve> eleves) {
         this.eleves = eleves;
-    }
-
-    public Double getLat() {
-        return lat;
-    }
-
-    public void setLat(Double lat) {
-        this.lat = lat;
-    }
-
-    public Double getLng() {
-        return lng;
-    }
-
-    public void setLng(Double lng) {
-        this.lng = lng;
     }
 
     public String getAdresse() {

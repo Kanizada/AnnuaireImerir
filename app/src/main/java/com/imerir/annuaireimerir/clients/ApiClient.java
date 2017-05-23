@@ -56,22 +56,14 @@ public class ApiClient {
         });
     }
 
-    public boolean loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4){
-        elevesLoaded = false;
-        promotionsLoaded = false;
-        entreprisesLoaded = false;
+    public void loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4){
         getEleves(cleApi,listener);
         getEntreprises(cleApi,listener2);
         getPromotions(cleApi,listener3);
         getRelations(cleApi,listener4);
-        if (entreprisesLoaded && elevesLoaded && promotionsLoaded ){
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
+    //requete api pour obtenir les relations eleves-entreprises
     public void getRelations(String cleApi, final OnRelationsListener listener){
         String url = URLHeader+"relations/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -109,6 +101,7 @@ public class ApiClient {
         queue.add(request);
     }
 
+    //requete api pour obtenir les entreprises
     public void getEntreprises(String cleApi, final OnEntreprisesListener listener){
         String url = URLHeader+"entreprises/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -128,13 +121,10 @@ public class ApiClient {
                             entreprisesIdObj.append(entreprise.getId(),entreprise);
                         }
                         //LISTENER HERE
-                        //listener.onEntreprisesReceived(entreprises);
                         listener.onEntreprisesReceived(entreprises,entreprisesIdObj);
-                        entreprisesLoaded = true;
                     }else {
                         Log.e("ApiClient","getEntreprises() requete HTTP SUCCESS = 0");
                         listener.onEntreprisesFailed("getEntreprises() requete HTTP SUCCESS = 0");
-                        entreprisesLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -152,6 +142,7 @@ public class ApiClient {
         queue.add(request);
     }
 
+    //requete api pour obtenir les eleves
     public void getEleves(String cleApi, final OnElevesListener listener){
         String url = URLHeader+"eleves/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -170,15 +161,11 @@ public class ApiClient {
                             eleves.add(eleve);
                             elevesIdObj.append(eleve.getId(),eleve);
                         }
-                        //LISTENER HERE
-                        //listener.onElevesReceived(eleves);
                         listener.onElevesReceived(eleves,elevesIdObj);
-                        elevesLoaded = true;
 
                     }else {
                         Log.e("ApiClient","getEleves() requete HTTP SUCCESS = 0");
                         listener.onElevesFailed("getEleves() requete HTTP SUCCESS = 0");
-                        elevesLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -196,6 +183,7 @@ public class ApiClient {
         queue.add(request);
     }
 
+    //requete api pour obtenir les promotions
     public void getPromotions(String cleApi,final OnPromotionsListener listener){
         String url = URLHeader+"promotions/list/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
@@ -216,11 +204,9 @@ public class ApiClient {
                         }
                         //LISTENER HERE
                         listener.onPromotionsReceived(promotions,promotionsById);
-                        promotionsLoaded = true;
                     }else {
                         Log.e("ApiClient","getPromotions() requete HTTP SUCCESS = 0");
                         listener.onPromotionsFailed("getPromotions() requete HTTP SUCCESS = 0");
-                        promotionsLoaded = false;
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();

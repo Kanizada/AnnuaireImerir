@@ -13,7 +13,6 @@ import android.widget.SectionIndexer;
 import android.widget.TextView;
 
 import com.imerir.annuaireimerir.R;
-import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
@@ -43,7 +42,7 @@ public class EntrepriseListViewAdapter extends BaseAdapter implements SectionInd
     }
     public View getView(int position, View v, ViewGroup parent) {
         LayoutInflater inflate = ((Activity) context).getLayoutInflater();
-        View view = (View) inflate.inflate(R.layout.fragment_entreprise_list_test_row, null);
+        View view = (View) inflate.inflate(R.layout.fragment_entreprise_list_row, null);
         LinearLayout header = (LinearLayout) view.findViewById(R.id.section);
         String label = entreprises.get(position).getNom();
         char firstChar = label.toUpperCase().charAt(0);

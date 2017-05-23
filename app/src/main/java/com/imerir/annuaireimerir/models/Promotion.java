@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Promotion implements Serializable,Parcelable {
+public class Promotion {
 
 
 
@@ -23,9 +23,7 @@ public class Promotion implements Serializable,Parcelable {
     private String nom;
     private String annee;
     private Boolean promoActuelle;
-    //
-    private Integer yearStart;
-    private Integer yearEnd;
+
     private ArrayList<Eleve> eleves = new ArrayList<>();
 
     //constructeur JSON
@@ -57,21 +55,6 @@ public class Promotion implements Serializable,Parcelable {
         this.nom = nom;
     }
 
-    public Integer getYearStart() {
-        return yearStart;
-    }
-
-    public void setYearStart(Integer yearStart) {
-        this.yearStart = yearStart;
-    }
-
-    public Integer getYearEnd() {
-        return yearEnd;
-    }
-
-    public void setYearEnd(Integer yearEnd) {
-        this.yearEnd = yearEnd;
-    }
 
     public ArrayList<Eleve> getEleves() {
         return eleves;
@@ -104,32 +87,4 @@ public class Promotion implements Serializable,Parcelable {
         this.promoActuelle = promoActuelle;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(id);
-        dest.writeString(nom);
-        dest.writeString(annee);
-    }
-    protected Promotion(Parcel in) {
-        id = in.readInt();
-        nom = in.readString();
-        annee = in.readString();
-    }
-
-    public static final Creator<Promotion> CREATOR = new Creator<Promotion>() {
-        @Override
-        public Promotion createFromParcel(Parcel in) {
-            return new Promotion(in);
-        }
-
-        @Override
-        public Promotion[] newArray(int size) {
-            return new Promotion[size];
-        }
-    };
 }

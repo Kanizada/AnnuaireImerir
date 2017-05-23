@@ -37,7 +37,7 @@ public class EleveListViewAdapter extends BaseAdapter implements SectionIndexer,
     }
     public View getView(int position, View v, ViewGroup parent) {
         LayoutInflater inflate = ((Activity) context).getLayoutInflater();
-        View view = (View) inflate.inflate(R.layout.fragment_eleve_list_test_row, null);
+        View view = (View) inflate.inflate(R.layout.fragment_eleve_list_row, null);
         LinearLayout header = (LinearLayout) view.findViewById(R.id.section);
         String label = eleves.get(position).getNom();
         String prenom = eleves.get(position).getPrenom();

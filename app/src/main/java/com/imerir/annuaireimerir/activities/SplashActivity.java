@@ -20,11 +20,7 @@ import java.util.ArrayList;
  */
 
 public class SplashActivity extends AppCompatActivity{
-
-
     Intent intent;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
