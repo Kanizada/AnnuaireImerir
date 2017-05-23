@@ -12,9 +12,10 @@
         android:layout_height="wrap_content">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="vertical"
         android:padding="16dp">
 
         <TextView
@@ -25,190 +26,176 @@
             android:textStyle="bold"
             android:layout_marginStart="100dp"
             android:layout_marginBottom="8dp"
-            android:layout_centerHorizontal="true"
             android:lines="1"
             tools:text="Tristan WAGNER"/>
-
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/tvNom"
             android:layout_marginBottom="8dp"
             android:textStyle="bold"
-            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
             android:id="@+id/tvPromotion"
             tools:text="GOA 2016-2017"/>
 
         <android.support.v7.widget.CardView
             android:id="@+id/info_contact_container"
-            android:layout_below="@+id/tvPromotion"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
             app:cardElevation="4dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                >
-
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="4dp">
-
-                    <TextView
-                        android:padding="2dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/labelAdresse"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:text="Adresse" />
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="34dp"
-                        android:layout_below="@+id/labelAdresse"
-                        android:id="@+id/tvAdresse"
-                        android:padding="2dp"
-                        tools:text="8 rue Raymond Parès"
-                        android:gravity="center"/>
-                    <TextView
-                        android:layout_below="@id/tvAdresse"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/tvCPetVille"
-                        android:padding="2dp"
-                        android:gravity="center"
-                        tools:text="66250, Saint-laurent-de-la-Salanque"/>
-
-                    <TextView
-                        android:padding="2dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/labelTelephoneMobile"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:text="Telephone mobile"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/tvTelephoneMobile"
-                            android:padding="2dp"
-                            android:gravity="center"
-                            tools:text="0625660278"/>
-
-                        <ImageButton
-                            android:id="@+id/callMobileBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_call_green_600_36dp"
-                            android:background="@color/white"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="8dp" />
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:padding="2dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/labelTelephoneFixe"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:text="Telephone fixe"/>
-
-                    <RelativeLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:id="@+id/tvTelephoneFixe"
-                            android:padding="2dp"
-                            android:gravity="center"
-                            tools:text="0525660278"/>
-
-                        <ImageButton
-                            android:id="@+id/callFixeBtn"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:src="@drawable/ic_call_green_600_36dp"
-                            android:background="@color/white"
-                            android:layout_alignParentRight="true"
-                            android:layout_centerVertical="true"
-                            android:layout_marginEnd="8dp"/>
-
-                    </RelativeLayout>
-
-                    <TextView
-                        android:padding="2dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/labelAdresseEmail"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:text="Adresse email"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/tvAdresseEmail"
-                        android:padding="6dp"
-                        android:gravity="center"
-                        tools:text="tristan.wagner@imerir.com"/>
-
-                    <TextView
-                        android:padding="2dp"
-                        android:layout_marginTop="24dp"
-                        android:layout_height="wrap_content"
-                        android:layout_width="wrap_content"
-                        android:id="@+id/labelSiteWeb"
-                        android:textStyle="bold"
-                        android:textSize="16sp"
-                        android:text="Site Web"/>
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:id="@+id/tvSiteWeb"
-                        android:padding="6dp"
-                        android:gravity="center"
-                        tools:text="www.imerir.com"/>
-
-                </LinearLayout>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_margin="4dp"
-                    android:background="@color/grey"/>
+                android:layout_margin="4dp">
 
                 <TextView
-                    android:layout_margin="4dp"
-                    android:layout_height="26dp"
-                    android:layout_width="match_parent"
-                    android:id="@+id/labelEntreprise"
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresse"
                     android:textStyle="bold"
                     android:textSize="16sp"
-                    android:textAlignment="center"
-                    android:text="Entreprises"/>
+                    android:text="Adresse" />
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:id="@+id/tvAdresse"
+                    android:padding="2dp"
+                    tools:text="8 rue Raymond Parès"
+                    android:gravity="center"/>
 
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvCPetVille"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="66250, Saint-laurent-de-la-Salanque"/>
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelTelephoneMobile"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Telephone mobile"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/tvTelephoneMobile"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        tools:text="0625660278"/>
+
+                    <ImageButton
+                        android:id="@+id/callMobileBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_call_green_600_36dp"
+                        android:background="@color/white"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp" />
+
+                </RelativeLayout>
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelTelephoneFixe"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Telephone fixe"/>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:id="@+id/tvTelephoneFixe"
+                        android:padding="2dp"
+                        android:gravity="center"
+                        tools:text="0525660278"/>
+
+                    <ImageButton
+                        android:id="@+id/callFixeBtn"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:src="@drawable/ic_call_green_600_36dp"
+                        android:background="@color/white"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginEnd="8dp"/>
+
+                </RelativeLayout>
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresseEmail"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Adresse email"/>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tvAdresseEmail"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    tools:text="tristan.wagner@imerir.com"/>
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_marginTop="24dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelSiteWeb"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Site Web"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvSiteWeb"
+                    android:padding="6dp"
+                    android:gravity="center"
+                    tools:text="www.imerir.com"/>
 
             </LinearLayout>
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:layout_margin="4dp"
+                android:layout_height="26dp"
+                android:layout_width="match_parent"
+                android:id="@+id/labelEntreprise"
+                android:textStyle="bold"
+                android:textSize="16sp"
+                android:textAlignment="center"
+                android:text="Entreprises"/>
 
         </android.support.v7.widget.CardView>
 
@@ -217,10 +204,9 @@
             android:id="@+id/entrepriseContainer"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@id/info_contact_container"
             android:paddingTop="8dp"/>
 
-    </RelativeLayout>
+    </LinearLayout>
     </ScrollView>
 
 </FrameLayout>
