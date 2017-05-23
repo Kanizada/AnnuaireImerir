@@ -12,7 +12,6 @@ import com.imerir.annuaireimerir.R;
 import com.imerir.annuaireimerir.models.Entreprise;
 
 import java.util.ArrayList;
-import java.util.TreeSet;
 
 /**
  * Created by eleve on 12/01/2017.
@@ -22,8 +21,7 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
     View v;
     ArrayList<Entreprise> entreprises;
     private OnEntrepriseClickedListener listener;
-    int defaultLayout = R.layout.item_enterprise;
-    int eleveLayout = R.layout.item_entreprise_in_eleve_detail2;
+    int eleveLayout = R.layout.item_entreprise_in_eleve;
     boolean isInEleveDetail = false;
 
 
@@ -39,12 +37,7 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
     }
     @Override
     public EnterpriseViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (!isInEleveDetail){
-            v = LayoutInflater.from(parent.getContext()).inflate(defaultLayout, parent, false);
-        }else {
-            v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
-        }
-
+        v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
         return new EnterpriseViewHolder(v);
     }
 
@@ -63,7 +56,6 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
 
     public class EnterpriseViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         CardView cardView;
-        ImageView image;
         TextView nomTV, villeTV;
         Entreprise entreprise;
 
@@ -71,7 +63,6 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
         public EnterpriseViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            image = (ImageView) itemView.findViewById(R.id.enterprise_image);
             nomTV = (TextView) itemView.findViewById(R.id.enterprise_name);
             villeTV = (TextView) itemView.findViewById(R.id.enterprise_city);
         }
@@ -80,7 +71,6 @@ public class EntrepriseListAdapter extends RecyclerView.Adapter<EntrepriseListAd
             this.entreprise = entreprise;
             nomTV.setText(entreprise.getNom());
             villeTV.setText(entreprise.getVille());
-            //image
             cardView.setOnClickListener(this);
         }
 

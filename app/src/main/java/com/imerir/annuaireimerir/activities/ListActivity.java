@@ -48,22 +48,18 @@ import java.util.TreeSet;
 
 public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener {
 
+    //définit le mode affiché dans l'application
     enum DisplayMode {
         ELEVELIST,
         ENTREPRISELIST,
-        PROMOTIONLIST,
         ELEVEDETAIL,
         ENTREPRISEDETAIL
     }
 
-    private Fragment fragment;
-    private FragmentManager fragmentManager;
     DisplayMode mode = DisplayMode.ELEVELIST;
-    //DisplayMode previousMode;
     GoogleApiClient googleApiClient;
     GoogleSignInOptions signInOptions;
     Toolbar toolbar;
-    Thread thread;
     ProgressDialog loading;
     ListActivity context = this;
     ArrayList<Eleve> liste_eleves = new ArrayList<>();
@@ -87,7 +83,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ApiClient.createInstance(this);
-        //back button sur la toolbar logique provisoire pour le moment un back press retourne le dernier fragment ou l'ou etait
+
+        //logique du bouton back dans la toolbar
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,45 +96,29 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                         setMode(DisplayMode.ENTREPRISELIST);
                         break;
                     case ENTREPRISELIST:
-                        setMode(DisplayMode.PROMOTIONLIST);
+                        setMode(DisplayMode.ELEVELIST);
                         break;
                     case ELEVELIST:
                         setMode(DisplayMode.ENTREPRISELIST);
                         break;
-                    case PROMOTIONLIST:
-                        setMode(DisplayMode.ELEVELIST);
-                        break;
                     default:
                         getSupportFragmentManager().popBackStack();
                         break;
-
-                    /*Fragment f = getSupportFragmentManager().findFragmentById(R.id.fragmentContainer);
-                    Log.e("fragment tag", f.getTag());
-                    switch (f.getTag()){
-                        case "eleves":
-                            getSupportActionBar().setTitle("Liste des élèves");
-                            break;
-                        case "entreprises":
-                            getSupportActionBar().setTitle("Liste des entreprises");
-                            break;
-                        default:
-                            getSupportActionBar().setTitle(" ");
-                            break;
-                    }*/
-
-                    //getSupportActionBar().setTitle(" ");
                 }
             }
         });
+        //Google connect
         signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().setHostedDomain("imerir.com").build();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this, this)
                 .addApi(Auth.GOOGLE_SIGN_IN_API,signInOptions)
                 .build();
 
+        //requete api
         loadData();
     }
 
+    //requete api
     private void loadData(){
         pendingRequest = 4;
         ApiClient.getInstance().loadData(this,this,this,this);
@@ -147,6 +128,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 true);
     }
 
+    //Si le chargement des données depuis l'api on dismiss le loading, on cancel la queue volley et on affiche la snackbar pour relancer la requete
     private void loadFailed(){
         if (loading.isShowing()) {
             loading.dismiss();
@@ -164,6 +146,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                 }).show();
     }
 
+    //méthode appelée quand pending request = 0
     private void loadDone(){
         loading.dismiss();
         linkPromotions();
@@ -175,6 +158,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     }
 
+    //methode fermer le clavier
     public void hideKeyBoard(){
         View view = this.getCurrentFocus();
         if (view != null) {
@@ -183,6 +167,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         }
     }
 
+    //methode de changement de display mode, selon le mode la methode instancie un nouveau fragment et passe les arguments necessaires au nouveau fragment
     public void setMode(DisplayMode newMode){
         hideKeyBoard();
         if(newMode==DisplayMode.ELEVELIST){
@@ -208,18 +193,6 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
             getSupportActionBar()
                     .setTitle("Liste des entreprises");
-
-        }else if (newMode==DisplayMode.PROMOTIONLIST){
-
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
-                    .replace(R.id.fragmentContainer, PromotionListFragment.newInstance(liste_promotions), "promotions")
-                    .addToBackStack("promotions")
-                    .commit();
-
-            getSupportActionBar()
-                    .setTitle("Liste des promotions");
 
         }else if (newMode==DisplayMode.ELEVEDETAIL){
 
@@ -258,20 +231,11 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
         switch (id){
-            /*case R.id.action_sortby:
-                //pop up du dialogue pour changer le mode de tri
-                return true;*/
-            /*case R.id.action_account:
-                // go account page
-                return true;*/
             case R.id.action_entreprise:
                 setMode(DisplayMode.ENTREPRISELIST);
                 return true;
             case R.id.action_eleve:
                 setMode(DisplayMode.ELEVELIST);
-                return true;
-            case R.id.action_promotion:
-                setMode(DisplayMode.PROMOTIONLIST);
                 return true;
             case R.id.action_disconnect:
                 signOut();
@@ -317,13 +281,10 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                         setMode(DisplayMode.ENTREPRISELIST);
                         break;
                     case ENTREPRISELIST:
-                        setMode(DisplayMode.PROMOTIONLIST);
+                        setMode(DisplayMode.ELEVELIST);
                         break;
                     case ELEVELIST:
                         setMode(DisplayMode.ENTREPRISELIST);
-                        break;
-                    case PROMOTIONLIST:
-                        setMode(DisplayMode.ELEVELIST);
                         break;
                     default:
                         getSupportFragmentManager().popBackStack();
@@ -335,8 +296,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
 
 
-    //Methode provisoire pour le chargement des données depuis l'API
-
+    //Methode de liage des élèves et des entreprises par rapport à la liste des relations
     void linkRelation(){
         for (Relation relation:liste_relations) {
             int ideleve = relation.getIdeleve();
@@ -349,15 +309,16 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         }
     }
 
+    //Méthode de liage des promotions aux élèves
     void linkPromotions(){
         for (Eleve eleve:liste_eleves) {
             int idpromotion = eleve.getIdpromotion();
             Promotion promotion = promotionsById.get(idpromotion);
             eleve.setPromotion(promotion);
-            //promotion.addEleve(eleve);
         }
     }
 
+    //Callback quand la requete api de la liste des élèves a réussie
     @Override
     public void onElevesReceived(ArrayList<Eleve> eleves, SparseArray<Eleve> elevesIdObj) {
         switch (pendingRequest){
@@ -384,13 +345,14 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     }
 
-
+    //Callback quand la requete api de la liste des élèves a échoué
     @Override
     public void onElevesFailed(String error) {
         pendingRequest = -10;
         loadFailed();
     }
 
+    //Callback quand la requete api de la liste des entreprises a réussie
     @Override
     public void onEntreprisesReceived(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj) {
         switch (pendingRequest){
@@ -416,7 +378,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     }
 
 
-
+    //Callback quand la requete api de la liste des élèves a échouée
     @Override
     public void onEntreprisesFailed(String error) {
         pendingRequest = -10;
@@ -424,7 +386,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     }
 
 
-
+    //Callback quand la requete api de la liste des promotions a réussie
     @Override
     public void onPromotionsReceived(ArrayList<Promotion> promotions, SparseArray<Promotion> promotionsId) {
         switch (pendingRequest){
@@ -446,12 +408,14 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         Log.e("pendingRequest", ""+pendingRequest);
     }
 
+    //Callback quand la requete api de la liste des promotions a échoué
     @Override
     public void onPromotionsFailed(String error) {
         pendingRequest = -10;
         loadFailed();
     }
 
+    //Callback quand la requete api de la liste des relations eleves-entreprises a réussie
     @Override
     public void onRelationsReceived(ArrayList<Relation> relations) {
         switch (pendingRequest){
@@ -471,18 +435,21 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         Log.e("pendingRequest", ""+pendingRequest);
     }
 
+    //Callback quand la requete api de la liste des relations a échoué
     @Override
     public void onRelationsFailed(String error) {
         pendingRequest = -10;
         loadFailed();
     }
 
+    //Callback quand un élève de la liste est clické
     @Override
     public void onEleveClicked(Eleve eleve) {
         this.displayedEleve = eleve;
         setMode(DisplayMode.ELEVEDETAIL);
     }
 
+    //Callback quand un entreprise de la liste est clické
     @Override
     public void onEntrepriseClicked(Entreprise entreprise) {
         this.displayedEntreprise = entreprise;

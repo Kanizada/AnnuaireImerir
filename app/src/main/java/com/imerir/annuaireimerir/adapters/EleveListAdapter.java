@@ -21,8 +21,7 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
     View v;
     ArrayList<Eleve> eleves;
     private OnEleveClickedListener listener;
-    int defaultLayout = R.layout.item_eleve;
-    int eleveLayout = R.layout.item_eleve_in_entreprise2;
+    int eleveLayout = R.layout.item_eleve_in_entreprise;
     boolean isInEntrepriseDetail = false;
 
 
@@ -40,13 +39,7 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
 
     @Override
     public EleveViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        if (!isInEntrepriseDetail)
-        {
-            v = LayoutInflater.from(parent.getContext()).inflate(defaultLayout, parent, false);
-        }else {
-            v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
-        }
-
+        v = LayoutInflater.from(parent.getContext()).inflate(eleveLayout, parent, false);
         return new EleveViewHolder(v);
     }
 
@@ -66,14 +59,12 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
         CardView cardView;
         ImageView image;
         TextView nomTV;
-        TextView prenomTV;
         TextView promotionTV;
         Eleve eleve;
 
         public EleveViewHolder(View itemView) {
             super(itemView);
             cardView = (CardView) itemView.findViewById(R.id.card_view);
-            image = (ImageView) itemView.findViewById(R.id.student_image);
             nomTV = (TextView) itemView.findViewById(R.id.student_last_name);
             promotionTV = (TextView) itemView.findViewById(R.id.student_promotion);
         }
@@ -85,7 +76,6 @@ public class EleveListAdapter extends RecyclerView.Adapter<EleveListAdapter.Elev
                 promotionTV.setText(eleve.getPromotion().getNom() + " " + eleve.getPromotion().getAnnee());
             }
 
-            //image
             cardView.setOnClickListener(this);
         }
 

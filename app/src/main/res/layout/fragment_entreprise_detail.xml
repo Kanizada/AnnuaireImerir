@@ -1,384 +1,195 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/FrameView">
-
+    android:background="@color/grisclair">
     <ScrollView
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    android:id="@+id/scrollView">
-
-
-    <LinearLayout
-        android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/tvNom"
+            android:textSize="24sp"
+            android:textStyle="bold"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="8dp"
+            tools:text="Iristech"/>
 
         <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/tvNom"
             android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1">
-            <ImageView
+            android:layout_height="92dp"
+            android:id="@+id/adresseContainer"
+            android:background="@color/white">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="70dp"
-                android:src="@android:drawable/ic_menu_send"/>
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresse"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Adresse" />
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="34dp"
+                    android:layout_below="@+id/labelAdresse"
+                    android:id="@+id/tvAdresse"
+                    android:padding="2dp"
+                    tools:text="8 rue Raymond Parès"
+                    android:gravity="center"/>
+                <TextView
+                    android:layout_below="@id/tvAdresse"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvCPetVille"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="66250, Saint-laurent-de-la-Salanque"/>
+
+            </RelativeLayout>
         </android.support.v7.widget.CardView>
 
         <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/adresseContainer"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-            
-            <LinearLayout
+            android:layout_height="64dp"
+            android:id="@+id/sitewebContainer"
+            android:background="@color/white">
+            <RelativeLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_height="match_parent">
 
-                <LinearLayout
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelSiteWeb"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Site Web"/>
+                <TextView
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="3">
+                    android:id="@+id/tvSiteWeb"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="www.imerir.com"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/TitreAdresse"
-                        android:layout_weight="1"
-                        android:gravity="center_horizontal"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Adresse"/>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/CorpAdresse"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="20 avenue maréchal foch"/>
+            </RelativeLayout>
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="66250 Saint Laurent de la Salanque"/>
-
-                    </LinearLayout>
-
-                </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="10"
-                android:orientation="horizontal">
-
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:weightSum="2"
-            android:orientation="vertical"
-            android:layout_weight="9">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:gravity="center_horizontal"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                android:layout_weight="1"
-                android:text="Telephone"/>
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:textSize="16sp"
-                android:text="04 68 28 48 31"/>
-
-
-        </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_menu_compass"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:weightSum="10"
-                android:orientation="horizontal">
-
-
-                <LinearLayout
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:weightSum="2"
-                    android:orientation="vertical"
-                    android:layout_weight="9">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:layout_weight="1"
-                        android:text="Adresse mail:"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="contact@contact.com"/>
-
-
-                </LinearLayout>
-
-                <ImageView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:src="@android:drawable/ic_secure"/>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/TitreWeb"
-                        android:layout_weight="1"
-
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Site web:"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/CorpWeb"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="www.neovia-energie.com"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:weightSum="2">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/TitreMail"
-                        android:layout_weight="1"
-                        android:textSize="18sp"
-                        android:textStyle="bold"
-                        android:text="Horaire d'ouverture :"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="0dp"
-                        android:id="@+id/CorpMail"
-                        android:layout_weight="1"
-                        android:textSize="16sp"
-                        android:text="08:00 - 18:00"/>
-
-                </LinearLayout>
-
-            </LinearLayout>
-
-        </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="5dp">
-
-            <LinearLayout
-                android:id="@+id/formulaire"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/Adresse"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="20dp"
-                            android:text="Domaine d'activité"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/telephone"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="20dp"
-                            android:text="Site Web"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/adresseMail"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="20dp"
-                            android:text="Horaire d'ouverture"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="15dp"
-                        android:paddingBottom="10dp"
-                        android:text="Anciens élèves ayant travaillé dans cette entreprise :"/>
-
-
-                <android.support.v7.widget.CardView
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="5dp">
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:textSize="20dp"
-                            android:text="Eleve 1"/>
-
-                    </LinearLayout>
-
-                </android.support.v7.widget.CardView>
-
-
-            <android.support.v7.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="5dp">
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:textSize="20dp"
-                        android:text="Eleve 2"/>
-
-                </LinearLayout>
-
-            </android.support.v7.widget.CardView>
-
-            </LinearLayout>
 
         </android.support.v7.widget.CardView>
 
 
-    </LinearLayout>
 
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/sitewebContainer"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:id="@+id/telephoneFixeContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelTelephoneFixe"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Telephone fixe"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_toStartOf="@+id/callFixeBtn"
+                    android:id="@+id/tvTelephoneFixe"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="0625660278"/>
+
+                <ImageButton
+                    android:id="@+id/callFixeBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:src="@drawable/ic_call_green_600_36dp"
+                    android:background="@color/white"
+                    android:layout_alignParentRight="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="8dp"/>
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:elevation="3dp"
+            android:layout_below="@+id/telephoneFixeContainer"
+            android:layout_width="match_parent"
+            android:layout_height="76dp"
+            android:id="@+id/emailContainer"
+            android:background="@color/white">
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:padding="2dp"
+                    android:layout_height="wrap_content"
+                    android:layout_width="wrap_content"
+                    android:id="@+id/labelAdresseEmail"
+                    android:textStyle="bold"
+                    android:textSize="16sp"
+                    android:text="Adresse email"/>
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:id="@+id/tvAdresseEmail"
+                    android:padding="2dp"
+                    android:gravity="center"
+                    tools:text="tristan.wagner@imerir.com"/>
+
+
+            </RelativeLayout>
+
+
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.RecyclerView
+            android:layout_below="@+id/emailContainer"
+            android:id="@+id/elevesList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+    </RelativeLayout>
     </ScrollView>
+
 </FrameLayout>

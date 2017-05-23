@@ -1,43 +1,19 @@
 package com.imerir.annuaireimerir.activities;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.toolbox.Volley;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
-import com.imerir.annuaireimerir.models.Eleve;
-import com.imerir.annuaireimerir.models.Entreprise;
-import com.imerir.annuaireimerir.models.Promotion;
-import com.imerir.annuaireimerir.tools.App;
-import com.imerir.annuaireimerir.tools.LoginRequest;
 import com.imerir.annuaireimerir.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity implements  View.OnClickListener, GoogleApiClient.OnConnectionFailedListener {
 
@@ -49,9 +25,10 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login_google_sign_in_only);
+        setContentView(R.layout.activity_login);
         signinBtn = (SignInButton) findViewById(R.id.sign_in_button);
         signinBtn.setOnClickListener(this);
+        //instanciation google connect api
         GoogleSignInOptions signInOptions = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN).requestEmail().setHostedDomain("imerir.com").build();
         googleApiClient = new GoogleApiClient.Builder(this)
                 .enableAutoManage(this,this)
@@ -61,13 +38,14 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     }
 
 
+    //call activity for result de l'api google
     private void signIn()
     {
         Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
         startActivityForResult(intent,REQUEST_CODE);
     }
 
-
+    //Si l'activity for result retourne le bon code on gére la connexion
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -80,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
     }
 
 
+    //Si le result est un succès on se connecte sur l'api google et on change d'activité vers la listactivity
     private void handleResult(GoogleSignInResult result)
     {
         if (result.isSuccess())

@@ -13,10 +13,10 @@
         android:orderInCategory="100"
         android:title="Liste des élèves"
         app:showAsAction="never" />
-    <item
+    <!--<item
         android:id="@+id/action_promotion"
         android:orderInCategory="100"
-        android:title="Liste des promotions"/>
+        android:title="Liste des promotions"/>-->
     <item
         android:id="@+id/action_disconnect"
         android:orderInCategory="100"
