@@ -3,7 +3,6 @@ package com.imerir.annuaireimerir.activities;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -44,7 +43,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeSet;
 
-public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener, ApiClient.OnDatabaseListener {
+public class FragmentManagerActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener, ApiClient.OnDatabaseListener {
 
 
 
@@ -61,7 +60,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     GoogleSignInOptions signInOptions;
     Toolbar toolbar;
     ProgressDialog loading;
-    ListActivity context = this;
+    FragmentManagerActivity context = this;
     ArrayList<Eleve> liste_eleves = new ArrayList<>();
     ArrayList<Entreprise> liste_entreprises = new ArrayList<>();
     ArrayList<Promotion> liste_promotions = new ArrayList<>();
@@ -167,16 +166,18 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             public void run() {
                 ApiClient.getInstance().checkDb(context);
                 if (currentDbVersion != null){
+                    //Si la version est à jour
                     if (currentDbVersion.equals(checkDbVersion)){
-                        ListActivity.this.runOnUiThread(new Runnable() {
+                        FragmentManagerActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                Toast.makeText(ListActivity.this, "DB à jour", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(FragmentManagerActivity.this, "DB à jour", Toast.LENGTH_SHORT).show();
                             }
                         });
                         Log.e("timertask", "à jour");
+                    //Si la version n'est pas à jour
                     }else {
-                        ListActivity.this.runOnUiThread(new Runnable() {
+                        FragmentManagerActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
                                 timer.cancel();
@@ -199,6 +200,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             }
         };
         timer = new Timer();
+        //On dit au timer d'effectuer la timerTask toutes les 10 secondes
         timer.scheduleAtFixedRate(timerTask,10000,10000);
     }
     @Override
@@ -291,6 +293,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         return true;
     }
 
+    //menu
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -315,8 +318,8 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
             @Override
             public void onResult(@NonNull Status status) {
                 if (status.isSuccess()){
-                    Intent intent = new Intent(ListActivity.this, LoginActivity.class);
-                    ListActivity.this.startActivity(intent);
+                    Intent intent = new Intent(FragmentManagerActivity.this, LoginActivity.class);
+                    FragmentManagerActivity.this.startActivity(intent);
                     finish();
                 }
             }
@@ -331,7 +334,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
 
 
-
+    //Quand le bouton back est pressé selon le mode on met un autre mode
     @Override
     public void onBackPressed() {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
@@ -520,6 +523,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         setMode(DisplayMode.ENTREPRISEDETAIL);
     }
 
+    //on recoit pour la premiere fois la version de la base de données chargée
     @Override
     public void onDatabaseVersionReceived(Date date) {
         switch (pendingRequest){
@@ -539,6 +543,7 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
     }
 
+    //call back de ApiClient.getInstance().checkDb(context);
     @Override
     public void onDataVersionCheck(Date date) {
         checkDbVersion = date;
@@ -547,6 +552,18 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        timer.cancel();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
         timer.cancel();
     }
 }

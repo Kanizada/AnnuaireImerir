@@ -19,7 +19,7 @@ import java.util.ArrayList;
  * Created by student on 10/01/2017.
  */
 
-public class SplashActivity extends AppCompatActivity{
+public class SplashActivity extends AppCompatActivity {
     Intent intent;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,5 +30,6 @@ public class SplashActivity extends AppCompatActivity{
         finish();
 
     }
+
 
 }

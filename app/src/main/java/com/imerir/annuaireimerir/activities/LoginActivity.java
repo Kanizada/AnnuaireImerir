@@ -64,10 +64,11 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
         if (result.isSuccess())
         {
             googleApiClient.connect();
-            Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
+            Intent listIntent = new Intent(LoginActivity.this,FragmentManagerActivity.class);
             LoginActivity.this.startActivity(listIntent);
             finish();
         }else {
+            //Log.e("GoogleResult",result.getStatus().getStatusMessage().toString());
             Toast.makeText(this,"Erreur de connexion google",Toast.LENGTH_LONG).show();
         }
     }

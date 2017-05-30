@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Entreprise implements Parcelable {
+public class Entreprise{
     private int id;
     private String nom;
     private String adresse;
@@ -131,13 +131,5 @@ public class Entreprise implements Parcelable {
         this.telephone = telephone;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
+    
 }

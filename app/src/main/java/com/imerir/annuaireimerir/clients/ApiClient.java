@@ -282,7 +282,6 @@ public class ApiClient {
     public interface OnEntreprisesListener {
         void onEntreprisesReceived(ArrayList<Entreprise> entreprises, SparseArray<Entreprise> entrepriseIdObj);
         void onEntreprisesFailed(String error);
-
     }
 
     public interface OnPromotionsListener {
@@ -294,6 +293,5 @@ public class ApiClient {
         void onDatabaseVersionReceived(Date date);
         void onDataVersionCheck(Date date);
     }
-
 
 }

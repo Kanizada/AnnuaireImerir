@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Eleve implements Parcelable {
+public class Eleve {
 
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
@@ -39,7 +39,26 @@ public class Eleve implements Parcelable {
 
     }
 
-    //constructeur JSON
+    public Eleve(int id,String prenom, String nom, String adresse, String codePostal, String ville, String siteWeb, String telephoneMobile, String telephoneFixe, String email, int idpromotion){
+        this.id = id;
+        this.prenom = prenom;
+        this.nom = nom;
+        this.adresse = adresse;
+        this.codePostal = codePostal;
+        this.ville = ville;
+        this.siteWeb = siteWeb;
+        this.telephoneMobile = telephoneMobile;
+        this.telephoneFixe = telephoneFixe;
+        this.email = email;
+        this.idpromotion = idpromotion;
+    }
+
+    //
+
+    /**
+     * constructeur JSON
+     * @param jsonObject
+     */
     public Eleve(JSONObject jsonObject) {
         this.id = jsonObject.optInt("id");
         this.prenom = jsonObject.optString("prenom");
@@ -50,7 +69,7 @@ public class Eleve implements Parcelable {
         this.siteWeb = jsonObject.optString("site_web");
         this.telephoneMobile = jsonObject.optString("telephone_mobile");
         this.telephoneFixe = jsonObject.optString("telephone_fixe");
-        this.dateInscription = jsonObject.optString("date_inscription");
+        //this.dateInscription = jsonObject.optString("date_inscription");
         this.email = jsonObject.optString("email");
         this.idpromotion = jsonObject.optInt("idpromotion");
     }
@@ -186,13 +205,4 @@ public class Eleve implements Parcelable {
         this.ville = ville;
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-    }
 }
