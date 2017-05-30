@@ -67,6 +67,8 @@ public class LoginActivity extends AppCompatActivity implements  View.OnClickLis
             Intent listIntent = new Intent(LoginActivity.this,ListActivity.class);
             LoginActivity.this.startActivity(listIntent);
             finish();
+        }else {
+            Toast.makeText(this,"Erreur de connexion google",Toast.LENGTH_LONG).show();
         }
     }
 

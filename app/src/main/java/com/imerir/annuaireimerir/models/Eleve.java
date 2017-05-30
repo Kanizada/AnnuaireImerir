@@ -15,7 +15,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Eleve {
+public class Eleve implements Parcelable {
 
     // ATTRIBUTS ACTUELLEMENTS DISPONIBLES VIA L'API //
     private int id;
@@ -186,4 +186,13 @@ public class Eleve {
         this.ville = ville;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

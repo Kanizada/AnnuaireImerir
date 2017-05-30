@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * For Imerir.
  * axel.zapata@imerir.com
  */
-public class Promotion {
+public class Promotion implements Parcelable {
 
 
 
@@ -87,4 +87,13 @@ public class Promotion {
         this.promoActuelle = promoActuelle;
     }
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+
+    }
 }

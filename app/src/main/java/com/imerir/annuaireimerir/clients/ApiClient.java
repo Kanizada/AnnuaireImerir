@@ -19,7 +19,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * Created by student on 10/01/2017.
@@ -56,11 +59,52 @@ public class ApiClient {
         });
     }
 
-    public void loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4){
+    public void loadData(final  OnElevesListener listener, final OnEntreprisesListener listener2, final OnPromotionsListener listener3, final OnRelationsListener listener4, final OnDatabaseListener listener5){
         getEleves(cleApi,listener);
         getEntreprises(cleApi,listener2);
         getPromotions(cleApi,listener3);
         getRelations(cleApi,listener4);
+        getdbversion(cleApi,listener5,true);
+    }
+    public void checkDb(final OnDatabaseListener listener){
+        getdbversion(cleApi,listener, false);
+    }
+
+    public void getdbversion(String cleApi, final OnDatabaseListener listener, final boolean isCheck ){
+        String url = URLHeader+"dbversion/"+cleApi;
+        StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                try {
+                    JSONArray retourJSON = new JSONArray(response);
+                    JSONObject jsonObject = retourJSON.getJSONObject(0);
+                    SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+
+                    try {
+                        Date date = dateFormat.parse(jsonObject.getString("UPDATE_TIME"));
+                        if (isCheck){
+                            listener.onDatabaseVersionReceived(date);
+                        }else {
+                            listener.onDataVersionCheck(date);
+                        }
+
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                        Log.e("ApiClient","UPDATE TIME PARSE ERROR");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.e("ApiClient","UPDATE TIME JSON ERROR");
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+                Log.e("ApiClient","UPDATE TIME VOLLEY ERROR");
+            }
+        });
+        queue.add(request);
     }
 
     //requete api pour obtenir les relations eleves-entreprises
@@ -244,6 +288,11 @@ public class ApiClient {
     public interface OnPromotionsListener {
         void onPromotionsReceived(ArrayList<Promotion> promotions, SparseArray<Promotion> promotionsById);
         void onPromotionsFailed(String error);
+    }
+
+    public interface OnDatabaseListener{
+        void onDatabaseVersionReceived(Date date);
+        void onDataVersionCheck(Date date);
     }
 
 

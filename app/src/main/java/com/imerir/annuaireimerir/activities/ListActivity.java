@@ -1,16 +1,13 @@
 package com.imerir.annuaireimerir.activities;
 
 import android.app.ProgressDialog;
-import android.app.SearchManager;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.util.SparseArray;
@@ -23,7 +20,6 @@ import android.widget.Toast;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.Api;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.common.api.Status;
@@ -35,7 +31,6 @@ import com.imerir.annuaireimerir.fragments.EleveDetailFragment;
 import com.imerir.annuaireimerir.fragments.EntrepriseDetailFragment;
 import com.imerir.annuaireimerir.fragments.EntrepriseListFragment;
 import com.imerir.annuaireimerir.fragments.EleveListFragment;
-import com.imerir.annuaireimerir.fragments.PromotionListFragment;
 import com.imerir.annuaireimerir.models.Eleve;
 import com.imerir.annuaireimerir.models.Entreprise;
 import com.imerir.annuaireimerir.models.Promotion;
@@ -44,9 +39,14 @@ import com.imerir.annuaireimerir.models.ComparatorNomEntreprise;
 import com.imerir.annuaireimerir.models.Relation;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.TreeSet;
 
-public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener {
+public class ListActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener, ApiClient.OnDatabaseListener {
+
+
 
     //définit le mode affiché dans l'application
     enum DisplayMode {
@@ -74,6 +74,10 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     Eleve displayedEleve;
     Entreprise displayedEntreprise;
     int pendingRequest;
+    Date currentDbVersion;
+    Date checkDbVersion;
+    Timer timer;
+    TimerTask timerTask;
 
 
     @Override
@@ -116,12 +120,16 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
 
         //requete api
         loadData();
+
+
+
     }
+
 
     //requete api
     private void loadData(){
-        pendingRequest = 4;
-        ApiClient.getInstance().loadData(this,this,this,this);
+        pendingRequest = 5;
+        ApiClient.getInstance().loadData(this,this,this,this,this);
         loading = ProgressDialog.show(context,
                 "Veuillez patienter..",
                 "Chargement des données..",
@@ -152,6 +160,46 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         linkPromotions();
         linkRelation();
         setMode(DisplayMode.ELEVELIST);
+        ApiClient.getInstance().checkDb(context);
+        //tâche qui verifie la version de la base de données
+        timerTask = new TimerTask() {
+            @Override
+            public void run() {
+                ApiClient.getInstance().checkDb(context);
+                if (currentDbVersion != null){
+                    if (currentDbVersion.equals(checkDbVersion)){
+                        ListActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(ListActivity.this, "DB à jour", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                        Log.e("timertask", "à jour");
+                    }else {
+                        ListActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                timer.cancel();
+                                View view = findViewById(R.id.fragmentContainer);
+                                Snackbar.make(view,
+                                        "Les données ne sont plus à jour",
+                                        Snackbar.LENGTH_INDEFINITE)
+                                        .setAction("Charger", new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                loadData();
+                                            }
+                                        }).show();
+                            }
+                        });
+                        Log.e("timertask", "pas à jour");
+                        Log.e("timertask", checkDbVersion.toString() + " /// " +currentDbVersion);
+                    }
+                }
+            }
+        };
+        timer = new Timer();
+        timer.scheduleAtFixedRate(timerTask,10000,10000);
     }
     @Override
     public void onClick(View view) {
@@ -171,11 +219,15 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
     public void setMode(DisplayMode newMode){
         hideKeyBoard();
         if(newMode==DisplayMode.ELEVELIST){
+            /*Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("eleves",liste_eleves);*/
+            EleveListFragment eleveFragment = EleveListFragment.newInstance(liste_eleves,this);
+            //eleveFragment.setArguments(bundle);
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
-                    .replace(R.id.fragmentContainer, EleveListFragment.newInstance(liste_eleves,this), "")
+                    .replace(R.id.fragmentContainer, eleveFragment, "")
                     .addToBackStack("")
                     .commit();
 
@@ -183,11 +235,14 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                     .setTitle("Liste des élèves");
 
         }else if (newMode==DisplayMode.ENTREPRISELIST){
-
+            /*Bundle bundle = new Bundle();
+            bundle.putParcelableArrayList("entreprises",liste_entreprises);*/
+            EntrepriseListFragment entrepriseFragment = EntrepriseListFragment.newInstance(liste_entreprises,this);
+            //entrepriseFragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_left,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_left)
-                    .replace(R.id.fragmentContainer, EntrepriseListFragment.newInstance(liste_entreprises,this), "")
+                    .replace(R.id.fragmentContainer,entrepriseFragment , "")
                     .addToBackStack("")
                     .commit();
 
@@ -195,11 +250,15 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                     .setTitle("Liste des entreprises");
 
         }else if (newMode==DisplayMode.ELEVEDETAIL){
-
+            /*Bundle bundle = new Bundle();
+            bundle.putParcelable("eleve",displayedEleve);
+            bundle.putSparseParcelableArray("entreprises", entreprisesById);*/
+            EleveDetailFragment eleveFragment = EleveDetailFragment.newInstance(displayedEleve,this,entreprisesById);
+            //eleveFragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EleveDetailFragment.newInstance(displayedEleve,this,entreprisesById), "eleves")
+                    .replace(R.id.fragmentContainer,eleveFragment , "eleves")
                     .addToBackStack("eleves")
                     .commit();
 
@@ -207,10 +266,15 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
                     .setTitle(displayedEleve.getPrenom() + " " + displayedEleve.getNom());
 
         }else if (newMode==DisplayMode.ENTREPRISEDETAIL){
+            /*Bundle bundle = new Bundle();
+            bundle.putParcelable("entreprise",displayedEntreprise);
+            bundle.putSparseParcelableArray("eleves", elevesById);*/
+            EntrepriseDetailFragment entrepriseFragment =EntrepriseDetailFragment.newInstance(displayedEntreprise,this,elevesById);
+            //entrepriseFragment.setArguments(bundle);
             getSupportFragmentManager()
                     .beginTransaction()
                     .setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_left,R.anim.enter_from_left, R.anim.exit_to_right)
-                    .replace(R.id.fragmentContainer, EntrepriseDetailFragment.newInstance(displayedEntreprise,this,elevesById), "entreprises")
+                    .replace(R.id.fragmentContainer, entrepriseFragment, "entreprises")
                     .addToBackStack("entreprises")
                     .commit();
             getSupportActionBar()
@@ -456,6 +520,33 @@ public class ListActivity extends AppCompatActivity implements EntrepriseListAda
         setMode(DisplayMode.ENTREPRISEDETAIL);
     }
 
+    @Override
+    public void onDatabaseVersionReceived(Date date) {
+        switch (pendingRequest){
+            case -10:
+                loadFailed();
+                break;
+            case 1:
+                currentDbVersion = date;
+                pendingRequest--;
+                loadDone();
+                break;
+            default:
+                currentDbVersion = date;
+                pendingRequest--;
+        }
+        Log.e("DB VERSION",currentDbVersion.toString());
 
+    }
 
+    @Override
+    public void onDataVersionCheck(Date date) {
+        checkDbVersion = date;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        timer.cancel();
+    }
 }

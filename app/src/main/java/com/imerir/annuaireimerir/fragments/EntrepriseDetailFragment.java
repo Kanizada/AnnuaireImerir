@@ -84,14 +84,13 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_entreprise_detail_tmp3, container, false);
         tvNom = (TextView) rootView.findViewById(R.id.tvNom);
         tvAdresse = (TextView) rootView.findViewById(R.id.tvAdresse);
         tvCPetVille = (TextView) rootView.findViewById(R.id.tvCPetVille);
         tvSiteWeb = (TextView) rootView.findViewById(R.id.tvSiteWeb);
         tvTelFixe = (TextView) rootView.findViewById(R.id.tvTelephoneFixe);
         tvMail = (TextView) rootView.findViewById(R.id.tvAdresseEmail);
-        siteWebContainer = (CardView) rootView.findViewById(R.id.sitewebContainer);
         callFixeBtn = (ImageButton) rootView.findViewById(R.id.callFixeBtn);
         tvNom.setText(entreprise.getNom());
         tvAdresse.setText(entreprise.getAdresse());
@@ -121,7 +120,7 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
         tvAdresse.setOnClickListener(this);
         tvCPetVille.setOnClickListener(this);
         tvMail.setOnClickListener(this);
-        siteWebContainer.setOnClickListener(this);
+        tvSiteWeb.setOnClickListener(this);
         callFixeBtn.setOnClickListener(this);
         //declarer tous les conteneurs du layout ici puis attribuer à chacun la donnée de l'entreprise
         return rootView;
@@ -129,7 +128,7 @@ public class EntrepriseDetailFragment extends Fragment implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        if (v==siteWebContainer){
+        if (v==tvSiteWeb){
             //l'api doit retourner des urls complétes avec le http:// ou https://
             Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(entreprise.getSiteWeb()));
             startActivity(intent);

@@ -44,7 +44,11 @@ public class EleveListFragment extends Fragment {
     // en arguments du fragment pour passer les données de l'activité vers le fragment pour ensuite les passer à l'adapterr
     //de la listview
     public static EleveListFragment newInstance(ArrayList<Eleve> eleves,EleveListAdapter.OnEleveClickedListener listener){
+        /*Bundle bundle = new Bundle();
+        bundle.putParcelableArrayList("eleves",eleves);
+        bundle.putParcelable("listener",listener);*/
         EleveListFragment fragment = new EleveListFragment(eleves,listener);
+        //fragment.setArguments(bundle);
         return fragment;
     }
 
