@@ -46,8 +46,9 @@ import java.util.TreeSet;
 public class FragmentManagerActivity extends AppCompatActivity implements EntrepriseListAdapter.OnEntrepriseClickedListener,EleveListAdapter.OnEleveClickedListener,View.OnClickListener, ApiClient.OnElevesListener, ApiClient.OnEntreprisesListener, ApiClient.OnPromotionsListener, GoogleApiClient.OnConnectionFailedListener, ApiClient.OnRelationsListener, ApiClient.OnDatabaseListener {
 
 
-
-    //définit le mode affiché dans l'application
+    /**
+     * DisplayMode définit le type de fragment affiché dans la vue
+     */
     enum DisplayMode {
         ELEVELIST,
         ENTREPRISELIST,
@@ -126,6 +127,12 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
 
 
     //requete api
+
+    /**
+     * Fonction principale de chargement des données
+     * Cette fonction fait appel à la méthode loaddata() de l'ApiClient
+     * pendingRequest est le compteur de requêtes http dans la file d'attente
+     */
     private void loadData(){
         pendingRequest = 5;
         ApiClient.getInstance().loadData(this,this,this,this,this);
@@ -136,6 +143,13 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
     }
 
     //Si le chargement des données depuis l'api on dismiss le loading, on cancel la queue volley et on affiche la snackbar pour relancer la requete
+
+    /**
+     * Fonction appelée quand une requête http à retourné une erreur
+     * Si cette fonction est appelée on retire l'icone de chargement
+     * On annule la file d'attente de Volley
+     * On affiche une SnackBar qui propose de recharger les données
+     */
     private void loadFailed(){
         if (loading.isShowing()) {
             loading.dismiss();
@@ -154,6 +168,13 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
     }
 
     //méthode appelée quand pending request = 0
+
+    /**
+     * Fonction appelée une fois toutes les requêtes http effectuées
+     * On retire le dialogue de chargement
+     * On associe les élèves aux entreprises et promotions
+     * On lance le timer de check de la version de la base de données
+     */
     private void loadDone(){
         loading.dismiss();
         linkPromotions();
@@ -161,6 +182,17 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
         setMode(DisplayMode.ELEVELIST);
         ApiClient.getInstance().checkDb(context);
         //tâche qui verifie la version de la base de données
+        setTimerCheckDb(10000);
+    }
+    @Override
+    public void onClick(View view) {
+
+    }
+
+    /**
+     * Fonction pour instantier la tâche + le timer pour check la version de la base de données
+     */
+    private void setTimerCheckDb(long rate){
         timerTask = new TimerTask() {
             @Override
             public void run() {
@@ -175,7 +207,7 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
                             }
                         });
                         Log.e("timertask", "à jour");
-                    //Si la version n'est pas à jour
+                        //Si la version n'est pas à jour
                     }else {
                         FragmentManagerActivity.this.runOnUiThread(new Runnable() {
                             @Override
@@ -201,11 +233,7 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
         };
         timer = new Timer();
         //On dit au timer d'effectuer la timerTask toutes les 10 secondes
-        timer.scheduleAtFixedRate(timerTask,10000,10000);
-    }
-    @Override
-    public void onClick(View view) {
-
+        timer.scheduleAtFixedRate(timerTask,rate,rate);
     }
 
     //methode fermer le clavier
@@ -311,7 +339,9 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
         return super.onOptionsItemSelected(item);
     }
 
-    //signout google
+    /**
+     * Fonction appelée pour se déconnecter de l'api Google, retour vers LoginActivity
+     */
     private void signOut()
     {
         Auth.GoogleSignInApi.signOut(googleApiClient).setResultCallback(new ResultCallback<Status>() {
@@ -337,28 +367,24 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
     //Quand le bouton back est pressé selon le mode on met un autre mode
     @Override
     public void onBackPressed() {
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switch (mode) {
-                    case ELEVEDETAIL:
-                        setMode(DisplayMode.ELEVELIST);
-                        break;
-                    case ENTREPRISEDETAIL:
-                        setMode(DisplayMode.ENTREPRISELIST);
-                        break;
-                    case ENTREPRISELIST:
-                        setMode(DisplayMode.ELEVELIST);
-                        break;
-                    case ELEVELIST:
-                        setMode(DisplayMode.ENTREPRISELIST);
-                        break;
-                    default:
-                        getSupportFragmentManager().popBackStack();
-                        break;
-                }
-            }
-        });
+        switch (mode) {
+            case ELEVEDETAIL:
+                setMode(DisplayMode.ELEVELIST);
+                break;
+            case ENTREPRISEDETAIL:
+                setMode(DisplayMode.ENTREPRISELIST);
+                break;
+            case ENTREPRISELIST:
+                setMode(DisplayMode.ELEVELIST);
+                break;
+            case ELEVELIST:
+                setMode(DisplayMode.ENTREPRISELIST);
+                break;
+            default:
+                getSupportFragmentManager().popBackStack();
+                break;
+        }
+
     }
 
 
@@ -566,4 +592,5 @@ public class FragmentManagerActivity extends AppCompatActivity implements Entrep
         super.onPause();
         timer.cancel();
     }
+
 }
