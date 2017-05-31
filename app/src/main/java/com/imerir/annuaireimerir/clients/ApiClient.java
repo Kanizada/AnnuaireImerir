@@ -109,7 +109,7 @@ public class ApiClient {
 
     //requete api pour obtenir les relations eleves-entreprises
     public void getRelations(String cleApi, final OnRelationsListener listener){
-        String url = URLHeader+"relations/list/"+cleApi;
+        String url = URLHeader+"relations/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -147,7 +147,7 @@ public class ApiClient {
 
     //requete api pour obtenir les entreprises
     public void getEntreprises(String cleApi, final OnEntreprisesListener listener){
-        String url = URLHeader+"entreprises/list/"+cleApi;
+        String url = URLHeader+"entreprises/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -188,7 +188,7 @@ public class ApiClient {
 
     //requete api pour obtenir les eleves
     public void getEleves(String cleApi, final OnElevesListener listener){
-        String url = URLHeader+"eleves/list/"+cleApi;
+        String url = URLHeader+"eleves/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
@@ -229,7 +229,7 @@ public class ApiClient {
 
     //requete api pour obtenir les promotions
     public void getPromotions(String cleApi,final OnPromotionsListener listener){
-        String url = URLHeader+"promotions/list/"+cleApi;
+        String url = URLHeader+"promotions/"+cleApi;
         StringRequest request = new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
